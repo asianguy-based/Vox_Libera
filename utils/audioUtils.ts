@@ -44,7 +44,7 @@ async function decodeAudioData(
   return buffer;
 }
 
-export const playAudio = async (base64Audio: string, onEnded: () => void): Promise<void> => {
+export const playAudio = async (base64Audio: string, onEnded: () => void, playbackRate: number = 1.0): Promise<void> => {
     try {
         const OutputAudioContext = getAudioContext();
         if (OutputAudioContext.state === 'suspended') {
@@ -56,6 +56,9 @@ export const playAudio = async (base64Audio: string, onEnded: () => void): Promi
         
         const source = OutputAudioContext.createBufferSource();
         source.buffer = audioBuffer;
+        // Set playback rate to shift pitch (1.0 is normal, >1.0 is higher/faster, <1.0 is lower/slower)
+        source.playbackRate.value = playbackRate;
+        
         source.connect(OutputAudioContext.destination);
         source.start();
 
@@ -149,19 +152,6 @@ export const blobToBase64 = (blob: Blob): Promise<string> => {
         const reader = new FileReader();
         reader.onloadend = () => {
             const base64String = reader.result as string;
-            // Remove data url prefix if present to match existing decode expectation or keep it if needed.
-            // The current decode function expects raw base64 without prefix.
-            // However, recorded audio is usually saved with MIME type. 
-            // For simplicity in this app, we will strip the prefix for the `decode` function we have
-            // OR modify the player to handle Blobs. 
-            // Actually, the existing `playAudio` expects Gemini's raw PCM format usually, or base64 encoded binary.
-            // Browser recordings are usually WebM/Ogg. 
-            // To play browser recording, it's easier to use `new Audio(url)`.
-            // But to keep consistent with `playAudio` which uses AudioContext and Base64:
-            
-            // Let's keep the prefix so we can use it with `new Audio` for recordings, 
-            // but we need to distinguish in the main app or here.
-            // For now, return full Data URL.
             resolve(base64String);
         };
         reader.onerror = reject;

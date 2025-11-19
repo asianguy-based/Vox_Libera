@@ -1,5 +1,6 @@
+
 import React, { useState, useCallback, useEffect } from 'react';
-import { Category, Word, UserSettings, Language } from './types';
+import { Category, Word, UserSettings, Language, VOICE_OPTIONS } from './types';
 import { CATEGORIES as DEFAULT_CATEGORIES } from './data/words';
 import { UI_LABELS, CATEGORY_TRANSLATIONS } from './data/translations';
 import SentenceBar from './components/SentenceBar';
@@ -45,7 +46,7 @@ const App = (): React.ReactElement => {
   const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
   const [isFullScreenOpen, setIsFullScreenOpen] = useState<boolean>(false);
   const [isAboutOpen, setIsAboutOpen] = useState<boolean>(false);
-  const [isVirtualKeyboardOpen, setIsVirtualKeyboardOpen] = useState<boolean>(false);
+  const [isVirtualKeyboardOpen, setIsVirtualKeyboardOpen] = useState<boolean>(true);
   const [userSettings, setUserSettings] = useState<UserSettings>(DEFAULT_SETTINGS);
 
   // Add Item Modal State
@@ -306,10 +307,16 @@ const App = (): React.ReactElement => {
       const { generateSpeech } = await import('./services/geminiService');
       const { playAudio } = await import('./utils/audioUtils');
       
-      const audioData = await generateSpeech(textToSpeak, userSettings.voiceName, userSettings.language);
+      // Get selected voice config (for API Name and Pitch)
+      const selectedVoice = VOICE_OPTIONS.find(v => v.id === userSettings.voiceName) || VOICE_OPTIONS[0];
+
+      // Pass the correct API Voice Name (e.g. 'Puck' instead of 'Boy')
+      const audioData = await generateSpeech(textToSpeak, selectedVoice.apiVoice, userSettings.language);
+      
       if (audioData) {
         setIsPlaying(true);
-        await playAudio(audioData, () => setIsPlaying(false));
+        // Pass the specific pitch for this voice option (e.g. 1.25 for kids)
+        await playAudio(audioData, () => setIsPlaying(false), selectedVoice.pitch);
       } else {
          setError('Could not generate speech. The API returned no audio data.');
       }

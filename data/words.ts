@@ -1,6 +1,7 @@
 
 
 
+
 import { Category } from '../types';
 
 export const CATEGORIES: Category[] = [
@@ -705,6 +706,36 @@ export const CATEGORIES: Category[] = [
     ],
   },
   {
+    name: 'Holidays',
+    name_es: 'Fiestas',
+    name_de: 'Feiertage',
+    name_fr: 'Fêtes',
+    name_it: 'Vacanze',
+    name_pt: 'Feriados',
+    name_tl: 'Pista',
+    icon: '🎉',
+    color: '#f87171', // red-400
+    words: [
+      { label: "New Year's", label_es: 'Año Nuevo', icon: '🎆' },
+      { label: 'MLK Day', label_es: 'Día de MLK', icon: '🕊️' },
+      { label: "Valentine's Day", label_es: 'San Valentín', icon: '💘' },
+      { label: "St. Patrick's Day", label_es: 'San Patricio', icon: '☘️' },
+      { label: 'Easter', label_es: 'Pascua', icon: '🐰' },
+      { label: "Mother's Day", label_es: 'Día de la Madre', icon: '💐' },
+      { label: 'Memorial Day', label_es: 'Día de los Caídos', icon: '🎖️' },
+      { label: "Father's Day", label_es: 'Día del Padre', icon: '👔' },
+      { label: '4th of July', label_es: '4 de Julio', icon: '🎇' },
+      { label: 'Labor Day', label_es: 'Día del Trabajo', icon: '👷' },
+      { label: 'Halloween', label_es: 'Halloween', icon: '🎃' },
+      { label: 'Veterans Day', label_es: 'Día de Veteranos', icon: '🪖' },
+      { label: 'Thanksgiving', label_es: 'Acción de Gracias', icon: '🦃' },
+      { label: 'Hanukkah', label_es: 'Jánuca', icon: '🕎' },
+      { label: 'Christmas', label_es: 'Navidad', icon: '🎄' },
+      { label: "New Year's Eve", label_es: 'Nochevieja', icon: '🥂' },
+      { label: 'Birthday', label_es: 'Cumpleaños', icon: '🎂' },
+    ],
+  },
+  {
     name: 'Saved Spoken Memos',
     name_es: 'Memos Guardados',
     name_de: 'Gespeicherte Memos',
@@ -718,27 +749,6 @@ export const CATEGORIES: Category[] = [
       { label: 'Memo 1', icon: '📝' },
       { label: 'Memo 2', icon: '📝' },
       { label: 'Important', icon: '⭐' },
-    ],
-  },
-  {
-    name: 'Holidays',
-    name_es: 'Fiestas',
-    name_de: 'Feiertage',
-    name_fr: 'Fêtes',
-    name_it: 'Vacanze',
-    name_pt: 'Feriados',
-    name_tl: 'Pista',
-    icon: '🎉',
-    color: '#f87171', // red-400
-    words: [
-      { label: "New Year's", label_es: 'Año Nuevo', icon: '🎆' },
-      { label: "Valentine's Day", label_es: 'San Valentín', icon: '💘' },
-      { label: 'Easter', label_es: 'Pascua', icon: '🐰' },
-      { label: 'Halloween', label_es: 'Halloween', icon: '🎃' },
-      { label: 'Thanksgiving', label_es: 'Acción de Gracias', icon: '🦃' },
-      { label: 'Christmas', label_es: 'Navidad', icon: '🎄' },
-      { label: 'Hanukkah', label_es: 'Jánuca', icon: '🕎' },
-      { label: 'Birthday', label_es: 'Cumpleaños', icon: '🎂' },
     ],
   },
 ];

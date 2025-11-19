@@ -174,12 +174,16 @@ const SettingsModal = ({ isOpen, onClose, settings, onSave }: SettingsModalProps
         const prefix = greetings[localSettings.language] || greetings['en'];
         const testPhrase = `${prefix} ${localSettings.userName || 'Speech Assistant'}.`;
         
-        // Pass the language code for the test
-        const audioData = await generateSpeech(testPhrase, localSettings.voiceName, localSettings.language);
+        // Get selected voice settings (apiName and Pitch)
+        const selectedVoice = VOICE_OPTIONS.find(v => v.id === localSettings.voiceName) || VOICE_OPTIONS[0];
+
+        // Pass the correct API Name and Language
+        const audioData = await generateSpeech(testPhrase, selectedVoice.apiVoice, localSettings.language);
 
         if (audioData) {
             setIsPreviewPlaying(true);
-            await playAudio(audioData, () => setIsPreviewPlaying(false));
+            // Pass the specific pitch (e.g. 1.25 for kid voice)
+            await playAudio(audioData, () => setIsPreviewPlaying(false), selectedVoice.pitch);
         }
       } catch (error) {
           console.error("Failed to test voice:", error);
