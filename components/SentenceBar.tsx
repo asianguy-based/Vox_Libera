@@ -1,4 +1,3 @@
-
 import React, { useRef } from 'react';
 import { SpeakIcon, LoadingIcon, PlayingIcon, SettingsIcon, BellIcon, ExpandIcon, ContractIcon, KeyboardIcon } from './icons';
 
