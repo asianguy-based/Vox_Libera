@@ -1,6 +1,6 @@
 
 import React, { useRef } from 'react';
-import { SpeakIcon, DeleteIcon, ClearIcon, LoadingIcon, PlayingIcon, SettingsIcon, BellIcon, ExpandIcon, KeyboardIcon, UndoIcon } from './icons';
+import { SpeakIcon, DeleteIcon, ClearIcon, LoadingIcon, PlayingIcon, SettingsIcon, BellIcon, ExpandIcon, ContractIcon, KeyboardIcon, UndoIcon } from './icons';
 
 interface SentenceBarProps {
   sentence: string;
@@ -11,7 +11,8 @@ interface SentenceBarProps {
   onUndo: () => void;
   canUndo: boolean;
   onSettingsClick: () => void;
-  onFullScreenClick: () => void;
+  onToggleKiosk: () => void;
+  isKioskMode: boolean;
   onAttentionClick: () => void;
   isLoading: boolean;
   isPlaying: boolean;
@@ -32,7 +33,8 @@ const SentenceBar = ({
   isLoading,
   isPlaying,
   onSettingsClick,
-  onFullScreenClick,
+  onToggleKiosk,
+  isKioskMode,
   onAttentionClick,
   darkMode,
   onToggleVirtualKeyboard,
@@ -156,25 +158,28 @@ const SentenceBar = ({
                 </button>
                 
                 <button
-                    onClick={onFullScreenClick}
-                    // Removed disabled check so it opens even if empty
+                    onClick={onToggleKiosk}
                     aria-label={labels?.fullScreen || "Full Screen"}
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors font-medium"
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-blue-200 transition-colors font-medium ${isKioskMode ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'}`}
                 >
-                    <ExpandIcon className="w-6 h-6" />
-                    <span className="hidden sm:inline">{labels?.fullScreen || "Full Screen"}</span>
+                    {isKioskMode ? <ContractIcon className="w-6 h-6" /> : <ExpandIcon className="w-6 h-6" />}
+                    <span className="hidden sm:inline">{isKioskMode ? (labels?.exit || "Exit") : (labels?.fullScreen || "Full Screen")}</span>
                 </button>
                 
-                 <div className={`w-px h-8 mx-1 self-center ${darkMode ? 'bg-slate-600' : 'bg-slate-300'}`}></div>
-
-                <button
-                    onClick={onSettingsClick}
-                    aria-label={labels?.settings || "Settings"}
-                    className={`p-3 rounded-lg transition-colors ${secondaryBtnClass}`}
-                    title={labels?.settings || "Settings"}
-                >
-                    <SettingsIcon className="w-6 h-6" />
-                </button>
+                 {/* Hide settings in Kiosk mode to prevent changes */}
+                 {!isKioskMode && (
+                     <>
+                        <div className={`w-px h-8 mx-1 self-center ${darkMode ? 'bg-slate-600' : 'bg-slate-300'}`}></div>
+                        <button
+                            onClick={onSettingsClick}
+                            aria-label={labels?.settings || "Settings"}
+                            className={`p-3 rounded-lg transition-colors ${secondaryBtnClass}`}
+                            title={labels?.settings || "Settings"}
+                        >
+                            <SettingsIcon className="w-6 h-6" />
+                        </button>
+                     </>
+                 )}
             </div>
         </div>
       </div>

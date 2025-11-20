@@ -46,8 +46,10 @@ const App = (): React.ReactElement => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
-  const [isFullScreenOpen, setIsFullScreenOpen] = useState<boolean>(false);
+  const [isFullScreenOpen, setIsFullScreenOpen] = useState<boolean>(false); // Legacy "Big Text" modal
+  const [isKioskMode, setIsKioskMode] = useState<boolean>(false); // True browser fullscreen
   const [isAboutOpen, setIsAboutOpen] = useState<boolean>(false);
+  
   // Initialize keyboard based on screen size (hide on mobile by default)
   const [isVirtualKeyboardOpen, setIsVirtualKeyboardOpen] = useState<boolean>(() => {
       if (typeof window !== 'undefined') {
@@ -80,6 +82,15 @@ const App = (): React.ReactElement => {
             console.error('Failed to parse saved categories', e);
         }
     }
+  }, []);
+
+  // Listen for fullscreen changes to update state
+  useEffect(() => {
+      const handleFullscreenChange = () => {
+          setIsKioskMode(!!document.fullscreenElement);
+      };
+      document.addEventListener('fullscreenchange', handleFullscreenChange);
+      return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
   }, []);
 
   // Update "My Information", "Saved Spoken Memos" and apply Translations when settings change
@@ -263,6 +274,27 @@ const App = (): React.ReactElement => {
     });
   }, []);
 
+  // --- Kiosk Mode Logic ---
+  const handleToggleKiosk = useCallback(() => {
+      if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(e => {
+              console.error("Fullscreen request failed", e);
+          });
+      } else {
+          if (userSettings.pinCode) {
+              // Simple prompt for PIN
+              const input = prompt("Enter PIN to exit Full Screen:");
+              if (input === userSettings.pinCode) {
+                  document.exitFullscreen().catch(e => console.error("Exit fullscreen failed", e));
+              } else {
+                  alert("Incorrect PIN");
+              }
+          } else {
+              document.exitFullscreen().catch(e => console.error("Exit fullscreen failed", e));
+          }
+      }
+  }, [userSettings.pinCode]);
+
   // --- Custom Item Logic ---
 
   const openAddCategoryModal = () => {
@@ -384,7 +416,8 @@ const App = (): React.ReactElement => {
           isLoading={isLoading}
           isPlaying={isPlaying}
           onSettingsClick={handleSettingsClick}
-          onFullScreenClick={() => setIsFullScreenOpen(true)}
+          onToggleKiosk={handleToggleKiosk}
+          isKioskMode={isKioskMode}
           onAttentionClick={handleAttentionClick}
           darkMode={userSettings.darkMode}
           onToggleVirtualKeyboard={() => setIsVirtualKeyboardOpen(!isVirtualKeyboardOpen)}
@@ -446,6 +479,8 @@ const App = (): React.ReactElement => {
         onSave={handleSaveSettings}
       />
 
+      {/* We keep FullScreenDisplay accessible if needed but button logic is now Kiosk 
+          If user wants big text, we might need a different trigger, but request prioritized Kiosk. */}
       <FullScreenDisplay 
         isOpen={isFullScreenOpen}
         onClose={() => setIsFullScreenOpen(false)}
