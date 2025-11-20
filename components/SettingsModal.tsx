@@ -542,21 +542,34 @@ const SettingsModal = ({ isOpen, onClose, settings, onSave }: SettingsModalProps
             </form>
         </div>
 
-        <div className="p-4 border-t border-slate-200 bg-slate-50 flex justify-end gap-3">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 font-semibold transition-colors"
+        <div className="p-4 border-t border-slate-200 bg-slate-50 flex justify-between items-center">
+            <a 
+              href='https://ko-fi.com/D1D61NBN42' 
+              target='_blank' 
+              rel="noopener noreferrer" 
+              className='flex items-center gap-2 px-4 py-2 rounded-full font-bold text-white transition-transform hover:scale-105 active:scale-95 shadow-sm text-sm'
+              style={{ backgroundColor: '#73a9f5' }}
             >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              form="settings-form"
-              className="px-6 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 font-semibold shadow-md transition-colors"
-            >
-              Save Settings
-            </button>
+                <span role="img" aria-label="coffee" className="text-lg">☕</span>
+                <span>Support me on Ko-fi</span>
+            </a>
+
+            <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="px-4 py-2 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 font-semibold transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  form="settings-form"
+                  className="px-6 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 font-semibold shadow-md transition-colors"
+                >
+                  Save Settings
+                </button>
+            </div>
           </div>
       </div>
     </div>

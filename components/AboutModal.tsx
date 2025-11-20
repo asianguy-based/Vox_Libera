@@ -61,7 +61,18 @@ const AboutModal = ({ isOpen, onClose }: AboutModalProps): React.ReactElement | 
           </section>
         </div>
 
-        <div className="p-4 border-t border-slate-200 bg-slate-50 flex justify-end">
+        <div className="p-4 border-t border-slate-200 bg-slate-50 flex justify-between items-center">
+            <a 
+              href='https://ko-fi.com/D1D61NBN42' 
+              target='_blank' 
+              rel="noopener noreferrer" 
+              className='flex items-center gap-2 px-4 py-2 rounded-full font-bold text-white transition-transform hover:scale-105 active:scale-95 shadow-sm text-sm'
+              style={{ backgroundColor: '#73a9f5' }}
+            >
+                <span role="img" aria-label="coffee" className="text-lg">☕</span>
+                <span>Support me on Ko-fi</span>
+            </a>
+
             <button
               onClick={onClose}
               className="px-6 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 font-semibold shadow-md transition-colors"

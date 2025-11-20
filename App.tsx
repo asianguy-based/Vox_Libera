@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, useEffect } from 'react';
 import { Category, Word, UserSettings, Language, VOICE_OPTIONS } from './types';
 import { CATEGORIES as DEFAULT_CATEGORIES } from './data/words';
@@ -53,7 +52,7 @@ const App = (): React.ReactElement => {
   // Initialize keyboard based on screen size (hide on mobile by default)
   const [isVirtualKeyboardOpen, setIsVirtualKeyboardOpen] = useState<boolean>(() => {
       if (typeof window !== 'undefined') {
-          return true; 
+          return window.innerWidth >= 768; 
       }
       return true;
   });
@@ -395,8 +394,8 @@ const App = (): React.ReactElement => {
   }, [userSettings.lockSettings, userSettings.pinCode]);
 
   const activeCategory = categories.find(c => c.name === currentCategoryName);
-  // Padding adjusted for new two-row header
-  const mainPaddingClass = "pt-32 sm:pt-36 pb-2 sm:pb-4"; 
+  // Padding adjusted for extra header height (Branding + SentenceBar)
+  const mainPaddingClass = "pt-48 sm:pt-52 pb-2 sm:pb-4"; 
 
   const currentUILabels = UI_LABELS[userSettings.language] || UI_LABELS['en'];
 
@@ -464,13 +463,19 @@ const App = (): React.ReactElement => {
          </div>
       )}
 
-      <footer className={`text-center p-1 text-xs transition-colors duration-300 ${userSettings.darkMode ? 'text-slate-600' : 'text-slate-400'} ${isVirtualKeyboardOpen ? 'mb-64' : ''}`}>
+      <footer className={`text-center p-4 text-xs transition-colors duration-300 flex flex-row items-center justify-center gap-4 ${userSettings.darkMode ? 'text-slate-500' : 'text-slate-500'} ${isVirtualKeyboardOpen ? 'mb-64' : ''}`}>
         <button 
             onClick={() => setIsAboutOpen(true)} 
-            className="hover:underline focus:outline-none"
+            className="hover:underline focus:outline-none font-semibold"
         >
             About
         </button>
+        
+        <span className="text-slate-300">|</span>
+
+        <a href="mailto:jeffrey.i.mcconnell@gmail.com" className="hover:text-blue-500 transition-colors hover:underline">
+             © 2025 Jeffrey McConnell
+        </a>
       </footer>
 
       <SettingsModal 

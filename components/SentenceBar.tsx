@@ -1,4 +1,3 @@
-
 import React, { useRef } from 'react';
 import { SpeakIcon, LoadingIcon, PlayingIcon, SettingsIcon, BellIcon, ExpandIcon, ContractIcon, KeyboardIcon } from './icons';
 
@@ -94,6 +93,14 @@ const SentenceBar = ({
     <div className={`fixed top-0 left-0 right-0 shadow-lg z-10 transition-colors duration-300 ${bgClass} p-2`}>
       <div className="flex flex-col gap-2 w-full max-w-full mx-auto">
         
+        {/* Branding Row */}
+        <div className="flex flex-col items-center justify-center pt-1 pb-2">
+            <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-wide">Vox Libera</h1>
+            <p className="text-slate-300 text-lg sm:text-xl" style={{ fontFamily: "'Dancing Script', cursive" }}>
+                Every Voice, Set Free!
+            </p>
+        </div>
+
         {/* ROW 1: Input Field + Speak Button */}
         <div className="flex gap-2 items-stretch">
             <div className="relative flex-grow">
