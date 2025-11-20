@@ -1,5 +1,5 @@
 <div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/asianguy-based/Vox_Libera/blob/main/logo.png" />
+<img width="1200" height="475" alt="Logo" src="https://github.com/asianguy-based/Vox_Libera/blob/2d9433bd851ae85957d8f96a0290ab638a379d82/logo.png" />
 </div>
 
 # Augmentative and Alternative Communications (AAC) app for everyone!
