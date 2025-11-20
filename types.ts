@@ -76,6 +76,10 @@ export interface UserSettings {
   darkMode: boolean;
   customCategoryColor: string; // Hex code or empty string for default
   customWordColor: string; // Hex code or empty string for default
+
+  // Security
+  pinCode: string;
+  lockSettings: boolean;
 }
 
 export interface VoiceOption {

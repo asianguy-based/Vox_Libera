@@ -31,6 +31,8 @@ const DEFAULT_SETTINGS: UserSettings = {
   darkMode: false,
   customCategoryColor: '',
   customWordColor: '',
+  pinCode: '',
+  lockSettings: false,
 };
 
 const App = (): React.ReactElement => {
@@ -46,7 +48,13 @@ const App = (): React.ReactElement => {
   const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
   const [isFullScreenOpen, setIsFullScreenOpen] = useState<boolean>(false);
   const [isAboutOpen, setIsAboutOpen] = useState<boolean>(false);
-  const [isVirtualKeyboardOpen, setIsVirtualKeyboardOpen] = useState<boolean>(true);
+  // Initialize keyboard based on screen size (hide on mobile by default)
+  const [isVirtualKeyboardOpen, setIsVirtualKeyboardOpen] = useState<boolean>(() => {
+      if (typeof window !== 'undefined') {
+          return window.innerWidth >= 768;
+      }
+      return true;
+  });
   const [userSettings, setUserSettings] = useState<UserSettings>(DEFAULT_SETTINGS);
 
   // Add Item Modal State
@@ -341,6 +349,21 @@ const App = (): React.ReactElement => {
       }
   }, []);
 
+  // Security Check for Settings
+  const handleSettingsClick = useCallback(() => {
+      if (userSettings.lockSettings && userSettings.pinCode) {
+          // Simple prompt for PIN - in a real app, use a dedicated Modal
+          const input = prompt("Please enter PIN to access Settings:", "");
+          if (input === userSettings.pinCode) {
+              setIsSettingsOpen(true);
+          } else {
+              alert("Incorrect PIN");
+          }
+      } else {
+          setIsSettingsOpen(true);
+      }
+  }, [userSettings.lockSettings, userSettings.pinCode]);
+
   const activeCategory = categories.find(c => c.name === currentCategoryName);
   const mainPaddingClass = "pt-36 pb-16 sm:pt-36 sm:pb-20"; 
 
@@ -360,7 +383,7 @@ const App = (): React.ReactElement => {
           canUndo={history.length > 0}
           isLoading={isLoading}
           isPlaying={isPlaying}
-          onSettingsClick={() => setIsSettingsOpen(true)}
+          onSettingsClick={handleSettingsClick}
           onFullScreenClick={() => setIsFullScreenOpen(true)}
           onAttentionClick={handleAttentionClick}
           darkMode={userSettings.darkMode}
@@ -430,6 +453,7 @@ const App = (): React.ReactElement => {
         onSpeak={handleSpeak}
         isPlaying={isPlaying}
         isLoading={isLoading}
+        pinCode={userSettings.pinCode}
       />
 
       <AboutModal 

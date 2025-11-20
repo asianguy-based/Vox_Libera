@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { UserSettings, VOICE_OPTIONS, LANGUAGES, Language } from '../types';
-import { CloseIcon, SpeakIcon, LoadingIcon, PlayingIcon, DeleteIcon } from './icons';
+import { CloseIcon, SpeakIcon, LoadingIcon, PlayingIcon, DeleteIcon, LockIcon } from './icons';
 import { recorderUtils, blobToBase64 } from '../utils/audioUtils';
 
 interface SettingsModalProps {
@@ -206,6 +206,42 @@ const SettingsModal = ({ isOpen, onClose, settings, onSave }: SettingsModalProps
         <div className="overflow-y-auto p-6 space-y-6">
             <form id="settings-form" onSubmit={handleSubmit} className="space-y-8">
             
+            {/* Security Section */}
+            <div className="space-y-4 p-4 bg-red-50 rounded-lg border border-red-100">
+                <h3 className="text-lg font-semibold text-red-800 border-b border-red-200 pb-2 flex items-center gap-2">
+                    <LockIcon className="w-5 h-5" />
+                    Security & Locking
+                </h3>
+                
+                <div>
+                    <label htmlFor="pinCode" className="block text-sm font-medium text-red-800 mb-2">Set 4-Digit PIN Code</label>
+                    <input
+                        type="text"
+                        inputMode="numeric"
+                        maxLength={4}
+                        id="pinCode"
+                        name="pinCode"
+                        value={localSettings.pinCode}
+                        onChange={handleChange}
+                        placeholder="e.g. 1234"
+                        className="w-full p-3 border border-red-200 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-slate-800 bg-white tracking-widest font-mono"
+                    />
+                    <p className="text-xs text-red-600 mt-1">Used to unlock Full Screen mode and Settings.</p>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <label htmlFor="lockSettings" className="text-sm font-medium text-red-800">Require PIN to open Settings</label>
+                  <input
+                    type="checkbox"
+                    id="lockSettings"
+                    name="lockSettings"
+                    checked={localSettings.lockSettings}
+                    onChange={handleChange}
+                    className="w-5 h-5 rounded text-red-600 focus:ring-red-500 border-gray-300 cursor-pointer"
+                  />
+                </div>
+            </div>
+
             {/* Language & Voice */}
             <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-slate-800 border-b pb-2">Language & Speech</h3>
