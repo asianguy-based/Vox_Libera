@@ -53,7 +53,7 @@ const App = (): React.ReactElement => {
   // Initialize keyboard based on screen size (hide on mobile by default)
   const [isVirtualKeyboardOpen, setIsVirtualKeyboardOpen] = useState<boolean>(() => {
       if (typeof window !== 'undefined') {
-          return window.innerWidth >= 768;
+          return true; 
       }
       return true;
   });
@@ -96,22 +96,27 @@ const App = (): React.ReactElement => {
   // Update "My Information", "Saved Spoken Memos" and apply Translations when settings change
   useEffect(() => {
     setCategories(prevCats => {
+      // Find the clean template from DEFAULT_CATEGORIES to prevent double-appending
+      const defaultCatsMap = new Map(DEFAULT_CATEGORIES.map(c => [c.name, c]));
+
       return prevCats.map(cat => {
+        // Use template category if available to reset words, otherwise use current
+        const templateCat = defaultCatsMap.get(cat.name) || cat;
+        let wordsToProcess = [...templateCat.words];
+        
         // Apply Translations to Category Name if available
         let displayCatName = cat.name;
         const lang = userSettings.language;
         
-        // Try to find translation in CATEGORY_TRANSLATIONS first
         if (lang !== 'en' && CATEGORY_TRANSLATIONS[cat.name]) {
             const translatedName = (CATEGORY_TRANSLATIONS[cat.name] as any)[lang];
             if (translatedName) displayCatName = translatedName;
         } else if (lang !== 'en') {
-            // Fallback to properties on the object if manual translations exist there
             const translatedName = (cat as any)[`name_${lang}`];
             if (translatedName) displayCatName = translatedName;
         }
 
-        let updatedWords = cat.words.map(word => {
+        let updatedWords = wordsToProcess.map(word => {
              // Apply Translations to Word Label and Spoken Phrase
              let displayLabel = word.label;
              let displaySpokenPhrase = word.spokenPhrase;
@@ -126,45 +131,45 @@ const App = (): React.ReactElement => {
              
              const updatedWord = { ...word, label: displayLabel, spokenPhrase: displaySpokenPhrase };
 
-             if (word.label === 'My name is' && userSettings.userName) {
+             // Use Icons to identify fields to be language-agnostic
+             if (word.icon === '📛' && userSettings.userName) {
                  return { ...updatedWord, spokenPhrase: `${updatedWord.spokenPhrase || updatedWord.label} ${userSettings.userName}` };
              }
-             if (word.label === 'I live at' && userSettings.address) {
+             if (word.icon === '🏠' && userSettings.address) {
                  return { ...updatedWord, spokenPhrase: `${updatedWord.spokenPhrase || updatedWord.label} ${userSettings.address}` };
              }
-             if (word.label === 'My phone number is' && userSettings.phone) {
+             if (word.icon === '📱' && userSettings.phone) {
                  return { ...updatedWord, spokenPhrase: `${updatedWord.spokenPhrase || updatedWord.label} ${userSettings.phone}` };
              }
-             if (word.label === 'I am ... years old' && userSettings.age) {
+             if (word.icon === '🎂' && userSettings.age) { // Age
                   const base = updatedWord.spokenPhrase || updatedWord.label;
                   const final = base.replace('...', userSettings.age);
                  return { ...updatedWord, label: final, spokenPhrase: final };
              }
-             if (word.label === 'My birthday is' && userSettings.birthday) {
+             if (word.icon === '🥳' && userSettings.birthday) { // Birthday
                  return { ...updatedWord, spokenPhrase: `${updatedWord.spokenPhrase || updatedWord.label} ${userSettings.birthday}` };
              }
-             if (word.label === 'Allergies' && userSettings.allergies) {
+             if (word.icon === '🥜' && userSettings.allergies) {
                  return { ...updatedWord, spokenPhrase: `${updatedWord.spokenPhrase || 'I am allergic to '} ${userSettings.allergies}` };
              }
-             if (word.label === 'Disability' && userSettings.disabilityInfo) {
+             if (word.icon === '♿' && userSettings.disabilityInfo) {
                  return { ...updatedWord, spokenPhrase: `${updatedWord.spokenPhrase || 'My disability is '} ${userSettings.disabilityInfo}` };
              }
-             if (word.label === 'Emergency Contact' && userSettings.emergencyContact) {
+             if (word.icon === '🚨' && userSettings.emergencyContact) {
                  return { ...updatedWord, spokenPhrase: `${updatedWord.spokenPhrase || 'My emergency contact is '} ${userSettings.emergencyContact}` };
              }
-             if (word.label === 'Caregiver' && userSettings.caregiver) {
+             if (word.icon === '🧑‍⚕️' && userSettings.caregiver) {
                  return { ...updatedWord, spokenPhrase: `${updatedWord.spokenPhrase || 'My caregiver is '} ${userSettings.caregiver}` };
              }
              return updatedWord;
         });
 
         // Handle Saved Spoken Memos (Audio)
-        if (cat.name === 'Saved Spoken Memos' || cat.name === 'Memos Guardados' || cat.name === 'Gespeicherte Memos') {
+        if (cat.name === 'Saved Spoken Memos') {
              updatedWords = updatedWords.map(word => {
-                // Simple check for memo slots based on icon or order is safer than label which changes
-                if (word.icon === '📝' && updatedWords.indexOf(word) === 0) return { ...word, audioRecording: userSettings.memo1Audio };
-                if (word.icon === '📝' && updatedWords.indexOf(word) === 1) return { ...word, audioRecording: userSettings.memo2Audio };
-                if (word.icon === '⭐') return { ...word, audioRecording: userSettings.importantMemoAudio };
+                if (word.label.startsWith('Memo 1') || word.label === 'Memo 1') return { ...word, audioRecording: userSettings.memo1Audio };
+                if (word.label.startsWith('Memo 2') || word.label === 'Memo 2') return { ...word, audioRecording: userSettings.memo2Audio };
+                if (word.label === 'Important') return { ...word, audioRecording: userSettings.importantMemoAudio };
                 return word;
             });
         }
@@ -209,7 +214,7 @@ const App = (): React.ReactElement => {
     
     setSentence(prev => {
       const cleanSentence = prev.filter(s => s.trim() !== '');
-      // Avoid double spaces if the textToAdd already has space logic, but mostly simple append here
+      // Avoid double spaces
       return [...cleanSentence, textToAdd];
     });
   }, [sentence]);
@@ -282,7 +287,6 @@ const App = (): React.ReactElement => {
           });
       } else {
           if (userSettings.pinCode) {
-              // Simple prompt for PIN
               const input = prompt("Enter PIN to exit Full Screen:");
               if (input === userSettings.pinCode) {
                   document.exitFullscreen().catch(e => console.error("Exit fullscreen failed", e));
@@ -319,7 +323,6 @@ const App = (): React.ReactElement => {
         setCategories(updatedCategories);
         localStorage.setItem('aac_user_categories', JSON.stringify(updatedCategories));
     } else {
-        // Adding a word to the current category
         if (!currentCategoryName) return;
         
         const updatedCategories = categories.map(cat => {
@@ -347,15 +350,12 @@ const App = (): React.ReactElement => {
       const { generateSpeech } = await import('./services/geminiService');
       const { playAudio } = await import('./utils/audioUtils');
       
-      // Get selected voice config (for API Name and Pitch)
       const selectedVoice = VOICE_OPTIONS.find(v => v.id === userSettings.voiceName) || VOICE_OPTIONS[0];
 
-      // Pass the correct API Voice Name (e.g. 'Puck' instead of 'Boy')
       const audioData = await generateSpeech(textToSpeak, selectedVoice.apiVoice, userSettings.language);
       
       if (audioData) {
         setIsPlaying(true);
-        // Pass the specific pitch for this voice option (e.g. 1.25 for kids)
         await playAudio(audioData, () => setIsPlaying(false), selectedVoice.pitch);
       } else {
          setError('Could not generate speech. The API returned no audio data.');
@@ -381,10 +381,8 @@ const App = (): React.ReactElement => {
       }
   }, []);
 
-  // Security Check for Settings
   const handleSettingsClick = useCallback(() => {
       if (userSettings.lockSettings && userSettings.pinCode) {
-          // Simple prompt for PIN - in a real app, use a dedicated Modal
           const input = prompt("Please enter PIN to access Settings:", "");
           if (input === userSettings.pinCode) {
               setIsSettingsOpen(true);
@@ -397,12 +395,13 @@ const App = (): React.ReactElement => {
   }, [userSettings.lockSettings, userSettings.pinCode]);
 
   const activeCategory = categories.find(c => c.name === currentCategoryName);
-  const mainPaddingClass = "pt-36 pb-16 sm:pt-36 sm:pb-20"; 
+  // Padding adjusted for new two-row header
+  const mainPaddingClass = "pt-32 sm:pt-36 pb-2 sm:pb-4"; 
 
   const currentUILabels = UI_LABELS[userSettings.language] || UI_LABELS['en'];
 
   return (
-    <div className={`min-h-screen font-sans flex flex-col transition-colors duration-300 overflow-hidden ${userSettings.darkMode ? 'bg-slate-900 text-slate-100' : 'bg-slate-50 text-slate-800'}`}>
+    <div className={`h-screen flex flex-col transition-colors duration-300 overflow-hidden ${userSettings.darkMode ? 'bg-slate-900 text-slate-100' : 'bg-slate-50 text-slate-800'}`}>
       
       <header>
         <SentenceBar
@@ -423,10 +422,12 @@ const App = (): React.ReactElement => {
           onToggleVirtualKeyboard={() => setIsVirtualKeyboardOpen(!isVirtualKeyboardOpen)}
           isVirtualKeyboardOpen={isVirtualKeyboardOpen}
           labels={currentUILabels}
+          isInCategory={!!activeCategory}
+          onGoBack={handleGoBack}
         />
       </header>
 
-      <main className={`flex-grow p-2 max-w-7xl mx-auto w-full overflow-y-auto ${mainPaddingClass}`}>
+      <main className={`flex-grow w-full overflow-y-auto p-1 ${mainPaddingClass}`}>
         {error && (
             <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-r shadow-sm" role="alert">
                 <p className="font-bold">Error</p>
@@ -463,7 +464,7 @@ const App = (): React.ReactElement => {
          </div>
       )}
 
-      <footer className={`text-center p-2 text-xs transition-colors duration-300 ${userSettings.darkMode ? 'text-slate-600' : 'text-slate-400'} ${isVirtualKeyboardOpen ? 'mb-64' : ''}`}>
+      <footer className={`text-center p-1 text-xs transition-colors duration-300 ${userSettings.darkMode ? 'text-slate-600' : 'text-slate-400'} ${isVirtualKeyboardOpen ? 'mb-64' : ''}`}>
         <button 
             onClick={() => setIsAboutOpen(true)} 
             className="hover:underline focus:outline-none"
@@ -479,8 +480,6 @@ const App = (): React.ReactElement => {
         onSave={handleSaveSettings}
       />
 
-      {/* We keep FullScreenDisplay accessible if needed but button logic is now Kiosk 
-          If user wants big text, we might need a different trigger, but request prioritized Kiosk. */}
       <FullScreenDisplay 
         isOpen={isFullScreenOpen}
         onClose={() => setIsFullScreenOpen(false)}

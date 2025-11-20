@@ -1,7 +1,8 @@
+
 import React from 'react';
 import { Category, Word } from '../types';
 import Card from './Card';
-import { BackIcon, PlusIcon } from './icons';
+import { PlusIcon } from './icons';
 import { UI_LABELS } from '../data/translations';
 
 interface WordGridProps {
@@ -16,17 +17,13 @@ interface WordGridProps {
 const WordGrid = ({ category, onWordClick, onGoBack, customColor, onAddWord, labels }: WordGridProps): React.ReactElement => {
   return (
     <div>
-      <div className="flex items-center mb-4">
-        <button
-          onClick={onGoBack}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-lg font-semibold text-white bg-slate-500 hover:bg-slate-600 transition-colors duration-200 shadow-sm text-sm"
-        >
-          <BackIcon className="w-4 h-4" />
-          {labels?.back || "Back"}
-        </button>
-        <h1 className="text-2xl font-bold text-center text-current opacity-90 flex-grow">{category.name}</h1>
+      {/* Header removed as navigation is now in the SentenceBar */}
+      <div className="flex items-center mb-2 justify-center">
+        <h1 className="text-xl font-bold text-center text-current opacity-90">{category.name}</h1>
       </div>
-      <div className="grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] gap-2">
+      
+      {/* Dense responsive grid to fill width */}
+      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-1">
         {category.words.map((word) => (
           <Card
             key={word.label}

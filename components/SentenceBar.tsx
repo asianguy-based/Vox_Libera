@@ -1,6 +1,6 @@
 
 import React, { useRef } from 'react';
-import { SpeakIcon, DeleteIcon, ClearIcon, LoadingIcon, PlayingIcon, SettingsIcon, BellIcon, ExpandIcon, ContractIcon, KeyboardIcon, UndoIcon } from './icons';
+import { SpeakIcon, LoadingIcon, PlayingIcon, SettingsIcon, BellIcon, ExpandIcon, ContractIcon, KeyboardIcon } from './icons';
 
 interface SentenceBarProps {
   sentence: string;
@@ -20,6 +20,8 @@ interface SentenceBarProps {
   onToggleVirtualKeyboard: () => void;
   isVirtualKeyboardOpen: boolean;
   labels?: any;
+  isInCategory: boolean;
+  onGoBack: () => void;
 }
 
 const SentenceBar = ({
@@ -39,7 +41,9 @@ const SentenceBar = ({
   darkMode,
   onToggleVirtualKeyboard,
   isVirtualKeyboardOpen,
-  labels
+  labels,
+  isInCategory,
+  onGoBack
 }: SentenceBarProps): React.ReactElement => {
   const inputRef = useRef<HTMLInputElement>(null);
   const canPerformActions = sentence.length > 0;
@@ -50,7 +54,7 @@ const SentenceBar = ({
       return (
         <>
           <LoadingIcon className="w-6 h-6 animate-spin" />
-          <span>{labels?.generating || "Generating..."}</span>
+          <span className="font-semibold">{labels?.generating || "Generating..."}</span>
         </>
       );
     }
@@ -58,31 +62,41 @@ const SentenceBar = ({
       return (
         <>
           <PlayingIcon className="w-6 h-6" />
-          <span>{labels?.playing || "Playing..."}</span>
+          <span className="font-semibold">{labels?.playing || "Playing..."}</span>
         </>
       );
     }
     return (
       <>
         <SpeakIcon className="w-6 h-6" />
-        <span>{labels?.speak || "Speak"}</span>
+        <span className="font-semibold">{labels?.speak || "Speak"}</span>
       </>
     );
   };
   
-  const bgClass = darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200';
-  const inputBgClass = darkMode ? 'bg-slate-700 text-white placeholder-slate-400 focus:border-blue-500' : 'bg-slate-100 text-slate-800 placeholder-slate-400 focus:border-blue-400';
-  const iconColorClass = darkMode ? 'text-slate-300' : 'text-slate-400';
-  const secondaryBtnClass = darkMode 
-    ? 'bg-slate-700 text-slate-300 hover:bg-slate-600 hover:text-white' 
-    : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900';
+  const bgClass = darkMode ? 'bg-slate-900 border-slate-800' : 'bg-slate-800 border-slate-700'; // Dark header background as shown in image
+  const inputBgClass = darkMode ? 'bg-slate-700 text-white placeholder-slate-400' : 'bg-slate-700/50 text-white placeholder-slate-400';
+  
+  // Button base styles
+  const btnBase = "flex items-center justify-center rounded-lg shadow-sm transition-all active:scale-95 h-12";
+  
+  // Specific button styles to match image
+  const backBtnClass = `${btnBase} bg-slate-500 text-white hover:bg-slate-600`;
+  const undoBtnClass = `${btnBase} bg-[#C6B596] text-amber-900 hover:bg-[#B5A485] disabled:opacity-50 disabled:cursor-not-allowed`; // Beige/Khaki
+  const deleteBtnClass = `${btnBase} bg-[#A57F86] text-red-50 hover:bg-[#946E75] disabled:opacity-50 disabled:cursor-not-allowed`; // Muted Red/Mauve
+  const clearBtnClass = `${btnBase} bg-[#A57F86] text-red-50 hover:bg-[#946E75] disabled:opacity-50 disabled:cursor-not-allowed`; // Muted Red/Mauve
+  
+  const attentionBtnClass = `px-4 rounded-lg font-bold text-sm transition-colors flex items-center justify-center gap-2 shadow-sm bg-[#FDF6B2] text-yellow-800 hover:bg-[#FCE96A] h-12 whitespace-nowrap`;
+  const fullScreenBtnClass = `px-4 rounded-lg font-bold text-sm transition-colors flex items-center justify-center gap-2 shadow-sm bg-[#E1EFFE] text-blue-800 hover:bg-[#C3DDFD] h-12 whitespace-nowrap`;
+  const settingsBtnClass = `${btnBase} min-w-[3rem] bg-slate-700 text-slate-300 hover:bg-slate-600`;
 
   return (
-    <div className={`fixed top-0 left-0 right-0 shadow-md z-10 p-2 sm:p-3 border-b transition-colors duration-300 ${bgClass}`}>
-      <div className="flex flex-col gap-3 max-w-7xl mx-auto">
-        {/* Top Row: Textbox and Main Actions */}
-        <div className="flex items-center gap-2">
-            <div className="flex-grow relative">
+    <div className={`fixed top-0 left-0 right-0 shadow-lg z-10 transition-colors duration-300 ${bgClass} p-2`}>
+      <div className="flex flex-col gap-2 w-full max-w-full mx-auto">
+        
+        {/* ROW 1: Input Field + Speak Button */}
+        <div className="flex gap-2 items-stretch">
+            <div className="relative flex-grow">
                 <input
                     ref={inputRef}
                     type="text"
@@ -90,12 +104,12 @@ const SentenceBar = ({
                     value={sentence}
                     onChange={(e) => onSentenceChange(e.target.value)}
                     placeholder={labels?.tapToType || "Tap to type or select words..."}
-                    className={`w-full rounded-lg min-h-[3.5rem] p-3 pr-12 text-xl sm:text-2xl border-2 border-transparent focus:outline-none transition-colors italic ${inputBgClass}`}
+                    className={`w-full rounded-lg h-14 sm:h-16 pl-4 pr-12 text-xl sm:text-2xl font-medium border border-slate-600 focus:outline-none focus:border-blue-500 transition-colors ${inputBgClass}`}
                 />
                  <button
                     onClick={onToggleVirtualKeyboard}
                     onMouseDown={(e) => e.preventDefault()}
-                    className={`absolute right-2 top-1/2 -translate-y-1/2 p-2 hover:text-blue-500 transition-colors ${isVirtualKeyboardOpen ? 'text-blue-500' : iconColorClass}`}
+                    className={`absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-md hover:bg-slate-600 transition-colors ${isVirtualKeyboardOpen ? 'text-blue-400' : 'text-slate-400'}`}
                     aria-label={isVirtualKeyboardOpen ? (labels?.closeKeyboard || "Close Keyboard") : (labels?.openKeyboard || "Open Keyboard")}
                 >
                     <KeyboardIcon className="w-6 h-6" />
@@ -105,83 +119,64 @@ const SentenceBar = ({
              <button
                 onClick={onSpeak}
                 disabled={speakButtonDisabled}
-                className={`flex items-center justify-center gap-2 px-4 h-14 rounded-lg font-semibold text-white transition-all duration-200 shadow-sm min-w-[7rem] ${
+                className={`flex items-center justify-center gap-2 px-6 rounded-lg font-bold text-white transition-all duration-200 shadow-sm min-w-[8rem] h-14 sm:h-16 ${
                 speakButtonDisabled
-                    ? 'bg-green-800/50 cursor-not-allowed text-slate-300'
-                    : 'bg-green-600 hover:bg-green-700 active:scale-95'
+                    ? 'bg-green-900/50 cursor-not-allowed text-slate-400'
+                    : 'bg-[#1E5F44] hover:bg-[#174935] active:scale-95 border border-green-800' // Darker green like image
                 }`}
             >
                 {getSpeakButtonContent()}
             </button>
         </div>
 
-        {/* Bottom Row: Secondary Actions */}
-        <div className="flex items-center justify-between overflow-x-auto pb-1 sm:pb-0 no-scrollbar gap-2">
-            <div className="flex gap-2">
-                 <button
-                    onClick={onUndo}
-                    disabled={!canUndo}
-                    aria-label={labels?.undo || "Undo last action"}
-                    className="p-3 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                    title={labels?.undo || "Undo"}
-                >
-                    <UndoIcon className="w-6 h-6" />
+        {/* ROW 2: Action Buttons */}
+        <div className="flex justify-between items-center gap-2 overflow-x-auto pb-1 sm:pb-0 no-scrollbar">
+            
+            {/* Left Group: Navigation & Editing */}
+            <div className="flex gap-2 shrink-0">
+                {isInCategory && (
+                    <button onClick={onGoBack} className={`${backBtnClass} px-3 w-auto`} title={labels?.back || "Back"}>
+                        <span className="font-bold text-sm sm:text-base whitespace-nowrap">{labels?.back || "⭠ Previous Page"}</span>
+                    </button>
+                )}
+
+                <button onClick={onUndo} disabled={!canUndo} className={`${undoBtnClass} px-3 w-auto`} title={labels?.undo || "Undo"}>
+                    <span className="font-bold text-sm sm:text-base whitespace-nowrap">{labels?.undo || "⭯ Undo"}</span>
                 </button>
-                <button
-                    onClick={onDeleteLast}
-                    disabled={!canPerformActions}
-                    aria-label={labels?.delete || "Delete last word"}
-                    className="p-3 rounded-lg bg-amber-100 text-amber-700 hover:bg-amber-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                    title={labels?.delete || "Delete last word"}
-                >
-                    <DeleteIcon className="w-6 h-6" />
+                
+                <button onClick={onDeleteLast} disabled={!canPerformActions} className={`${deleteBtnClass} px-3 w-auto`} title={labels?.delete || "Delete"}>
+                    <span className="font-bold text-sm sm:text-base whitespace-nowrap">{labels?.delete || "⇤ Delete"}</span>
                 </button>
-                <button
-                    onClick={onClearAll}
-                    disabled={!canPerformActions}
-                    aria-label={labels?.clearAll || "Clear all"}
-                    className="p-3 rounded-lg bg-red-100 text-red-700 hover:bg-red-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                    title={labels?.clearAll || "Clear all"}
-                >
-                    <ClearIcon className="w-6 h-6" />
+
+                <button onClick={onClearAll} disabled={!canPerformActions} className={`${clearBtnClass} px-3 w-auto`} title={labels?.clearAll || "Clear All"}>
+                    <span className="font-bold text-sm sm:text-base whitespace-nowrap">{labels?.clearAll || "⭙ Clear All"}</span>
                 </button>
             </div>
 
-            <div className="flex gap-2">
-                 <button
-                    onClick={onAttentionClick}
-                    aria-label={labels?.attention || "Attention Sound"}
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-yellow-100 text-yellow-800 hover:bg-yellow-200 transition-colors font-medium"
-                >
-                    <BellIcon className="w-6 h-6" />
+            {/* Right Group: Utilities */}
+            <div className="flex gap-2 items-center shrink-0">
+                 <button onClick={onAttentionClick} className={attentionBtnClass}>
+                    <BellIcon className="w-5 h-5" />
                     <span className="hidden sm:inline">{labels?.attention || "Attention"}</span>
                 </button>
-                
-                <button
-                    onClick={onToggleKiosk}
-                    aria-label={labels?.fullScreen || "Full Screen"}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-blue-200 transition-colors font-medium ${isKioskMode ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'}`}
-                >
-                    {isKioskMode ? <ContractIcon className="w-6 h-6" /> : <ExpandIcon className="w-6 h-6" />}
+
+                 <button onClick={onToggleKiosk} className={fullScreenBtnClass}>
+                    {isKioskMode ? <ContractIcon className="w-5 h-5" /> : <ExpandIcon className="w-5 h-5" />}
                     <span className="hidden sm:inline">{isKioskMode ? (labels?.exit || "Exit") : (labels?.fullScreen || "Full Screen")}</span>
                 </button>
-                
-                 {/* Hide settings in Kiosk mode to prevent changes */}
-                 {!isKioskMode && (
-                     <>
-                        <div className={`w-px h-8 mx-1 self-center ${darkMode ? 'bg-slate-600' : 'bg-slate-300'}`}></div>
-                        <button
-                            onClick={onSettingsClick}
-                            aria-label={labels?.settings || "Settings"}
-                            className={`p-3 rounded-lg transition-colors ${secondaryBtnClass}`}
-                            title={labels?.settings || "Settings"}
-                        >
+
+                {!isKioskMode && (
+                    <>
+                        <div className="w-px h-8 bg-slate-600 mx-1"></div>
+                        <button onClick={onSettingsClick} className={settingsBtnClass} title={labels?.settings || "Settings"}>
                             <SettingsIcon className="w-6 h-6" />
                         </button>
-                     </>
-                 )}
+                    </>
+                )}
             </div>
+
         </div>
+
       </div>
     </div>
   );
