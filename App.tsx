@@ -395,8 +395,8 @@ const App = (): React.ReactElement => {
   }, [userSettings.lockSettings, userSettings.pinCode]);
 
   const activeCategory = categories.find(c => c.name === currentCategoryName);
-  // Padding adjusted for extra header height (Branding + SentenceBar)
-  const mainPaddingClass = "pt-52 sm:pt-60 pb-2 sm:pb-4"; 
+  // Padding adjusted for the now-shorter header
+  const mainPaddingClass = "pt-52 sm:pt-56 pb-2 sm:pb-4"; 
 
   const currentUILabels = UI_LABELS[userSettings.language] || UI_LABELS['en'];
 

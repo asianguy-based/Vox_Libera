@@ -94,12 +94,14 @@ const SentenceBar = ({
     <div className={`fixed top-0 left-0 right-0 shadow-lg z-10 transition-colors duration-300 ${bgClass} p-2`}>
       <div className="flex flex-col gap-2 w-full max-w-full mx-auto">
         
-        {/* Branding Row - Updated to use Image Logo */}
-        <div className="flex items-center justify-center py-2">
+        {/* Branding Row - Reduced height to fix layout */}
+        <div className="flex items-center justify-center">
             <img 
-                src="/logo.png" 
+                src="https://raw.githubusercontent.com/asianguy-based/Speech-Assistant-AAC-/main/logo.png" 
                 alt="Vox Libera - Every Voice, Set Free!" 
-                className="h-16 sm:h-24 object-contain"
+                className="h-24 object-contain"
+                width="500"
+                height="300"
             />
         </div>
 
@@ -192,4 +194,3 @@ const SentenceBar = ({
 };
 
 export default SentenceBar;
-    
