@@ -1,5 +1,5 @@
 {
-  "name": "Speech Assistant (AAC)",
+  "name": "Vox Libera",
   "description": "An Augmentative and Alternative Communication (AAC) app designed to help individuals with communication difficulties. Users can tap on images to build sentences, which are then spoken aloud using advanced text-to-speech technology.",
   "requestFramePermissions": [
     "microphone"

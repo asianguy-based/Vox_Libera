@@ -14,7 +14,7 @@ const AboutModal = ({ isOpen, onClose }: AboutModalProps): React.ReactElement | 
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm p-4">
       <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]">
         <div className="flex justify-between items-center p-4 border-b border-slate-200 bg-slate-50">
-          <h2 className="text-xl font-bold text-slate-800">About Speech Assistant</h2>
+          <h2 className="text-xl font-bold text-slate-800">About Vox Libera</h2>
           <button onClick={onClose} className="text-slate-500 hover:text-slate-700 transition-colors p-1" aria-label="Close">
             <CloseIcon className="w-6 h-6" />
           </button>
@@ -24,7 +24,7 @@ const AboutModal = ({ isOpen, onClose }: AboutModalProps): React.ReactElement | 
           <section>
             <h3 className="text-lg font-semibold text-slate-900 mb-2">Purpose</h3>
             <p className="leading-relaxed">
-              Speech Assistant (AAC) is an Augmentative and Alternative Communication application designed to give a voice to individuals who have difficulty speaking. Whether due to aphasia, autism, stroke, vocal cord damage, or other conditions, this app helps users communicate their needs, thoughts, and feelings effectively.
+              Vox Libera is an Augmentative and Alternative Communication application designed to give a voice to individuals who have difficulty speaking. Whether due to aphasia, autism, stroke, vocal cord damage, or other conditions, this app helps users communicate their needs, thoughts, and feelings effectively.
             </p>
           </section>
 
