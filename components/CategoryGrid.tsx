@@ -38,8 +38,8 @@ const CategoryGrid = ({ categories, onCategoryClick, customColor, onAddCategory,
   };
 
   return (
-    <div>
-      <div className="flex items-center justify-center gap-4 mb-2">
+    <div className="mt-8">
+      <div className="flex items-center justify-center gap-4 mb-4">
          <h1 className="text-xl font-bold text-current opacity-90">{labels?.selectCategory || "Select a Category"}</h1>
          <button 
            onClick={() => setIsReordering(!isReordering)}
