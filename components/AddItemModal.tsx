@@ -1,6 +1,5 @@
 
 import React, { useState } from 'react';
-import { CloseIcon } from './icons';
 
 interface AddItemModalProps {
   isOpen: boolean;
@@ -32,7 +31,7 @@ const AddItemModal = ({ isOpen, onClose, onSave, type }: AddItemModalProps): Rea
         <div className="flex justify-between items-center p-4 border-b border-slate-200 bg-slate-50">
           <h2 className="text-xl font-bold text-slate-800">Add New {type === 'category' ? 'Category' : 'Phrase'}</h2>
           <button onClick={onClose} className="text-slate-500 hover:text-slate-700 transition-colors p-1">
-            <CloseIcon className="w-6 h-6" />
+            <span className="text-2xl">❌</span>
           </button>
         </div>
 

@@ -1,6 +1,5 @@
 
 import React, { useRef } from 'react';
-import { SpeakIcon, LoadingIcon, PlayingIcon, SettingsIcon, BellIcon, ExpandIcon, ContractIcon, KeyboardIcon } from './icons';
 
 interface SentenceBarProps {
   sentence: string;
@@ -53,7 +52,7 @@ const SentenceBar = ({
     if (isLoading) {
       return (
         <>
-          <LoadingIcon className="w-6 h-6 animate-spin" />
+          <span className="text-xl animate-spin">⏳</span>
           <span className="font-semibold">{labels?.generating || "Generating..."}</span>
         </>
       );
@@ -61,14 +60,14 @@ const SentenceBar = ({
     if (isPlaying) {
       return (
         <>
-          <PlayingIcon className="w-6 h-6" />
+          <span className="text-xl animate-pulse">▶️</span>
           <span className="font-semibold">{labels?.playing || "Playing..."}</span>
         </>
       );
     }
     return (
       <>
-        <SpeakIcon className="w-6 h-6" />
+        <span className="text-xl">🔊</span>
         <span className="font-semibold">{labels?.speak || "Speak"}</span>
       </>
     );
@@ -78,7 +77,7 @@ const SentenceBar = ({
   const inputBgClass = darkMode ? 'bg-slate-700 text-white placeholder-slate-400' : 'bg-slate-700/50 text-white placeholder-slate-400';
   
   // Button base styles
-  const btnBase = "flex items-center justify-center rounded-lg shadow-sm transition-all active:scale-95 h-12";
+  const btnBase = "flex items-center justify-center rounded-lg shadow-sm transition-all active:scale-95 h-12 gap-2";
   
   // Specific button styles to match image
   const backBtnClass = `${btnBase} bg-slate-500 text-white hover:bg-slate-600`;
@@ -123,7 +122,7 @@ const SentenceBar = ({
                     className={`absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-md hover:bg-slate-600 transition-colors ${isVirtualKeyboardOpen ? 'text-blue-400' : 'text-slate-400'}`}
                     aria-label={isVirtualKeyboardOpen ? (labels?.closeKeyboard || "Close Keyboard") : (labels?.openKeyboard || "Open Keyboard")}
                 >
-                    <KeyboardIcon className="w-6 h-6" />
+                    <span className="text-xl">⌨️</span>
                 </button>
             </div>
 
@@ -147,32 +146,36 @@ const SentenceBar = ({
             <div className="flex gap-2 shrink-0">
                 {isInCategory && (
                     <button onClick={onGoBack} className={`${backBtnClass} px-3 w-auto`} title={labels?.back || "Back"}>
-                        <span className="font-bold text-sm sm:text-base whitespace-nowrap">{labels?.back || "⭠ Previous Page"}</span>
+                        <span className="text-xl">⬅️</span>
+                        <span className="font-bold text-sm sm:text-base whitespace-nowrap">{labels?.back || "Previous Page"}</span>
                     </button>
                 )}
 
                 <button onClick={onUndo} disabled={!canUndo} className={`${undoBtnClass} px-3 w-auto`} title={labels?.undo || "Undo"}>
-                    <span className="font-bold text-sm sm:text-base whitespace-nowrap">{labels?.undo || "⭯ Undo"}</span>
+                    <span className="text-xl">↪️</span>
+                    <span className="font-bold text-sm sm:text-base whitespace-nowrap">{labels?.undo || "Undo"}</span>
                 </button>
                 
                 <button onClick={onDeleteLast} disabled={!canPerformActions} className={`${deleteBtnClass} px-3 w-auto`} title={labels?.delete || "Delete"}>
-                    <span className="font-bold text-sm sm:text-base whitespace-nowrap">{labels?.delete || "⇤ Delete"}</span>
+                    <span className="text-xl">⏮️</span>
+                    <span className="font-bold text-sm sm:text-base whitespace-nowrap">{labels?.delete || "Delete"}</span>
                 </button>
 
                 <button onClick={onClearAll} disabled={!canPerformActions} className={`${clearBtnClass} px-3 w-auto`} title={labels?.clearAll || "Clear All"}>
-                    <span className="font-bold text-sm sm:text-base whitespace-nowrap">{labels?.clearAll || "⭙ Clear All"}</span>
+                    <span className="text-xl">🗑️</span>
+                    <span className="font-bold text-sm sm:text-base whitespace-nowrap">{labels?.clearAll || "Clear All"}</span>
                 </button>
             </div>
 
             {/* Right Group: Utilities */}
             <div className="flex gap-2 items-center shrink-0">
                  <button onClick={onAttentionClick} className={attentionBtnClass}>
-                    <BellIcon className="w-5 h-5" />
+                    <span className="text-xl">🔔</span>
                     <span className="hidden sm:inline">{labels?.attention || "Attention"}</span>
                 </button>
 
                  <button onClick={onToggleKiosk} className={fullScreenBtnClass}>
-                    {isKioskMode ? <ContractIcon className="w-5 h-5" /> : <ExpandIcon className="w-5 h-5" />}
+                    <span className="text-xl">{isKioskMode ? "📲" : "📱"}</span>
                     <span className="hidden sm:inline">{isKioskMode ? (labels?.exit || "Exit") : (labels?.fullScreen || "Full Screen")}</span>
                 </button>
 
@@ -180,7 +183,7 @@ const SentenceBar = ({
                     <>
                         <div className="w-px h-8 bg-slate-600 mx-1"></div>
                         <button onClick={onSettingsClick} className={settingsBtnClass} title={labels?.settings || "Settings"}>
-                            <SettingsIcon className="w-6 h-6" />
+                            <span className="text-2xl">⚙️</span>
                         </button>
                     </>
                 )}

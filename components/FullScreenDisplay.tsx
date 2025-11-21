@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect } from 'react';
-import { CloseIcon, FlipIcon, SpeakIcon, PlayingIcon, LoadingIcon, LockIcon, UnlockIcon } from './icons';
 
 interface FullScreenDisplayProps {
   text: string;
@@ -63,7 +62,7 @@ const FullScreenDisplay = ({ text, isOpen, onClose, onSpeak, isPlaying, isLoadin
                 aria-label="Flip text"
                 disabled={showPinPad}
             >
-                <FlipIcon className="w-8 h-8" />
+                <span className="text-2xl">🔄</span>
             </button>
             {pinCode && (
                 <button
@@ -72,7 +71,7 @@ const FullScreenDisplay = ({ text, isOpen, onClose, onSpeak, isPlaying, isLoadin
                     aria-label={isLocked ? "Unlock screen" : "Lock screen"}
                     disabled={showPinPad}
                 >
-                    {isLocked ? <LockIcon className="w-8 h-8" /> : <UnlockIcon className="w-8 h-8" />}
+                    <span className="text-2xl">{isLocked ? "🔒" : "🔓"}</span>
                 </button>
             )}
         </div>
@@ -82,7 +81,7 @@ const FullScreenDisplay = ({ text, isOpen, onClose, onSpeak, isPlaying, isLoadin
             className="p-4 rounded-full bg-red-100 text-red-600 hover:bg-red-200 transition-colors"
             aria-label="Close full screen"
         >
-            <CloseIcon className="w-8 h-8" />
+            <span className="text-2xl">❌</span>
         </button>
       </div>
 
@@ -101,11 +100,11 @@ const FullScreenDisplay = ({ text, isOpen, onClose, onSpeak, isPlaying, isLoadin
           className="flex flex-col items-center gap-2 p-6 rounded-2xl bg-green-500 text-white hover:bg-green-600 disabled:bg-green-300 disabled:cursor-not-allowed shadow-lg transition-transform active:scale-95"
         >
             {isLoading ? (
-                <LoadingIcon className="w-12 h-12 animate-spin" />
+                <span className="text-4xl animate-spin">⏳</span>
             ) : isPlaying ? (
-                <PlayingIcon className="w-12 h-12" />
+                <span className="text-4xl">▶️</span>
             ) : (
-                <SpeakIcon className="w-12 h-12" />
+                <span className="text-4xl">🔊</span>
             )}
             <span className="text-xl font-semibold">Speak</span>
         </button>

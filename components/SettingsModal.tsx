@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { UserSettings, VOICE_OPTIONS, LANGUAGES, Language } from '../types';
-import { CloseIcon, SpeakIcon, LoadingIcon, PlayingIcon, DeleteIcon, LockIcon } from './icons';
 import { recorderUtils, blobToBase64 } from '../utils/audioUtils';
 
 interface SettingsModalProps {
@@ -106,7 +105,7 @@ const AudioRecorderControl = ({
                             disabled={isPlaying}
                             className="flex items-center gap-2 px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors disabled:opacity-50"
                         >
-                            {isPlaying ? <PlayingIcon className="w-5 h-5" /> : <SpeakIcon className="w-5 h-5" />}
+                            {isPlaying ? <span className="text-lg">▶️</span> : <span className="text-lg">🔊</span>}
                             {isPlaying ? 'Playing...' : 'Play Recording'}
                         </button>
                         <button
@@ -115,7 +114,7 @@ const AudioRecorderControl = ({
                             className="p-2 bg-slate-100 text-slate-500 rounded-lg hover:bg-red-50 hover:text-red-600 transition-colors"
                             title="Delete Recording"
                         >
-                            <DeleteIcon className="w-5 h-5" />
+                            <span className="text-lg">🗑️</span>
                         </button>
                     </>
                 )}
@@ -199,7 +198,7 @@ const SettingsModal = ({ isOpen, onClose, settings, onSave }: SettingsModalProps
         <div className="flex justify-between items-center p-4 border-b border-slate-200 bg-slate-50">
           <h2 className="text-xl font-bold text-slate-800">Settings & Customization</h2>
           <button onClick={onClose} className="text-slate-500 hover:text-slate-700 transition-colors p-1">
-            <CloseIcon className="w-6 h-6" />
+            <span className="text-2xl">❌</span>
           </button>
         </div>
 
@@ -209,7 +208,7 @@ const SettingsModal = ({ isOpen, onClose, settings, onSave }: SettingsModalProps
             {/* Security Section */}
             <div className="space-y-4 p-4 bg-red-50 rounded-lg border border-red-100">
                 <h3 className="text-lg font-semibold text-red-800 border-b border-red-200 pb-2 flex items-center gap-2">
-                    <LockIcon className="w-5 h-5" />
+                    <span className="text-xl">🔒</span>
                     Security & Locking
                 </h3>
                 
@@ -291,12 +290,12 @@ const SettingsModal = ({ isOpen, onClose, settings, onSave }: SettingsModalProps
                             title="Test Voice"
                         >
                             {isPreviewLoading ? (
-                                <LoadingIcon className="w-5 h-5 animate-spin" />
+                                <span className="animate-spin">⏳</span>
                             ) : isPreviewPlaying ? (
-                                <PlayingIcon className="w-5 h-5 text-green-600" />
+                                <span className="text-green-600">▶️</span>
                             ) : (
                                 <div className="flex items-center gap-1">
-                                    <SpeakIcon className="w-5 h-5" />
+                                    <span>🔊</span>
                                     <span className="text-sm font-medium">Test</span>
                                 </div>
                             )}
