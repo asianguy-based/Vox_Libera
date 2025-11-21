@@ -396,7 +396,7 @@ const App = (): React.ReactElement => {
 
   const activeCategory = categories.find(c => c.name === currentCategoryName);
   // Padding adjusted for the now-shorter header
-  const mainPaddingClass = "pt-52 sm:pt-56 pb-2 sm:pb-4"; 
+  const mainPaddingClass = "pt-64 sm:pt-72 pb-2 sm:pb-4"; 
 
   const currentUILabels = UI_LABELS[userSettings.language] || UI_LABELS['en'];
 

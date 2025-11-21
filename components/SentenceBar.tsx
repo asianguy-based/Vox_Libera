@@ -1,3 +1,4 @@
+
 import React, { useRef } from 'react';
 import { SpeakIcon, LoadingIcon, PlayingIcon, SettingsIcon, BellIcon, ExpandIcon, ContractIcon, KeyboardIcon } from './icons';
 
@@ -96,7 +97,7 @@ const SentenceBar = ({
         {/* Branding Row - Reduced height to fix layout */}
         <div className="flex items-center justify-center">
             <img 
-                src="https://raw.githubusercontent.com/asianguy-based/Vox_Libera/main/logo.png" 
+                src="https://raw.githubusercontent.com/asianguy-based/Vox_Libera/2d9433bd851ae85957d8f96a0290ab638a379d82/logo.png" 
                 alt="Vox Libera - Every Voice, Set Free!" 
                 className="h-24 object-contain"
                 width="500"

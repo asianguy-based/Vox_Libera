@@ -16,7 +16,7 @@ interface WordGridProps {
 
 const WordGrid = ({ category, onWordClick, onGoBack, customColor, onAddWord, labels }: WordGridProps): React.ReactElement => {
   return (
-    <div>
+    <div className="mt-8">
       {/* Header removed as navigation is now in the SentenceBar */}
       <div className="flex items-center mb-2 justify-center">
         <h1 className="text-xl font-bold text-center text-current opacity-90">{category.name}</h1>
