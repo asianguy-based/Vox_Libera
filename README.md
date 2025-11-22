@@ -1,20 +1,21 @@
 <div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+<img width="1200" height="475" alt="Logo" src="https://github.com/asianguy-based/Vox_Libera/blob/2d9433bd851ae85957d8f96a0290ab638a379d82/logo.png" />
 </div>
 
-# Run and deploy your AI Studio app
+# Augmentative and Alternative Communications (AAC) app for everyone!
 
-This contains everything you need to run your app locally.
+This application was written with the goal of ensuring that everyone with a disability, even those without, can are afforded the opportunity to speak.
 
-View your app in AI Studio: https://ai.studio/apps/drive/1sCKx0GE4Z5GCA1ciXxhvGDJvcdIQGpxi
+For those that can speak, we often take this free ability for granted. That is why this application is available at NO COST to all. There shouldn't be a price on the ability to speak!
 
-## Run Locally
+To utilize this application, visit https://vox-libera-408583195940.us-west1.run.app/.
 
-**Prerequisites:**  Node.js
+At this time, it is in beta mode and there may be some issues. If there is an issue, concern, or feature to be added, I can be reached at my email address in the app. 
 
+I am one person trying to do what I can. Having a daughter with Cerebral Palsy, I know how these AAC apps are. One has features that another has but it costs a lot of money or vice versa and it is often hard to chose. Why not design something that is useful for EVERYONE!
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+If you can, please show your support and check out another project of mine:
+
+<a href="http://www.bulletpointlegal.info"><img width="1216" height="231" alt="Bullet Point Legal Logo" src="https://github.com/user-attachments/assets/11adf159-f12a-4401-96a3-7aec71d1cd2e"/> </a>
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/D1D61NBN42)
