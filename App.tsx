@@ -97,23 +97,58 @@ const App = (): React.ReactElement => {
   useEffect(() => {
     setCategories(prevCats => {
       // Find the clean template from DEFAULT_CATEGORIES to prevent double-appending
-      const defaultCatsMap = new Map(DEFAULT_CATEGORIES.map(c => [c.name, c]));
+      // We map by ICON because names change with translation, but icons are usually static for default categories.
+      const defaultCatsMap = new Map(DEFAULT_CATEGORIES.map(c => [c.icon, c]));
 
       return prevCats.map(cat => {
         // Use template category if available to reset words, otherwise use current
-        const templateCat = defaultCatsMap.get(cat.name) || cat;
-        let wordsToProcess = [...templateCat.words];
+        let templateCat = defaultCatsMap.get(cat.icon);
+        
+        // Verify it's truly the default category by checking if the current name matches any known translation
+        // This prevents custom categories that happen to use the same icon from being overwritten
+        if (templateCat) {
+             const isMatch = 
+                cat.name === templateCat.name || // English match
+                Object.values(CATEGORY_TRANSLATIONS[templateCat.name] || {}).includes(cat.name) || // External Translation match
+                // Inline translation match check
+                (templateCat as any).name_es === cat.name ||
+                (templateCat as any).name_de === cat.name ||
+                (templateCat as any).name_fr === cat.name ||
+                (templateCat as any).name_it === cat.name ||
+                (templateCat as any).name_pt === cat.name ||
+                (templateCat as any).name_tl === cat.name;
+             
+             if (!isMatch) {
+                 // Name doesn't match any known version of this default category. 
+                 // Assume it's a custom category sharing the icon.
+                 templateCat = undefined; 
+             }
+        }
+
+        const baseCat = templateCat || cat;
+        let wordsToProcess = [...baseCat.words];
         
         // Apply Translations to Category Name if available
-        let displayCatName = cat.name;
+        let displayCatName = baseCat.name;
         const lang = userSettings.language;
         
-        if (lang !== 'en' && CATEGORY_TRANSLATIONS[cat.name]) {
-            const translatedName = (CATEGORY_TRANSLATIONS[cat.name] as any)[lang];
-            if (translatedName) displayCatName = translatedName;
-        } else if (lang !== 'en') {
-            const translatedName = (cat as any)[`name_${lang}`];
-            if (translatedName) displayCatName = translatedName;
+        // If we found a template (it's a system category), we can translate it
+        if (templateCat) {
+            if (lang !== 'en') {
+                // Try external translation map first
+                if (CATEGORY_TRANSLATIONS[templateCat.name]) {
+                    const translatedName = (CATEGORY_TRANSLATIONS[templateCat.name] as any)[lang];
+                    if (translatedName) displayCatName = translatedName;
+                } 
+                // Fallback to inline properties
+                if (displayCatName === templateCat.name) {
+                    const translatedName = (templateCat as any)[`name_${lang}`];
+                    if (translatedName) displayCatName = translatedName;
+                }
+            }
+        } else {
+            // For custom categories, we stick to the existing name (no translation available usually)
+            displayCatName = cat.name;
         }
 
         let updatedWords = wordsToProcess.map(word => {
@@ -165,16 +200,17 @@ const App = (): React.ReactElement => {
         });
 
         // Handle Saved Spoken Memos (Audio)
-        if (cat.name === 'Saved Spoken Memos') {
+        if (baseCat.name === 'Saved Spoken Memos' || (templateCat && templateCat.name === 'Saved Spoken Memos')) {
              updatedWords = updatedWords.map(word => {
-                if (word.label.startsWith('Memo 1') || word.label === 'Memo 1') return { ...word, audioRecording: userSettings.memo1Audio };
-                if (word.label.startsWith('Memo 2') || word.label === 'Memo 2') return { ...word, audioRecording: userSettings.memo2Audio };
-                if (word.label === 'Important') return { ...word, audioRecording: userSettings.importantMemoAudio };
+                // Use simplified checks for memos as labels might be translated
+                if (word.icon === '📝' && (word.label.includes('1') || word.label.endsWith('1'))) return { ...word, audioRecording: userSettings.memo1Audio };
+                if (word.icon === '📝' && (word.label.includes('2') || word.label.endsWith('2'))) return { ...word, audioRecording: userSettings.memo2Audio };
+                if (word.icon === '⭐') return { ...word, audioRecording: userSettings.importantMemoAudio };
                 return word;
             });
         }
 
-        return { ...cat, name: displayCatName, words: updatedWords };
+        return { ...baseCat, name: displayCatName, words: updatedWords };
       });
     });
   }, [userSettings]);
