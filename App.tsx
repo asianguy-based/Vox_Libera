@@ -50,6 +50,9 @@ const App = (): React.ReactElement => {
   const [isKioskMode, setIsKioskMode] = useState<boolean>(false); // True browser fullscreen
   const [isAboutOpen, setIsAboutOpen] = useState<boolean>(false);
   
+  // PWA Install State
+  const [installPrompt, setInstallPrompt] = useState<any>(null);
+  
   // Initialize keyboard based on screen size (hide on mobile by default)
   const [isVirtualKeyboardOpen, setIsVirtualKeyboardOpen] = useState<boolean>(() => {
       if (typeof window !== 'undefined') {
@@ -92,6 +95,29 @@ const App = (): React.ReactElement => {
       document.addEventListener('fullscreenchange', handleFullscreenChange);
       return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
   }, []);
+
+  // Listen for PWA install prompt
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      setInstallPrompt(e);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (!installPrompt) return;
+    installPrompt.prompt();
+    const { outcome } = await installPrompt.userChoice;
+    if (outcome === 'accepted') {
+      setInstallPrompt(null);
+    }
+  };
 
   // Update "My Information", "Saved Spoken Memos" and apply Translations when settings change
   useEffect(() => {
@@ -500,7 +526,7 @@ const App = (): React.ReactElement => {
          </div>
       )}
 
-      <footer className={`text-center p-4 text-xs transition-colors duration-300 flex flex-row items-center justify-center gap-4 ${userSettings.darkMode ? 'text-slate-500' : 'text-slate-500'} ${isVirtualKeyboardOpen ? 'mb-64' : ''}`}>
+      <footer className={`text-center p-4 text-xs transition-colors duration-300 flex flex-row items-center justify-center gap-2 sm:gap-4 ${userSettings.darkMode ? 'text-slate-500' : 'text-slate-500'} ${isVirtualKeyboardOpen ? 'mb-64' : ''}`}>
         <button 
             onClick={() => setIsAboutOpen(true)} 
             className="hover:underline focus:outline-none font-semibold"
@@ -513,6 +539,18 @@ const App = (): React.ReactElement => {
         <a href="mailto:jeffrey.i.mcconnell@gmail.com" className="hover:text-blue-500 transition-colors hover:underline">
              © 2025 Jeffrey McConnell
         </a>
+
+        {installPrompt && (
+            <>
+                <span className="text-slate-300">|</span>
+                <button 
+                    onClick={handleInstallClick} 
+                    className="hover:underline focus:outline-none font-semibold text-blue-600"
+                >
+                    Install App
+                </button>
+            </>
+        )}
       </footer>
 
       <SettingsModal 
