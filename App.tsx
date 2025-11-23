@@ -52,6 +52,7 @@ const App = (): React.ReactElement => {
   
   // PWA Install State
   const [installPrompt, setInstallPrompt] = useState<any>(null);
+  const [isIOS, setIsIOS] = useState(false);
   
   // Initialize keyboard based on screen size (hide on mobile by default)
   const [isVirtualKeyboardOpen, setIsVirtualKeyboardOpen] = useState<boolean>(() => {
@@ -85,6 +86,10 @@ const App = (): React.ReactElement => {
             console.error('Failed to parse saved categories', e);
         }
     }
+    
+    // Check for iOS to provide specific instructions
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    setIsIOS(/iphone|ipad|ipod/.test(userAgent));
   }, []);
 
   // Listen for fullscreen changes to update state
@@ -111,11 +116,19 @@ const App = (): React.ReactElement => {
   }, []);
 
   const handleInstallClick = async () => {
-    if (!installPrompt) return;
-    installPrompt.prompt();
-    const { outcome } = await installPrompt.userChoice;
-    if (outcome === 'accepted') {
-      setInstallPrompt(null);
+    if (installPrompt) {
+        installPrompt.prompt();
+        const { outcome } = await installPrompt.userChoice;
+        if (outcome === 'accepted') {
+            setInstallPrompt(null);
+        }
+    } else {
+        // Manual Instructions
+        if (isIOS) {
+            alert("To install this app on iOS: Tap the Share button (rectangle with arrow up) and then select 'Add to Home Screen'.");
+        } else {
+            alert("To install this app: Tap the browser menu (three dots) and select 'Install App' or 'Add to Home Screen'.");
+        }
     }
   };
 
@@ -540,17 +553,14 @@ const App = (): React.ReactElement => {
              © 2025 Jeffrey McConnell
         </a>
 
-        {installPrompt && (
-            <>
-                <span className="text-slate-300">|</span>
-                <button 
-                    onClick={handleInstallClick} 
-                    className="hover:underline focus:outline-none font-semibold text-blue-600"
-                >
-                    Install App
-                </button>
-            </>
-        )}
+        <span className="text-slate-300">|</span>
+        
+        <button 
+            onClick={handleInstallClick} 
+            className="hover:underline focus:outline-none font-semibold text-blue-600"
+        >
+            Install App
+        </button>
       </footer>
 
       <SettingsModal 
