@@ -1,4 +1,4 @@
-const CACHE_NAME = 'vox-libera-cache-v1';
+const CACHE_NAME = 'vox-libera-cache-v3';
 const urlsToCache = [
   './',
   './index.html',
