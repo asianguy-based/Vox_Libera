@@ -1,7 +1,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { UserSettings, VOICE_OPTIONS, LANGUAGES, Language } from '../types';
+import { UserSettings, LANGUAGES, Language } from '../types';
 import { recorderUtils, blobToBase64 } from '../utils/audioUtils';
+import { loadVoices, speakText, isSpeechSynthesisSupported } from '../utils/speechUtils';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -128,20 +129,43 @@ const SettingsModal = ({ isOpen, onClose, settings, onSave }: SettingsModalProps
   const [localSettings, setLocalSettings] = useState<UserSettings>(settings);
   const [isPreviewLoading, setIsPreviewLoading] = useState(false);
   const [isPreviewPlaying, setIsPreviewPlaying] = useState(false);
+  const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const [ttsSupported, setTtsSupported] = useState(true);
 
   useEffect(() => {
     setLocalSettings(settings);
   }, [settings, isOpen]);
 
+  // Load the device's installed system voices when the modal opens.
+  useEffect(() => {
+    if (!isOpen) return;
+    setTtsSupported(isSpeechSynthesisSupported());
+    loadVoices().then(setAvailableVoices);
+  }, [isOpen]);
+
   if (!isOpen) return null;
+
+  // Only show voices relevant to the selected app language, falling back to
+  // showing all voices if none match (better than an empty dropdown).
+  const langInfo = LANGUAGES.find(l => l.code === localSettings.language);
+  const langPrefix = (langInfo?.voiceCode || 'en').split('-')[0].toLowerCase();
+  const filteredVoices = availableVoices.filter(v => v.lang.toLowerCase().startsWith(langPrefix));
+  const voicesToShow = filteredVoices.length > 0 ? filteredVoices : availableVoices;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     const checked = (e.target as HTMLInputElement).checked;
-    
+
+    let parsedValue: string | number | boolean = value;
+    if (type === 'checkbox') {
+      parsedValue = checked;
+    } else if (type === 'range' || type === 'number') {
+      parsedValue = parseFloat(value);
+    }
+
     setLocalSettings((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: parsedValue,
     }));
   };
 
@@ -153,43 +177,34 @@ const SettingsModal = ({ isOpen, onClose, settings, onSave }: SettingsModalProps
 
   const handleTestVoice = async () => {
       if (isPreviewLoading || isPreviewPlaying) return;
-      
-      setIsPreviewLoading(true);
-      try {
-        const { generateSpeech } = await import('../services/geminiService');
-        const { playAudio } = await import('../utils/audioUtils');
 
-        // Basic hello in different languages
-        const greetings: Record<Language, string> = {
-            'en': 'Hello, my name is',
-            'es': 'Hola, mi nombre es',
-            'de': 'Hallo, mein Name ist',
-            'fr': 'Bonjour, je m\'appelle',
-            'it': 'Ciao, mi chiamo',
-            'pt': 'Olá, meu nome é',
-            'tl': 'Kamusta, ang pangalan ko ay'
-        };
-        
-        const prefix = greetings[localSettings.language] || greetings['en'];
-        const testPhrase = `${prefix} ${localSettings.userName || 'Speech Assistant'}.`;
-        
-        // Get selected voice settings (apiName and Pitch)
-        const selectedVoice = VOICE_OPTIONS.find(v => v.id === localSettings.voiceName) || VOICE_OPTIONS[0];
+      // Basic hello in different languages
+      const greetings: Record<Language, string> = {
+          'en': 'Hello, my name is',
+          'es': 'Hola, mi nombre es',
+          'de': 'Hallo, mein Name ist',
+          'fr': 'Bonjour, je m\'appelle',
+          'it': 'Ciao, mi chiamo',
+          'pt': 'Olá, meu nome é',
+          'tl': 'Kamusta, ang pangalan ko ay'
+      };
 
-        // Pass the correct API Name and Language
-        const audioData = await generateSpeech(testPhrase, selectedVoice.apiVoice, localSettings.language);
+      const prefix = greetings[localSettings.language] || greetings['en'];
+      const testPhrase = `${prefix} ${localSettings.userName || 'Speech Assistant'}.`;
+      const langCode = LANGUAGES.find(l => l.code === localSettings.language)?.voiceCode || 'en-US';
 
-        if (audioData) {
-            setIsPreviewPlaying(true);
-            // Pass the specific pitch (e.g. 1.25 for kid voice)
-            await playAudio(audioData, () => setIsPreviewPlaying(false), selectedVoice.pitch);
-        }
-      } catch (error) {
-          console.error("Failed to test voice:", error);
-          alert("Could not generate voice preview. Please try again.");
-      } finally {
-          setIsPreviewLoading(false);
-      }
+      speakText(
+        testPhrase,
+        {
+          voiceURI: localSettings.systemVoiceURI,
+          lang: langCode,
+          pitch: localSettings.voicePitch ?? 1.0,
+          rate: localSettings.voiceRate ?? 1.0,
+        },
+        () => setIsPreviewPlaying(true),
+        () => setIsPreviewPlaying(false),
+        (message) => alert(message)
+      );
   };
 
   return (
@@ -265,43 +280,87 @@ const SettingsModal = ({ isOpen, onClose, settings, onSave }: SettingsModalProps
                 </div>
 
                 <div>
-                    <label htmlFor="voiceName" className="block text-sm font-medium text-slate-700 mb-2">
+                    <label htmlFor="systemVoiceURI" className="block text-sm font-medium text-slate-700 mb-2">
                     Voice Selection
                     </label>
-                    <div className="flex gap-2">
-                        <select
-                            id="voiceName"
-                            name="voiceName"
-                            value={localSettings.voiceName}
+                    {!ttsSupported ? (
+                        <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg p-3">
+                            Text-to-speech isn't supported on this browser. Try Chrome, Safari, or Edge.
+                        </p>
+                    ) : (
+                        <>
+                            <div className="flex gap-2">
+                                <select
+                                    id="systemVoiceURI"
+                                    name="systemVoiceURI"
+                                    value={localSettings.systemVoiceURI}
+                                    onChange={handleChange}
+                                    className="flex-grow p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-slate-800"
+                                >
+                                    <option value="">Device Default</option>
+                                    {voicesToShow.map((voice) => (
+                                        <option key={voice.voiceURI} value={voice.voiceURI}>
+                                        {voice.name} ({voice.lang})
+                                        </option>
+                                    ))}
+                                </select>
+                                <button
+                                    type="button"
+                                    onClick={handleTestVoice}
+                                    disabled={isPreviewLoading || isPreviewPlaying}
+                                    className="flex items-center justify-center px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 border border-slate-300 transition-colors min-w-[5rem]"
+                                    title="Test Voice"
+                                >
+                                    {isPreviewPlaying ? (
+                                        <span className="text-green-600">▶️</span>
+                                    ) : (
+                                        <div className="flex items-center gap-1">
+                                            <span>🔊</span>
+                                            <span className="text-sm font-medium">Test</span>
+                                        </div>
+                                    )}
+                                </button>
+                            </div>
+                            <p className="text-xs text-slate-500 mt-1">
+                                Uses your device's built-in voices (free, works offline). Voices shown depend on your browser and OS (Chrome, Safari, Android, iOS all provide different voices).
+                            </p>
+                        </>
+                    )}
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <label htmlFor="voicePitch" className="block text-sm font-medium text-slate-700 mb-2">
+                            Pitch ({(localSettings.voicePitch ?? 1.0).toFixed(2)})
+                        </label>
+                        <input
+                            type="range"
+                            id="voicePitch"
+                            name="voicePitch"
+                            min="0.5"
+                            max="2"
+                            step="0.05"
+                            value={localSettings.voicePitch ?? 1.0}
                             onChange={handleChange}
-                            className="flex-grow p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-slate-800"
-                        >
-                            {VOICE_OPTIONS.map((voice) => (
-                                <option key={voice.id} value={voice.id}>
-                                {voice.label}
-                                </option>
-                            ))}
-                        </select>
-                        <button
-                            type="button"
-                            onClick={handleTestVoice}
-                            disabled={isPreviewLoading || isPreviewPlaying}
-                            className="flex items-center justify-center px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 border border-slate-300 transition-colors min-w-[5rem]"
-                            title="Test Voice"
-                        >
-                            {isPreviewLoading ? (
-                                <span className="animate-spin">⏳</span>
-                            ) : isPreviewPlaying ? (
-                                <span className="text-green-600">▶️</span>
-                            ) : (
-                                <div className="flex items-center gap-1">
-                                    <span>🔊</span>
-                                    <span className="text-sm font-medium">Test</span>
-                                </div>
-                            )}
-                        </button>
+                            className="w-full accent-blue-600"
+                        />
                     </div>
-                    <p className="text-xs text-slate-500 mt-1">Choose a voice. Note: Some accents might sound best with specific voices.</p>
+                    <div>
+                        <label htmlFor="voiceRate" className="block text-sm font-medium text-slate-700 mb-2">
+                            Speed ({(localSettings.voiceRate ?? 1.0).toFixed(2)})
+                        </label>
+                        <input
+                            type="range"
+                            id="voiceRate"
+                            name="voiceRate"
+                            min="0.5"
+                            max="2"
+                            step="0.05"
+                            value={localSettings.voiceRate ?? 1.0}
+                            onChange={handleChange}
+                            className="w-full accent-blue-600"
+                        />
+                    </div>
                 </div>
             </div>
 

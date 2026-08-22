@@ -72,7 +72,11 @@ export interface UserSettings {
   memo2Audio?: string;
   importantMemoAudio?: string;
   
-  voiceName: string; // 'Puck' | 'Charon' | 'Kore' | 'Fenrir' | 'Zephyr'
+  // Native browser Text-to-Speech settings (Web Speech API - free, no API key, uses OS voices)
+  systemVoiceURI: string; // SpeechSynthesisVoice.voiceURI - '' means "use browser default for language"
+  voicePitch: number; // 0.5 - 2.0, default 1.0
+  voiceRate: number; // 0.5 - 2.0, default 1.0
+
   darkMode: boolean;
   customCategoryColor: string; // Hex code or empty string for default
   customWordColor: string; // Hex code or empty string for default
@@ -81,22 +85,3 @@ export interface UserSettings {
   pinCode: string;
   lockSettings: boolean;
 }
-
-export interface VoiceOption {
-  id: string;
-  label: string;
-  gender: string;
-  apiVoice: string;
-  pitch: number;
-}
-
-export const VOICE_OPTIONS: VoiceOption[] = [
-  { id: 'Kore', label: 'Sarah (US Female, Calm)', gender: 'Female', apiVoice: 'Kore', pitch: 1.0 },
-  { id: 'Puck', label: 'Michael (US Male, Energetic)', gender: 'Male', apiVoice: 'Puck', pitch: 1.0 },
-  { id: 'Charon', label: 'David (US Male, Deep)', gender: 'Male', apiVoice: 'Charon', pitch: 1.0 },
-  { id: 'Fenrir', label: 'Robert (US Male, Strong)', gender: 'Male', apiVoice: 'Fenrir', pitch: 1.0 },
-  { id: 'Zephyr', label: 'Emily (US Female, Soft)', gender: 'Female', apiVoice: 'Zephyr', pitch: 1.0 },
-  // Kid Voices (Simulated via pitch shift)
-  { id: 'Boy', label: 'Boy (Simulated)', gender: 'Male', apiVoice: 'Puck', pitch: 1.15 },
-  { id: 'Girl', label: 'Girl (Simulated)', gender: 'Female', apiVoice: 'Kore', pitch: 1.15 },
-];

@@ -31,7 +31,7 @@ const AboutModal = ({ isOpen, onClose }: AboutModalProps): React.ReactElement | 
             <h3 className="text-lg font-semibold text-slate-900 mb-2">Key Features</h3>
             <ul className="list-disc list-inside space-y-1 ml-1">
               <li><span className="font-medium">Visual Communication:</span> Uses intuitive icons and categories to build sentences quickly without typing.</li>
-              <li><span className="font-medium">Text-to-Speech:</span> Instantly converts selected words or typed text into natural-sounding speech using advanced AI.</li>
+              <li><span className="font-medium">Text-to-Speech:</span> Instantly converts selected words or typed text into speech using your device's built-in voices &mdash; free, private, and works offline.</li>
               <li><span className="font-medium">Customization:</span> Personalized settings for voice selection, user profile, and text input.</li>
               <li><span className="font-medium">Accessibility Tools:</span> Includes a Full Screen mode for visual clarity and an Attention sound to alert others.</li>
             </ul>

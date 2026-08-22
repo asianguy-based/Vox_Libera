@@ -1,6 +1,6 @@
 
 import React, { useState, useCallback, useEffect } from 'react';
-import { Category, Word, UserSettings, Language, VOICE_OPTIONS } from './types';
+import { Category, Word, UserSettings, Language, LANGUAGES } from './types';
 import { CATEGORIES as DEFAULT_CATEGORIES } from './data/words';
 import { UI_LABELS, CATEGORY_TRANSLATIONS } from './data/translations';
 import SentenceBar from './components/SentenceBar';
@@ -27,7 +27,9 @@ const DEFAULT_SETTINGS: UserSettings = {
   memo1: '',
   memo2: '',
   importantMemo: '',
-  voiceName: 'Kore',
+  systemVoiceURI: '',
+  voicePitch: 1.0,
+  voiceRate: 1.0,
   darkMode: false,
   customCategoryColor: '',
   customWordColor: '',
@@ -417,24 +419,34 @@ const App = (): React.ReactElement => {
   const handleSpeak = useCallback(async () => {
     if (sentence.length === 0 || isLoading || isPlaying) return;
 
-    setIsLoading(true);
     setError(null);
     const textToSpeak = sentence.join(' ');
-    
-    try {
-      const { generateSpeech } = await import('./services/geminiService');
-      const { playAudio } = await import('./utils/audioUtils');
-      
-      const selectedVoice = VOICE_OPTIONS.find(v => v.id === userSettings.voiceName) || VOICE_OPTIONS[0];
 
-      const audioData = await generateSpeech(textToSpeak, selectedVoice.apiVoice, userSettings.language);
-      
-      if (audioData) {
-        setIsPlaying(true);
-        await playAudio(audioData, () => setIsPlaying(false), selectedVoice.pitch);
-      } else {
-         setError('Could not generate speech. The API returned no audio data.');
+    try {
+      const { speakText, loadVoices, isSpeechSynthesisSupported } = await import('./utils/speechUtils');
+
+      if (!isSpeechSynthesisSupported()) {
+        setError('Text-to-speech is not supported on this browser/device.');
+        return;
       }
+
+      // Ensure the voice list is loaded (needed on first use in some browsers).
+      await loadVoices();
+
+      const langInfo = LANGUAGES.find(l => l.code === userSettings.language);
+
+      speakText(
+        textToSpeak,
+        {
+          voiceURI: userSettings.systemVoiceURI,
+          lang: langInfo?.voiceCode || 'en-US',
+          pitch: userSettings.voicePitch ?? 1.0,
+          rate: userSettings.voiceRate ?? 1.0,
+        },
+        () => setIsPlaying(true),
+        () => setIsPlaying(false),
+        (message) => setError(message)
+      );
     } catch (err) {
       console.error('Error generating or playing speech:', err);
       if (err instanceof Error) {
@@ -442,10 +454,9 @@ const App = (): React.ReactElement => {
       } else {
         setError('An unknown error occurred while generating speech.');
       }
-    } finally {
-      setIsLoading(false);
+      setIsPlaying(false);
     }
-  }, [sentence, isLoading, isPlaying, userSettings.voiceName, userSettings.language]);
+  }, [sentence, isLoading, isPlaying, userSettings.language, userSettings.systemVoiceURI, userSettings.voicePitch, userSettings.voiceRate]);
 
   const handleAttentionClick = useCallback(async () => {
       try {
