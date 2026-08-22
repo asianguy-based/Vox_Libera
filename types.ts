@@ -48,6 +48,19 @@ export interface Category {
   color: string;
 }
 
+// A single user-recorded voice clip. Replaces the old fixed
+// memo1Audio/memo2Audio/importantMemoAudio fields with an open-ended list so
+// users can record as many personal phrases (in their own voice, a loved
+// one's voice, etc.) as they need.
+export interface Recording {
+  id: string; // stable unique id (crypto.randomUUID() or fallback)
+  label: string; // e.g. "Memo 1", "Mom's Voice - I love you"
+  icon: string; // emoji shown on the card, default '📝'
+  audioData?: string; // Base64 data URL (data:audio/webm;base64,...)
+  isDefault?: boolean; // true for the 5 built-in starter slots
+  createdAt: number; // Date.now() timestamp, used for sort/export metadata
+}
+
 export interface UserSettings {
   language: Language;
   userName: string;
@@ -61,17 +74,12 @@ export interface UserSettings {
   emergencyContact: string;
   disabilityInfo: string;
   caregiver: string;
-  
-  // Saved Memos (Text)
-  memo1: string;
-  memo2: string;
-  importantMemo: string;
 
-  // Saved Memos (Audio)
-  memo1Audio?: string;
-  memo2Audio?: string;
-  importantMemoAudio?: string;
-  
+  // Dynamic Saved Spoken Recordings: 5 default slots are seeded on first run,
+  // and the user can add unlimited additional recordings via the ➕ button
+  // in the dedicated Recordings category page / Settings.
+  recordings: Recording[];
+
   // Native browser Text-to-Speech settings (Web Speech API - free, no API key, uses OS voices)
   systemVoiceURI: string; // SpeechSynthesisVoice.voiceURI - '' means "use browser default for language"
   voicePitch: number; // 0.5 - 2.0, default 1.0
@@ -84,4 +92,15 @@ export interface UserSettings {
   // Security
   pinCode: string;
   lockSettings: boolean;
+}
+
+// Shape of the JSON file produced by Settings > Export Data, and consumed by
+// Settings > Import Data. Versioned so future migrations can detect the
+// format of an older backup file.
+export interface VoxLiberaBackup {
+  appName: 'Vox Libera';
+  backupVersion: 1;
+  exportedAt: string; // ISO date string
+  settings: UserSettings;
+  categories: Category[];
 }

@@ -2,17 +2,21 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="https://raw.githubusercontent.com/asianguy-based/Vox_Libera/efedb55aff592ff000340be064b38a0537fbba70/components/icons/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/asianguy-based/Vox_Libera/fca65dfe77221569d100c94ddebb2ce8ee16c404/icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/asianguy-based/Vox_Libera/efedb55aff592ff000340be064b38a0537fbba70/components/icons/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="https://raw.githubusercontent.com/asianguy-based/Vox_Libera/efedb55aff592ff000340be064b38a0537fbba70/components/icons/favicon-16x16.png" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png" />
     <link rel="manifest" href="./manifest.json" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="description" content="Vox Libera - A free, open-source AAC (Augmentative and Alternative Communication) speech assistant. 100% offline-capable, no accounts, no ads, no API keys." />
     <title>Vox Libera</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
-
-</head>
+    <!--
+      Tailwind CSS is compiled locally at build time via @tailwindcss/vite
+      (see index.css / vite.config.ts) - no CDN script, no external
+      stylesheet requests, so the app works fully offline once installed.
+    -->
+  </head>
   <body class="bg-slate-100">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>

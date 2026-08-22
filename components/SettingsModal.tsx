@@ -1,136 +1,33 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { UserSettings, LANGUAGES, Language } from '../types';
-import { recorderUtils, blobToBase64 } from '../utils/audioUtils';
+import { UserSettings, LANGUAGES, Language, Category } from '../types';
 import { loadVoices, speakText, isSpeechSynthesisSupported } from '../utils/speechUtils';
+import {
+  exportBackupToFile,
+  saveBackupWithPicker,
+  canShareBackup,
+  shareBackup,
+  parseBackupFile,
+  BackupValidationError,
+} from '../utils/backupUtils';
 
 interface SettingsModalProps {
   isOpen: boolean;
   onClose: () => void;
   settings: UserSettings;
+  categories: Category[];
   onSave: (newSettings: UserSettings) => void;
+  onImportBackup: (settings: UserSettings, categories: Category[]) => void;
 }
 
-// Helper component for recording a single field
-const AudioRecorderControl = ({ 
-    label, 
-    existingAudio, 
-    onSaveAudio, 
-    onDeleteAudio 
-}: { 
-    label: string, 
-    existingAudio?: string, 
-    onSaveAudio: (base64: string) => void, 
-    onDeleteAudio: () => void 
-}) => {
-    const [isRecording, setIsRecording] = useState(false);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const audioRef = useRef<HTMLAudioElement | null>(null);
-
-    const handleStartRecording = async () => {
-        try {
-            await recorderUtils.startRecording();
-            setIsRecording(true);
-            setError(null);
-        } catch (e) {
-            setError("Microphone access denied or not available.");
-        }
-    };
-
-    const handleStopRecording = async () => {
-        try {
-            const blob = await recorderUtils.stopRecording();
-            const base64 = await blobToBase64(blob);
-            onSaveAudio(base64);
-            setIsRecording(false);
-        } catch (e) {
-            setError("Failed to save recording.");
-            setIsRecording(false);
-        }
-    };
-
-    const handlePlay = () => {
-        if (!existingAudio) return;
-        
-        // Existing audio is likely a Data URL (data:audio/webm;base64,...)
-        if (!audioRef.current) {
-            audioRef.current = new Audio(existingAudio);
-            audioRef.current.onended = () => setIsPlaying(false);
-            audioRef.current.onerror = () => {
-                 setIsPlaying(false);
-                 setError("Could not play audio.");
-            };
-        } else {
-            audioRef.current.src = existingAudio;
-        }
-        
-        setIsPlaying(true);
-        audioRef.current.play().catch(e => {
-            console.error("Playback error", e);
-            setIsPlaying(false);
-        });
-    };
-
-    return (
-        <div className="border p-4 rounded-lg bg-white shadow-sm">
-            <label className="block text-sm font-medium text-slate-700 mb-2">{label}</label>
-            <div className="flex items-center gap-3">
-                {!isRecording && !existingAudio && (
-                    <button
-                        type="button"
-                        onClick={handleStartRecording}
-                        className="flex items-center gap-2 px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors"
-                    >
-                        <div className="w-3 h-3 bg-red-600 rounded-full"></div>
-                        Record
-                    </button>
-                )}
-
-                {isRecording && (
-                    <button
-                        type="button"
-                        onClick={handleStopRecording}
-                        className="flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors animate-pulse border border-slate-300"
-                    >
-                        <div className="w-3 h-3 bg-slate-800 rounded-sm"></div>
-                        Stop Recording
-                    </button>
-                )}
-
-                {existingAudio && (
-                    <>
-                        <button
-                            type="button"
-                            onClick={handlePlay}
-                            disabled={isPlaying}
-                            className="flex items-center gap-2 px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors disabled:opacity-50"
-                        >
-                            {isPlaying ? <span className="text-lg">▶️</span> : <span className="text-lg">🔊</span>}
-                            {isPlaying ? 'Playing...' : 'Play Recording'}
-                        </button>
-                        <button
-                            type="button"
-                            onClick={onDeleteAudio}
-                            className="p-2 bg-slate-100 text-slate-500 rounded-lg hover:bg-red-50 hover:text-red-600 transition-colors"
-                            title="Delete Recording"
-                        >
-                            <span className="text-lg">🗑️</span>
-                        </button>
-                    </>
-                )}
-            </div>
-            {error && <p className="text-xs text-red-600 mt-2">{error}</p>}
-        </div>
-    );
-};
-
-const SettingsModal = ({ isOpen, onClose, settings, onSave }: SettingsModalProps): React.ReactElement | null => {
+const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImportBackup }: SettingsModalProps): React.ReactElement | null => {
   const [localSettings, setLocalSettings] = useState<UserSettings>(settings);
   const [isPreviewLoading, setIsPreviewLoading] = useState(false);
   const [isPreviewPlaying, setIsPreviewPlaying] = useState(false);
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [ttsSupported, setTtsSupported] = useState(true);
+  const [dataMessage, setDataMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const importFileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setLocalSettings(settings);
@@ -205,6 +102,76 @@ const SettingsModal = ({ isOpen, onClose, settings, onSave }: SettingsModalProps
         () => setIsPreviewPlaying(false),
         (message) => alert(message)
       );
+  };
+
+  // --- Export / Import / Backup handlers ---
+  // NOTE: these always operate on the currently SAVED settings/categories
+  // (props), not the in-progress `localSettings` edits, so a backup taken
+  // mid-edit doesn't accidentally include unsaved/discarded changes.
+
+  const showDataMessage = (type: 'success' | 'error', text: string) => {
+    setDataMessage({ type, text });
+    window.setTimeout(() => setDataMessage(null), 5000);
+  };
+
+  const handleExportDownload = () => {
+    try {
+      const filename = exportBackupToFile(settings, categories);
+      showDataMessage('success', `Backup downloaded as "${filename}". Move it into any cloud-synced folder (Google Drive, Dropbox, iCloud) to back it up online.`);
+    } catch (e) {
+      showDataMessage('error', 'Could not export backup. Please try again.');
+    }
+  };
+
+  const handleBackupChooseLocation = async () => {
+    try {
+      const result = await saveBackupWithPicker(settings, categories);
+      if (result.saved) {
+        showDataMessage('success', `Backup saved as "${result.filename}".`);
+      }
+    } catch (e) {
+      showDataMessage('error', 'Could not save backup to the chosen location.');
+    }
+  };
+
+  const handleBackupShare = async () => {
+    try {
+      const shared = await shareBackup(settings, categories);
+      if (shared) {
+        showDataMessage('success', 'Backup shared successfully.');
+      }
+    } catch (e) {
+      showDataMessage('error', 'Sharing failed. Try "Download Backup File" instead.');
+    }
+  };
+
+  const handleImportClick = () => {
+    importFileInputRef.current?.click();
+  };
+
+  const handleImportFileSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = ''; // allow re-selecting the same file later
+    if (!file) return;
+
+    try {
+      const backup = await parseBackupFile(file);
+      const confirmed = confirm(
+        'Importing this backup will REPLACE your current settings, personal info, recordings, and categories on this device. This cannot be undone. Continue?'
+      );
+      if (!confirmed) return;
+
+      onImportBackup(backup.settings, backup.categories);
+      setLocalSettings(backup.settings);
+      showDataMessage('success', 'Backup imported successfully! Your data has been restored.');
+    } catch (err) {
+      if (err instanceof BackupValidationError) {
+        showDataMessage('error', err.message);
+      } else {
+        console.error('Import failed', err);
+        showDataMessage('error', 'Failed to import backup file. Please make sure it is a valid Vox Libera backup.');
+      }
+    }
   };
 
   return (
@@ -502,31 +469,98 @@ const SettingsModal = ({ isOpen, onClose, settings, onSave }: SettingsModalProps
                 </div>
             </div>
             
-            {/* Saved Memos (Audio) */}
+            {/* Saved Spoken Recordings (summary + link to dedicated page) */}
+            <div className="space-y-3">
+                <h3 className="text-lg font-semibold text-slate-800 border-b pb-2">Saved Spoken Recordings</h3>
+                <p className="text-sm text-slate-500">
+                    Record personal audio messages (your own voice, or a loved one's) for quick playback.
+                    You get 5 starter slots and can add unlimited more.
+                </p>
+                <div className="flex items-center justify-between bg-violet-50 border border-violet-100 rounded-lg p-4">
+                    <div>
+                        <p className="font-semibold text-violet-900">
+                            {(localSettings.recordings || []).filter(r => r.audioData).length} of {(localSettings.recordings || []).length} recorded
+                        </p>
+                        <p className="text-xs text-violet-700 mt-0.5">Manage recordings from their own category page for easy access.</p>
+                    </div>
+                    <span className="text-3xl">💾</span>
+                </div>
+                <p className="text-xs text-slate-500">
+                    💡 Tap the <strong>Saved Spoken Recordings</strong> category on the main screen to record, play, rename, or add new voice clips.
+                </p>
+            </div>
+
+            {/* Data Management: Export / Import / Backup */}
             <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-slate-800 border-b pb-2">Saved Spoken Memos</h3>
-                <p className="text-sm text-slate-500">Record audio messages for quick access.</p>
-                
-                <AudioRecorderControl
-                    label="Memo 1"
-                    existingAudio={localSettings.memo1Audio}
-                    onSaveAudio={(base64) => setLocalSettings(prev => ({ ...prev, memo1Audio: base64 }))}
-                    onDeleteAudio={() => setLocalSettings(prev => ({ ...prev, memo1Audio: undefined }))}
-                />
+                <h3 className="text-lg font-semibold text-slate-800 border-b pb-2">Data Management</h3>
+                <p className="text-sm text-slate-500">
+                    Your personal info, recordings, and custom categories are stored only on this device.
+                    Export a backup to move to a new device, or back it up somewhere safe.
+                </p>
 
-                <AudioRecorderControl
-                    label="Memo 2"
-                    existingAudio={localSettings.memo2Audio}
-                    onSaveAudio={(base64) => setLocalSettings(prev => ({ ...prev, memo2Audio: base64 }))}
-                    onDeleteAudio={() => setLocalSettings(prev => ({ ...prev, memo2Audio: undefined }))}
-                />
+                {dataMessage && (
+                    <div className={`text-sm rounded-lg p-3 border ${dataMessage.type === 'success' ? 'bg-green-50 border-green-200 text-green-800' : 'bg-red-50 border-red-200 text-red-800'}`}>
+                        {dataMessage.text}
+                    </div>
+                )}
 
-                <AudioRecorderControl
-                    label="Important"
-                    existingAudio={localSettings.importantMemoAudio}
-                    onSaveAudio={(base64) => setLocalSettings(prev => ({ ...prev, importantMemoAudio: base64 }))}
-                    onDeleteAudio={() => setLocalSettings(prev => ({ ...prev, importantMemoAudio: undefined }))}
-                />
+                {/* Export */}
+                <div className="border border-slate-200 rounded-lg p-4 space-y-3">
+                    <p className="text-sm font-semibold text-slate-700">📤 Export Data</p>
+                    <div className="flex flex-wrap gap-2">
+                        <button
+                            type="button"
+                            onClick={handleExportDownload}
+                            className="flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors text-sm font-semibold"
+                        >
+                            ⬇️ Download Backup File
+                        </button>
+                        <button
+                            type="button"
+                            onClick={handleBackupChooseLocation}
+                            className="flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors text-sm font-semibold"
+                            title="Choose exactly where to save (works with cloud-synced folders like Google Drive/OneDrive on desktop browsers)"
+                        >
+                            📁 Save to Folder / Cloud Drive
+                        </button>
+                        {canShareBackup() && (
+                            <button
+                                type="button"
+                                onClick={handleBackupShare}
+                                className="flex items-center gap-2 px-4 py-2 bg-emerald-100 text-emerald-700 rounded-lg hover:bg-emerald-200 transition-colors text-sm font-semibold"
+                                title="Share directly to Google Drive, Dropbox, Email, etc."
+                            >
+                                📲 Share / Send to Cloud App
+                            </button>
+                        )}
+                    </div>
+                    <p className="text-xs text-slate-500">
+                        "Save to Folder / Cloud Drive" lets you pick a folder synced by Google Drive, OneDrive, iCloud Drive, or Dropbox's desktop app (where supported by your browser).
+                        "Share" opens your device's native share sheet on mobile.
+                    </p>
+                </div>
+
+                {/* Import */}
+                <div className="border border-slate-200 rounded-lg p-4 space-y-3">
+                    <p className="text-sm font-semibold text-slate-700">📥 Import Data</p>
+                    <input
+                        ref={importFileInputRef}
+                        type="file"
+                        accept="application/json,.json"
+                        onChange={handleImportFileSelected}
+                        className="hidden"
+                    />
+                    <button
+                        type="button"
+                        onClick={handleImportClick}
+                        className="flex items-center gap-2 px-4 py-2 bg-amber-100 text-amber-800 rounded-lg hover:bg-amber-200 transition-colors text-sm font-semibold"
+                    >
+                        📂 Choose Backup File to Restore
+                    </button>
+                    <p className="text-xs text-red-600">
+                        ⚠️ Importing will overwrite all current settings, personal info, recordings, and categories on this device.
+                    </p>
+                </div>
             </div>
 
             {/* Appearance Section */}

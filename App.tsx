@@ -1,16 +1,24 @@
 
 import React, { useState, useCallback, useEffect } from 'react';
-import { Category, Word, UserSettings, Language, LANGUAGES } from './types';
+import { Category, Word, UserSettings, Language, LANGUAGES, Recording } from './types';
 import { CATEGORIES as DEFAULT_CATEGORIES } from './data/words';
 import { UI_LABELS, CATEGORY_TRANSLATIONS } from './data/translations';
 import SentenceBar from './components/SentenceBar';
 import CategoryGrid from './components/CategoryGrid';
 import WordGrid from './components/WordGrid';
+import RecordingsPage from './components/RecordingsPage';
 import SettingsModal from './components/SettingsModal';
 import FullScreenDisplay from './components/FullScreenDisplay';
 import AboutModal from './components/AboutModal';
 import VirtualKeyboard from './components/VirtualKeyboard';
 import AddItemModal from './components/AddItemModal';
+import InstallInstructionsModal from './components/InstallInstructionsModal';
+import { createDefaultRecordings, generateId, migrateLegacyRecordings } from './utils/recordingsUtils';
+
+// Icon used to identify the built-in "Saved Spoken Memos" category across
+// all languages (names get translated, icons stay constant) so we can route
+// it to the dedicated RecordingsPage instead of the generic WordGrid.
+const RECORDINGS_CATEGORY_ICON = '💾';
 
 const DEFAULT_SETTINGS: UserSettings = {
   language: 'en',
@@ -24,9 +32,7 @@ const DEFAULT_SETTINGS: UserSettings = {
   emergencyContact: '',
   disabilityInfo: '',
   caregiver: '',
-  memo1: '',
-  memo2: '',
-  importantMemo: '',
+  recordings: createDefaultRecordings(),
   systemVoiceURI: '',
   voicePitch: 1.0,
   voiceRate: 1.0,
@@ -55,6 +61,8 @@ const App = (): React.ReactElement => {
   // PWA Install State
   const [installPrompt, setInstallPrompt] = useState<any>(null);
   const [isIOS, setIsIOS] = useState(false);
+  const [isStandalone, setIsStandalone] = useState(false);
+  const [isInstallInstructionsOpen, setIsInstallInstructionsOpen] = useState(false);
   
   // Initialize keyboard based on screen size (hide on mobile by default)
   const [isVirtualKeyboardOpen, setIsVirtualKeyboardOpen] = useState<boolean>(() => {
@@ -74,7 +82,12 @@ const App = (): React.ReactElement => {
     const savedSettings = localStorage.getItem('aac_app_settings');
     if (savedSettings) {
       try {
-        setUserSettings({ ...DEFAULT_SETTINGS, ...JSON.parse(savedSettings) });
+        const parsed = JSON.parse(savedSettings);
+        // Migrate settings saved by older versions of the app (fixed
+        // memo1Audio/memo2Audio/importantMemoAudio fields) into the new
+        // dynamic `recordings` array. Safe no-op if already migrated.
+        const recordings = migrateLegacyRecordings(parsed);
+        setUserSettings({ ...DEFAULT_SETTINGS, ...parsed, recordings });
       } catch (e) {
         console.error('Failed to parse settings', e);
       }
@@ -92,6 +105,19 @@ const App = (): React.ReactElement => {
     // Check for iOS to provide specific instructions
     const userAgent = window.navigator.userAgent.toLowerCase();
     setIsIOS(/iphone|ipad|ipod/.test(userAgent));
+
+    // Detect if the app is already running installed (standalone display mode)
+    // so we can hide the install button entirely once it's no longer useful.
+    const standaloneQuery = window.matchMedia('(display-mode: standalone)');
+    const updateStandalone = () => {
+      setIsStandalone(standaloneQuery.matches || (window.navigator as any).standalone === true);
+    };
+    updateStandalone();
+    standaloneQuery.addEventListener?.('change', updateStandalone);
+
+    return () => {
+      standaloneQuery.removeEventListener?.('change', updateStandalone);
+    };
   }, []);
 
   // Listen for fullscreen changes to update state
@@ -110,27 +136,32 @@ const App = (): React.ReactElement => {
       setInstallPrompt(e);
     };
 
+    const handleAppInstalled = () => {
+      setInstallPrompt(null);
+      setIsStandalone(true);
+    };
+
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener('appinstalled', handleAppInstalled);
 
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('appinstalled', handleAppInstalled);
     };
   }, []);
 
   const handleInstallClick = async () => {
     if (installPrompt) {
+        // Native browser install prompt is available (Chrome, Edge, Android).
         installPrompt.prompt();
         const { outcome } = await installPrompt.userChoice;
         if (outcome === 'accepted') {
             setInstallPrompt(null);
         }
     } else {
-        // Manual Instructions
-        if (isIOS) {
-            alert("To install this app on iOS: Tap the Share button (rectangle with arrow up) and then select 'Add to Home Screen'.");
-        } else {
-            alert("To install this app: Tap the browser menu (three dots) and select 'Install App' or 'Add to Home Screen'.");
-        }
+        // No native prompt available (iOS Safari, Firefox, etc.) - show
+        // step-by-step manual instructions in a proper modal instead of alert().
+        setIsInstallInstructionsOpen(true);
     }
   };
 
@@ -240,16 +271,10 @@ const App = (): React.ReactElement => {
              return updatedWord;
         });
 
-        // Handle Saved Spoken Memos (Audio)
-        if (baseCat.name === 'Saved Spoken Memos' || (templateCat && templateCat.name === 'Saved Spoken Memos')) {
-             updatedWords = updatedWords.map(word => {
-                // Use simplified checks for memos as labels might be translated
-                if (word.icon === '📝' && (word.label.includes('1') || word.label.endsWith('1'))) return { ...word, audioRecording: userSettings.memo1Audio };
-                if (word.icon === '📝' && (word.label.includes('2') || word.label.endsWith('2'))) return { ...word, audioRecording: userSettings.memo2Audio };
-                if (word.icon === '⭐') return { ...word, audioRecording: userSettings.importantMemoAudio };
-                return word;
-            });
-        }
+        // Note: the built-in "Saved Spoken Memos" category (icon 💾) no longer
+        // injects audio into its word list here - it's now rendered by the
+        // dedicated <RecordingsPage> which reads directly from
+        // userSettings.recordings, supporting unlimited custom recordings.
 
         return { ...baseCat, name: displayCatName, words: updatedWords };
       });
@@ -260,6 +285,63 @@ const App = (): React.ReactElement => {
     setUserSettings(newSettings);
     localStorage.setItem('aac_app_settings', JSON.stringify(newSettings));
   }, []);
+
+  // Restores both settings (profile info, voice, recordings, appearance) and
+  // custom categories/words from a previously exported backup JSON file.
+  // Used by Settings > Import Data.
+  const handleImportBackup = useCallback((importedSettings: UserSettings, importedCategories: Category[]) => {
+    const mergedSettings = { ...DEFAULT_SETTINGS, ...importedSettings };
+    setUserSettings(mergedSettings);
+    localStorage.setItem('aac_app_settings', JSON.stringify(mergedSettings));
+
+    setCategories(importedCategories);
+    localStorage.setItem('aac_user_categories', JSON.stringify(importedCategories));
+  }, []);
+
+  // --- Recordings Management (dedicated Recordings page) ---
+  // All recordings live in userSettings.recordings and persist through the
+  // same localStorage-backed settings save path as everything else, so
+  // Export/Import/Backup automatically include them for free.
+
+  const updateRecordings = useCallback((updater: (prev: Recording[]) => Recording[]) => {
+    setUserSettings(prev => {
+      const updated = { ...prev, recordings: updater(prev.recordings || []) };
+      localStorage.setItem('aac_app_settings', JSON.stringify(updated));
+      return updated;
+    });
+  }, []);
+
+  const handlePlayRecording = useCallback((recording: Recording) => {
+    if (!recording.audioData) return;
+    const audio = new Audio(recording.audioData);
+    setIsPlaying(true);
+    audio.play()
+      .then(() => { audio.onended = () => setIsPlaying(false); })
+      .catch(e => {
+        console.error('Failed to play recording', e);
+        setIsPlaying(false);
+      });
+  }, []);
+
+  const handleSaveRecordingAudio = useCallback((id: string, audioData: string) => {
+    updateRecordings(prev => prev.map(r => (r.id === id ? { ...r, audioData } : r)));
+  }, [updateRecordings]);
+
+  const handleDeleteRecordingAudio = useCallback((id: string) => {
+    updateRecordings(prev => prev.map(r => (r.id === id ? { ...r, audioData: undefined } : r)));
+  }, [updateRecordings]);
+
+  const handleAddRecording = useCallback((label: string, icon: string) => {
+    updateRecordings(prev => [...prev, { id: generateId(), label, icon, isDefault: false, createdAt: Date.now() }]);
+  }, [updateRecordings]);
+
+  const handleRenameRecording = useCallback((id: string, label: string) => {
+    updateRecordings(prev => prev.map(r => (r.id === id ? { ...r, label } : r)));
+  }, [updateRecordings]);
+
+  const handleDeleteRecording = useCallback((id: string) => {
+    updateRecordings(prev => prev.filter(r => r.id !== id));
+  }, [updateRecordings]);
 
   // History Management
   const handleUndo = useCallback(() => {
@@ -481,6 +563,7 @@ const App = (): React.ReactElement => {
   }, [userSettings.lockSettings, userSettings.pinCode]);
 
   const activeCategory = categories.find(c => c.name === currentCategoryName);
+  const isRecordingsCategory = activeCategory?.icon === RECORDINGS_CATEGORY_ICON;
   // Padding adjusted for the now-shorter header
   const mainPaddingClass = "pt-64 sm:pt-72 pb-2 sm:pb-4"; 
 
@@ -510,6 +593,8 @@ const App = (): React.ReactElement => {
           labels={currentUILabels}
           isInCategory={!!activeCategory}
           onGoBack={handleGoBack}
+          showInstallButton={!isStandalone}
+          onInstallClick={handleInstallClick}
         />
       </header>
 
@@ -520,7 +605,20 @@ const App = (): React.ReactElement => {
                 <p>{error}</p>
             </div>
         )}
-        {activeCategory ? (
+        {activeCategory && isRecordingsCategory ? (
+          <RecordingsPage
+            recordings={userSettings.recordings || []}
+            onGoBack={handleGoBack}
+            onPlay={handlePlayRecording}
+            onSaveRecording={handleSaveRecordingAudio}
+            onDeleteAudio={handleDeleteRecordingAudio}
+            onAddRecording={handleAddRecording}
+            onRenameRecording={handleRenameRecording}
+            onDeleteRecording={handleDeleteRecording}
+            customColor={userSettings.customWordColor}
+            darkMode={userSettings.darkMode}
+          />
+        ) : activeCategory ? (
           <WordGrid
             category={activeCategory}
             onWordClick={handleWordClick}
@@ -564,21 +662,27 @@ const App = (): React.ReactElement => {
              © 2025 Jeffrey McConnell
         </a>
 
-        <span className="text-slate-300">|</span>
-        
-        <button 
-            onClick={handleInstallClick} 
-            className="hover:underline focus:outline-none font-semibold text-blue-600"
-        >
-            Install App
-        </button>
+        {!isStandalone && (
+          <>
+            <span className="text-slate-300">|</span>
+
+            <button
+                onClick={handleInstallClick}
+                className="hover:underline focus:outline-none font-semibold text-blue-600"
+            >
+                Install App
+            </button>
+          </>
+        )}
       </footer>
 
       <SettingsModal 
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
         settings={userSettings}
+        categories={categories}
         onSave={handleSaveSettings}
+        onImportBackup={handleImportBackup}
       />
 
       <FullScreenDisplay 
@@ -601,6 +705,12 @@ const App = (): React.ReactElement => {
         onClose={() => setIsAddItemModalOpen(false)}
         onSave={handleSaveNewItem}
         type={addItemType}
+      />
+
+      <InstallInstructionsModal
+        isOpen={isInstallInstructionsOpen}
+        onClose={() => setIsInstallInstructionsOpen(false)}
+        platform={isIOS ? 'ios' : 'other'}
       />
     </div>
   );

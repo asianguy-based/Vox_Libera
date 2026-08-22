@@ -1,0 +1,30 @@
+{
+  "short_name": "Vox Libera",
+  "name": "Vox Libera: AAC Speech Assistant",
+  "description": "A free, open-source, offline-capable AAC (Augmentative and Alternative Communication) speech assistant.",
+  "icons": [
+    {
+      "src": "/assets/icons/favicon-32x32.png",
+      "type": "image/png",
+      "sizes": "32x32"
+    },
+    {
+      "src": "/assets/icons/android-chrome-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/icons/android-chrome-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#0f172a",
+  "background_color": "#f8fafc"
+}

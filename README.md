@@ -14,6 +14,17 @@ At this time, it is in beta mode and there may be some issues. If there is an is
 
 I am one person trying to do what I can. Having a daughter with Cerebral Palsy, I know how these AAC apps are. One has features that another has but it costs a lot of money or vice versa and it is often hard to chose. Why not design something that is useful for EVERYONE!
 
+## Open Source
+
+Vox Libera is free and open-source software, licensed under the [MIT License](./LICENSE). You are welcome to use, modify, and redistribute this app for your own needs — including forking it to build a version tailored to a specific individual or community. Text-to-speech runs entirely on your device's built-in voices (no API keys, no per-use costs, works offline), so anyone can self-host or run this app at zero ongoing cost.
+
+### Running it yourself
+```bash
+npm install
+npm run dev      # local development server
+npm run build    # production build (outputs to dist/)
+```
+
 If you can, please show your support and check out another project of mine:
 
 <a href="http://www.bulletpointlegal.info"><img width="1216" height="231" alt="Bullet Point Legal Logo" src="https://github.com/user-attachments/assets/11adf159-f12a-4401-96a3-7aec71d1cd2e"/> </a>

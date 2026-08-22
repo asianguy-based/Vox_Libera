@@ -21,6 +21,8 @@ interface SentenceBarProps {
   labels?: any;
   isInCategory: boolean;
   onGoBack: () => void;
+  showInstallButton?: boolean;
+  onInstallClick?: () => void;
 }
 
 const SentenceBar = ({
@@ -42,7 +44,9 @@ const SentenceBar = ({
   isVirtualKeyboardOpen,
   labels,
   isInCategory,
-  onGoBack
+  onGoBack,
+  showInstallButton,
+  onInstallClick
 }: SentenceBarProps): React.ReactElement => {
   const inputRef = useRef<HTMLInputElement>(null);
   const canPerformActions = sentence.length > 0;
@@ -88,6 +92,7 @@ const SentenceBar = ({
   const attentionBtnClass = `px-4 rounded-lg font-bold text-sm transition-colors flex items-center justify-center gap-2 shadow-sm bg-[#FDF6B2] text-yellow-800 hover:bg-[#FCE96A] h-12 whitespace-nowrap`;
   const fullScreenBtnClass = `px-4 rounded-lg font-bold text-sm transition-colors flex items-center justify-center gap-2 shadow-sm bg-[#E1EFFE] text-blue-800 hover:bg-[#C3DDFD] h-12 whitespace-nowrap`;
   const settingsBtnClass = `${btnBase} min-w-[3rem] bg-slate-700 text-slate-300 hover:bg-slate-600`;
+  const installBtnClass = `px-4 rounded-lg font-bold text-sm transition-colors flex items-center justify-center gap-2 shadow-sm bg-[#D1FAE5] text-emerald-800 hover:bg-[#A7F3D0] h-12 whitespace-nowrap animate-pulse`;
 
   return (
     <div className={`fixed top-0 left-0 right-0 shadow-lg z-10 transition-colors duration-300 ${bgClass} p-2`}>
@@ -96,11 +101,11 @@ const SentenceBar = ({
         {/* Branding Row - Reduced height to fix layout */}
         <div className="flex items-center justify-center">
             <img 
-                src="https://raw.githubusercontent.com/asianguy-based/Vox_Libera/2d9433bd851ae85957d8f96a0290ab638a379d82/logo.png" 
+                src="/assets/logo.png" 
                 alt="Vox Libera - Every Voice, Set Free!" 
                 className="h-24 object-contain"
-                width="500"
-                height="300"
+                width="1726"
+                height="339"
             />
         </div>
 
@@ -169,6 +174,13 @@ const SentenceBar = ({
 
             {/* Right Group: Utilities */}
             <div className="flex gap-2 items-center shrink-0">
+                 {showInstallButton && (
+                    <button onClick={onInstallClick} className={installBtnClass} title="Install this app on your device">
+                        <span className="text-xl">⬇️</span>
+                        <span className="hidden sm:inline">Install App</span>
+                    </button>
+                 )}
+
                  <button onClick={onAttentionClick} className={attentionBtnClass}>
                     <span className="text-xl">🔔</span>
                     <span className="hidden sm:inline">{labels?.attention || "Attention"}</span>

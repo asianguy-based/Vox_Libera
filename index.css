@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+/* Global app styles that were previously inline / relied on the Tailwind
+   CDN script's default behavior. Kept minimal and self-contained so the app
+   works fully offline without any external stylesheet or font requests.
+   (The Google Fonts link previously in index.html - Noto Color Emoji /
+   Dancing Script - was removed as neither font is actually referenced by
+   any component; browsers already render emoji with their native color
+   emoji font, so no fallback is needed.) */
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Utility used by SentenceBar's horizontally-scrolling action row */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
