@@ -92,7 +92,12 @@ const SentenceBar = ({
   const attentionBtnClass = `px-4 rounded-lg font-bold text-sm transition-colors flex items-center justify-center gap-2 shadow-sm bg-[#FDF6B2] text-yellow-800 hover:bg-[#FCE96A] h-12 whitespace-nowrap`;
   const fullScreenBtnClass = `px-4 rounded-lg font-bold text-sm transition-colors flex items-center justify-center gap-2 shadow-sm bg-[#E1EFFE] text-blue-800 hover:bg-[#C3DDFD] h-12 whitespace-nowrap`;
   const settingsBtnClass = `${btnBase} min-w-[3rem] bg-slate-700 text-slate-300 hover:bg-slate-600`;
-  const installBtnClass = `px-4 rounded-lg font-bold text-sm transition-colors flex items-center justify-center gap-2 shadow-sm bg-[#D1FAE5] text-emerald-800 hover:bg-[#A7F3D0] h-12 whitespace-nowrap animate-pulse`;
+  // Note: intentionally NOT using Tailwind's animate-pulse here. That utility
+  // cycles opacity (including the text), which both fails WCAG contrast
+  // checks when sampled mid-cycle and is genuinely harder to read for users
+  // with low vision - a bad tradeoff just to draw attention to an install
+  // button. The color + shadow are already enough to stand out.
+  const installBtnClass = `px-4 rounded-lg font-bold text-sm transition-colors flex items-center justify-center gap-2 shadow-sm bg-[#D1FAE5] text-emerald-800 hover:bg-[#A7F3D0] h-12 whitespace-nowrap`;
 
   return (
     <div className={`fixed top-0 left-0 right-0 shadow-lg z-10 transition-colors duration-300 ${bgClass} p-2`}>

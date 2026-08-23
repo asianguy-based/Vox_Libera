@@ -87,7 +87,7 @@ const VirtualKeyboard = ({ onKeyPress, darkMode }: VirtualKeyboardProps): React.
               // Adjust width and style for special keys
               if (key === 'SPACE') {
                 widthClass = 'flex-[4] max-w-md';
-                displayKey = ''; // Spacebar usually empty or "space"
+                displayKey = ''; // Visually empty, like a real keyboard spacebar
               } else if (key === 'BACKSPACE') {
                 widthClass = 'flex-[1.5]';
                 displayKey = '⌫';
@@ -99,9 +99,32 @@ const VirtualKeyboard = ({ onKeyPress, darkMode }: VirtualKeyboardProps): React.
                 if (key === 'SHIFT') displayKey = isUpperCase ? '⬆' : '⇧';
               }
 
+              // Provide an accessible name for every key so screen readers
+              // never announce a bare "button" - this matters most for keys
+              // like SPACE that are intentionally rendered with no visible
+              // glyph (a real keyboard's spacebar is blank too).
+              //
+              // WCAG 2.5.3 (Label in Name) requires the accessible name to
+              // start with the visible text label, not replace it - so for
+              // keys that DO show text (e.g. "?123", "ABC"), the aria-label
+              // begins with that exact visible string followed by a plain-
+              // English description, rather than substituting a different
+              // phrase entirely.
+              const ariaLabelMap: Record<string, string> = {
+                SPACE: 'Space',
+                BACKSPACE: 'Backspace, delete previous character',
+                SHIFT: isUpperCase ? 'Shift, currently uppercase' : 'Shift, currently lowercase',
+                '?123': '?123, switch to numbers and symbols',
+                'ABC': 'ABC, switch to letters',
+                '#+=': '#+=, switch to symbols',
+                '123': '123, switch to numbers',
+              };
+              const ariaLabel = ariaLabelMap[key] || `Letter ${displayKey}`;
+
               return (
                 <button
                   key={key}
+                  aria-label={ariaLabel}
                   onMouseDown={(e) => e.preventDefault()} // Prevent focus loss from input
                   onClick={() => handleInternalKeyPress(key)}
                   className={`${keyStyle} ${widthClass}`}

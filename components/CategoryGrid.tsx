@@ -73,7 +73,10 @@ const CategoryGrid = ({ categories, onCategoryClick, customColor, onAddCategory,
         {!isReordering && (
             <button
             onClick={onAddCategory}
-            className="flex flex-col items-center justify-center p-2 aspect-auto min-h-[6rem] h-full rounded-xl border-2 border-dashed border-slate-300 text-slate-400 hover:text-blue-500 hover:border-blue-500 hover:bg-blue-50 transition-all duration-200"
+            // text-slate-500 (not -400) in the resting state: -400 only hits
+            // a 2.56:1 contrast ratio against a white background, below the
+            // WCAG AA minimum of 4.5:1 for normal text.
+            className="flex flex-col items-center justify-center p-2 aspect-auto min-h-[6rem] h-full rounded-xl border-2 border-dashed border-slate-300 text-slate-500 hover:text-blue-600 hover:border-blue-500 hover:bg-blue-50 transition-all duration-200"
             >
             <span className="text-3xl mb-1 opacity-50">➕</span>
             <span className="text-xs font-semibold text-center">{labels?.addCategory || "Add Category"}</span>

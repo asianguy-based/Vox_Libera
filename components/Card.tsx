@@ -8,13 +8,39 @@ interface CardProps {
   color: string;
 }
 
+// Determine whether white or near-black text yields sufficient WCAG contrast
+// (>= 4.5:1) against a given background color. CSS text-shadow is NOT
+// recognized by contrast-checking tools (axe/Lighthouse) or by real users
+// with low vision, so we can't rely on it - the text color itself must have
+// adequate contrast against the solid background color.
+const getAccessibleTextColor = (bgColor: string): string => {
+  const hex = bgColor.replace('#', '');
+  if (hex.length !== 6) return '#ffffff';
+  const r = parseInt(hex.substring(0, 2), 16) / 255;
+  const g = parseInt(hex.substring(2, 4), 16) / 255;
+  const b = parseInt(hex.substring(4, 6), 16) / 255;
+  // Relative luminance (WCAG formula)
+  const toLinear = (c: number) => (c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
+  const luminance = 0.2126 * toLinear(r) + 0.7152 * toLinear(g) + 0.0722 * toLinear(b);
+  // Contrast ratio of luminance L against white (1.0) and black (0.0):
+  const contrastWithWhite = (1.05) / (luminance + 0.05);
+  const contrastWithBlack = (luminance + 0.05) / 0.05;
+  // Prefer white text unless black text gives meaningfully better contrast
+  // and white fails the 4.5:1 minimum.
+  return contrastWithWhite >= 4.5 || contrastWithWhite >= contrastWithBlack ? '#ffffff' : '#0f172a';
+};
+
 const Card: React.FC<CardProps> = ({ label, icon, onClick, color }) => {
+  const textColor = getAccessibleTextColor(color);
+  const isDarkText = textColor === '#0f172a';
   const cardStyle = {
     backgroundColor: color,
     '--tw-ring-color': color,
-    color: 'white',
-    textShadow: '0 1px 2px rgba(0,0,0,0.3)',
-    borderColor: 'rgba(255, 255, 255, 0.2)',
+    color: textColor,
+    // Shadow direction flips for dark-on-light text so it still reads as a
+    // subtle depth cue rather than muddying contrast further.
+    textShadow: isDarkText ? '0 1px 1px rgba(255,255,255,0.5)' : '0 1px 2px rgba(0,0,0,0.3)',
+    borderColor: isDarkText ? 'rgba(0, 0, 0, 0.15)' : 'rgba(255, 255, 255, 0.2)',
     borderWidth: '1px',
   } as React.CSSProperties;
 

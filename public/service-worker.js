@@ -1,13 +1,32 @@
 // Vox Libera Service Worker
-// Goal: TRUE offline access. Once a user has loaded the app once, it should
-// keep working with no network connection at all - including the app shell,
-// the compiled JS/CSS bundle, the manifest, and all icon/logo images.
+// Goal: TRUE offline access - including on a user's very FIRST visit. Once
+// the app has loaded once, it must keep working with no network connection
+// at all: the app shell, the compiled JS/CSS bundle, the manifest, and all
+// icon/logo images.
+//
+// IMPORTANT LESSON LEARNED (bug fixed in v5): a service worker never
+// controls the network requests made by the page load that registers it -
+// only requests from the *next* navigation onward are intercepted (this is
+// part of the Service Worker spec, not a bug in our fetch handler). Because
+// Vite content-hashes the built JS/CSS filenames on every build
+// (e.g. index-Cjnxpcwy.js), those filenames are NOT known ahead of time and
+// could not previously be listed in CORE_ASSETS - so on a brand-new
+// install, the hashed bundle was only ever cached reactively by the fetch
+// handler, which never got a chance to run for that very first load. Result:
+// installing the app and then immediately going offline (before a second
+// page view) produced a blank white screen.
+//
+// FIX: the install handler now fetches index.html itself, parses out the
+// actual hashed <script>/<link rel="stylesheet"> asset URLs it references,
+// and precaches those explicitly alongside the static core assets - all
+// within the install step, before the service worker ever activates. This
+// guarantees the full app shell (including the current build's JS/CSS) is
+// cached before the very first offline scenario can occur.
 //
 // Strategy:
 //  - App shell + hashed build assets (JS/CSS/images under /assets/):
-//    cache-first, since Vite fingerprints these filenames on every build,
-//    so a cached copy is always safe to reuse and a new deploy naturally
-//    gets new filenames (cache-busting is automatic).
+//    cache-first, since a cached copy is always safe to reuse and a new
+//    deploy naturally gets new filenames (cache-busting is automatic).
 //  - Navigation requests (the SPA's index.html): network-first with a
 //    cache fallback, so users get the latest shell when online but the app
 //    still boots normally when fully offline.
@@ -15,16 +34,18 @@
 //
 // Bump CACHE_VERSION whenever you want to force old caches to be cleared on
 // next activate (e.g. after significant asset changes).
-const CACHE_VERSION = 'v4';
+const CACHE_VERSION = 'v5';
 const CACHE_NAME = `vox-libera-cache-${CACHE_VERSION}`;
 
-// Core app-shell files that must always be available offline, even before
-// the browser has a chance to discover the hashed build assets by request.
+// Core app-shell files that must always be available offline. Hashed build
+// assets (JS/CSS) are discovered dynamically at install time (see below)
+// since their filenames change on every build.
 const CORE_ASSETS = [
   './',
   './index.html',
   './manifest.json',
   './favicon.ico',
+  './robots.txt',
   './assets/logo.png',
   './assets/icons/favicon-16x16.png',
   './assets/icons/favicon-32x32.png',
@@ -33,17 +54,48 @@ const CORE_ASSETS = [
   './assets/icons/android-chrome-512x512.png',
 ];
 
+// Fetches index.html and extracts the hashed build asset URLs it
+// references (script src + stylesheet href), so we can precache the exact
+// JS/CSS bundle this build produced - without hardcoding filenames that
+// change on every build.
+async function discoverBuildAssetUrls() {
+  try {
+    const response = await fetch('./index.html', { cache: 'no-store' });
+    const html = await response.text();
+    const urls = new Set();
+    // <script ... src="/assets/index-XXXX.js" ...>
+    const scriptRe = /<script[^>]+src=["']([^"']+)["']/g;
+    // <link ... rel="stylesheet" ... href="/assets/index-XXXX.css" ...>
+    const linkRe = /<link[^>]+href=["']([^"']+)["'][^>]*>/g;
+    let match;
+    while ((match = scriptRe.exec(html))) urls.add(match[1]);
+    while ((match = linkRe.exec(html))) {
+      // Only cache stylesheet/module-preload links, not e.g. the manifest
+      // (which is already in CORE_ASSETS) or external icon links.
+      const tag = html.slice(Math.max(0, match.index - 20), match.index + match[0].length);
+      if (/rel=["'](stylesheet|modulepreload)["']/.test(tag)) urls.add(match[1]);
+    }
+    return Array.from(urls);
+  } catch (err) {
+    console.warn('[SW] Failed to discover build assets from index.html', err);
+    return [];
+  }
+}
+
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
+    (async () => {
+      const cache = await caches.open(CACHE_NAME);
+      const buildAssetUrls = await discoverBuildAssetUrls();
+      const allAssets = [...CORE_ASSETS, ...buildAssetUrls];
       // Use individual add() calls with catch so a single missing file
       // (e.g. during local dev) doesn't fail the entire install step.
-      return Promise.all(
-        CORE_ASSETS.map((url) =>
+      await Promise.all(
+        allAssets.map((url) =>
           cache.add(url).catch((err) => console.warn('[SW] Failed to precache', url, err))
         )
       );
-    })
+    })()
   );
   self.skipWaiting();
 });
