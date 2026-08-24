@@ -12,4 +12,10 @@
 // will misbehave (either never firing, or firing on every load).
 //
 // Use plain semantic-ish versioning: MAJOR.MINOR.PATCH (e.g. "1.2.0").
-export const APP_VERSION = '1.1.0';
+//
+// Versioning policy: bump the PATCH digit (rightmost) for normal,
+// incremental changes - new small features, fixes, content/copy updates,
+// etc. Only bump MINOR for a meaningfully larger feature set shipped
+// together, and MAJOR for a complete overhaul/redesign. Most day-to-day
+// commits should just be a patch bump (e.g. 1.1.0 -> 1.1.1 -> 1.1.2).
+export const APP_VERSION = '1.1.1';

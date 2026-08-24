@@ -1,4 +1,4 @@
 {
-  "version": "1.1.0",
-  "notes": "Dark Mode now applies everywhere (Settings, About, Add Item, Full Screen). Voice Selection dropdown loads more reliably on slower devices/browsers. Added the Feature Guide and automatic update checking."
+  "version": "1.1.1",
+  "notes": "Added an in-app Press & Media Kit (About page) with a downloadable one-page flyer PDF, plus consistent brand copy for outreach."
 }
