@@ -1,0 +1,24 @@
+# Cloudflare Pages header rules.
+# https://developers.cloudflare.com/pages/configuration/headers/
+#
+# Goal: hashed build assets (which get a brand-new filename on every build,
+# e.g. index-abc123.js) can be cached forever, but service-worker.js and
+# manifest.json must always be re-checked so PWA updates roll out promptly
+# instead of getting stuck behind a stale edge/browser cache.
+
+# The service worker script itself: never let the CDN or browser cache it.
+# The browser already re-checks this file on every navigation per spec, but
+# an aggressively-cached edge copy would defeat that and delay updates for
+# all users behind this PoP.
+/service-worker.js
+  Cache-Control: no-cache
+
+# The manifest can change (icons, name, theme) without a new deploy hash,
+# so keep it short-lived rather than immutable.
+/manifest.json
+  Cache-Control: public, max-age=3600
+
+# Hashed, content-fingerprinted build output - safe to cache forever since
+# any change produces a new filename automatically.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
