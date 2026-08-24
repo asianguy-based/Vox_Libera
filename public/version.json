@@ -1,4 +1,4 @@
 {
-  "version": "1.1.1",
-  "notes": "Added an in-app Press & Media Kit (About page) with a downloadable one-page flyer PDF, plus consistent brand copy for outreach."
+  "version": "1.1.2",
+  "notes": "Fixed the press-kit flyer PDF spilling onto a stray second page - now a clean single page with the fine-print line at the bottom."
 }
