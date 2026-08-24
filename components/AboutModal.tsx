@@ -1,5 +1,7 @@
 
-import React from 'react';
+import React, { useState } from 'react';
+import FeatureGuideModal from './FeatureGuideModal';
+import FeedbackModal from './FeedbackModal';
 
 interface AboutModalProps {
   isOpen: boolean;
@@ -7,6 +9,9 @@ interface AboutModalProps {
 }
 
 const AboutModal = ({ isOpen, onClose }: AboutModalProps): React.ReactElement | null => {
+  const [isFeatureGuideOpen, setIsFeatureGuideOpen] = useState(false);
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
+
   if (!isOpen) return null;
 
   return (
@@ -18,42 +23,83 @@ const AboutModal = ({ isOpen, onClose }: AboutModalProps): React.ReactElement | 
             <span className="text-2xl">❌</span>
           </button>
         </div>
-        
+
         <div className="overflow-y-auto p-6 space-y-6 text-slate-700 dark:text-slate-300">
+          {/* Purpose */}
           <section>
-            <h3 className="text-lg font-semibold text-slate-900 mb-2 dark:text-slate-100">Purpose</h3>
-            <p className="leading-relaxed">
-              Vox Libera is an Augmentative and Alternative Communication application designed to give a voice to individuals who have difficulty speaking. Whether due to aphasia, autism, stroke, vocal cord damage, or other conditions, this app helps users communicate their needs, thoughts, and feelings effectively.
+            <h3 className="text-lg font-semibold text-slate-900 mb-2 dark:text-slate-100">🎯 Purpose</h3>
+            <p className="text-sm leading-relaxed">
+              Vox Libera is a free, open-source Augmentative and Alternative Communication (AAC) app designed to give a voice to individuals who have difficulty speaking &mdash; whether due to aphasia, autism, stroke, vocal cord damage, or other conditions.
             </p>
           </section>
 
+          {/* Key Features */}
           <section>
-            <h3 className="text-lg font-semibold text-slate-900 mb-2 dark:text-slate-100">Key Features</h3>
-            <ul className="list-disc list-inside space-y-1 ml-1">
-              <li><span className="font-medium">Visual Communication:</span> Uses intuitive icons and categories to build sentences quickly without typing.</li>
-              <li><span className="font-medium">Text-to-Speech:</span> Instantly converts selected words or typed text into speech using your device's built-in voices &mdash; free, private, and works offline.</li>
-              <li><span className="font-medium">Customization:</span> Personalized settings for voice selection, user profile, and text input.</li>
-              <li><span className="font-medium">Accessibility Tools:</span> Includes a Full Screen mode for visual clarity and an Attention sound to alert others.</li>
+            <h3 className="text-lg font-semibold text-slate-900 mb-2 dark:text-slate-100">✨ Key Features</h3>
+            <ul className="list-disc list-inside space-y-1 ml-1 text-sm">
+              <li><span className="font-medium">Visual Communication:</span> Intuitive icons and categories to build sentences quickly without typing.</li>
+              <li><span className="font-medium">Text-to-Speech:</span> Converts words or typed text into speech using your device's built-in voices &mdash; free, private, and works offline.</li>
+              <li><span className="font-medium">Customization:</span> Personalized voice, profile, and appearance settings.</li>
+              <li><span className="font-medium">Accessibility Tools:</span> Full Screen mode for visual clarity and an Attention sound to alert others.</li>
             </ul>
           </section>
 
+          {/* Help & Feedback */}
           <section>
-            <h3 className="text-lg font-semibold text-slate-900 mb-2 dark:text-slate-100">Resources</h3>
-            <p className="mb-2 text-sm">Useful links for AAC support and information:</p>
-            <ul className="list-none space-y-2 text-sm">
+            <h3 className="text-lg font-semibold text-slate-900 mb-3 dark:text-slate-100">🙋 Help &amp; Feedback</h3>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between gap-3 p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/40">
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-slate-800 dark:text-slate-100">📖 Feature Guide</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                    A quick slide-by-slide walkthrough of everything Vox Libera can do.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsFeatureGuideOpen(true)}
+                  className="shrink-0 px-3 py-1.5 rounded-lg bg-indigo-100 text-indigo-700 hover:bg-indigo-200 dark:bg-indigo-900/40 dark:text-indigo-300 dark:hover:bg-indigo-900/60 text-xs font-semibold transition-colors"
+                >
+                  View Guide
+                </button>
+              </div>
+
+              <div className="flex items-center justify-between gap-3 p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/40">
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-slate-800 dark:text-slate-100">💬 Questions, Comments &amp; Feedback</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                    Found a bug, have a suggestion, or just want to say hi? We'd love to hear from you.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsFeedbackOpen(true)}
+                  className="shrink-0 px-3 py-1.5 rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 dark:bg-blue-900/40 dark:text-blue-300 dark:hover:bg-blue-900/60 text-xs font-semibold transition-colors"
+                >
+                  Send Feedback
+                </button>
+              </div>
+            </div>
+          </section>
+
+          {/* Resources */}
+          <section>
+            <h3 className="text-lg font-semibold text-slate-900 mb-2 dark:text-slate-100">🔗 Resources</h3>
+            <p className="mb-2 text-xs text-slate-500 dark:text-slate-400">Useful links for AAC support and information:</p>
+            <ul className="list-none space-y-1.5 text-sm">
               <li>
-                <a href="https://www.asha.org/public/speech/disorders/aac/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center gap-2">
-                  <span>•</span> ASHA - AAC Information
+                <a href="https://www.asha.org/public/speech/disorders/aac/" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-2">
+                  <span>•</span> ASHA &mdash; AAC Information
                 </a>
               </li>
               <li>
-                 <a href="https://isaac-online.org/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center gap-2">
+                 <a href="https://isaac-online.org/" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-2">
                   <span>•</span> ISAAC (International Society for AAC)
                 </a>
               </li>
               <li>
-                 <a href="https://www.autismspeaks.org/technology-and-autism" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center gap-2">
-                  <span>•</span> Autism Speaks - Technology
+                 <a href="https://www.autismspeaks.org/technology-and-autism" target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-2">
+                  <span>•</span> Autism Speaks &mdash; Technology
                 </a>
               </li>
             </ul>
@@ -80,6 +126,16 @@ const AboutModal = ({ isOpen, onClose }: AboutModalProps): React.ReactElement | 
             </button>
         </div>
       </div>
+
+      <FeatureGuideModal
+        isOpen={isFeatureGuideOpen}
+        onClose={() => setIsFeatureGuideOpen(false)}
+      />
+
+      <FeedbackModal
+        isOpen={isFeedbackOpen}
+        onClose={() => setIsFeedbackOpen(false)}
+      />
     </div>
   );
 };
