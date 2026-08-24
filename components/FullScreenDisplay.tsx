@@ -52,13 +52,13 @@ const FullScreenDisplay = ({ text, isOpen, onClose, onSpeak, isPlaying, isLoadin
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-white flex flex-col justify-between p-6 sm:p-12">
+    <div className="fixed inset-0 z-50 bg-white dark:bg-slate-900 flex flex-col justify-between p-6 sm:p-12">
       {/* Top Actions */}
       <div className="flex justify-between items-start mb-4">
         <div className="flex gap-2">
              <button
                 onClick={() => setIsFlipped(!isFlipped)}
-                className="p-4 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors"
+                className="p-4 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
                 aria-label="Flip text"
                 disabled={showPinPad}
             >
@@ -67,7 +67,7 @@ const FullScreenDisplay = ({ text, isOpen, onClose, onSpeak, isPlaying, isLoadin
             {pinCode && (
                 <button
                     onClick={() => setIsLocked(!isLocked)}
-                    className={`p-4 rounded-full transition-colors ${isLocked ? 'bg-red-100 text-red-600' : 'bg-slate-100 text-slate-500'}`}
+                    className={`p-4 rounded-full transition-colors ${isLocked ? 'bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400' : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-300'}`}
                     aria-label={isLocked ? "Unlock screen" : "Lock screen"}
                     disabled={showPinPad}
                 >
@@ -87,7 +87,7 @@ const FullScreenDisplay = ({ text, isOpen, onClose, onSpeak, isPlaying, isLoadin
 
       {/* Content */}
       <div className={`flex-grow flex items-center justify-center transition-transform duration-500 ${isFlipped ? 'rotate-180' : ''}`}>
-        <p className="text-6xl sm:text-8xl font-bold text-slate-900 text-center break-words leading-tight">
+        <p className="text-6xl sm:text-8xl font-bold text-slate-900 dark:text-slate-100 text-center break-words leading-tight">
           {text}
         </p>
       </div>
@@ -112,12 +112,12 @@ const FullScreenDisplay = ({ text, isOpen, onClose, onSpeak, isPlaying, isLoadin
 
       {/* PIN Pad Overlay */}
       {showPinPad && (
-          <div className="absolute inset-0 bg-white/90 backdrop-blur-sm flex items-center justify-center z-50">
-              <div className="bg-white p-8 rounded-2xl shadow-2xl border border-slate-200 max-w-sm w-full text-center">
-                  <h3 className="text-2xl font-bold text-slate-800 mb-6">Enter PIN to Unlock</h3>
+          <div className="absolute inset-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm flex items-center justify-center z-50">
+              <div className="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 max-w-sm w-full text-center">
+                  <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-6">Enter PIN to Unlock</h3>
                   <div className="flex justify-center gap-2 mb-8">
                       {[0, 1, 2, 3].map(i => (
-                          <div key={i} className={`w-4 h-4 rounded-full ${enteredPin.length > i ? 'bg-blue-600' : 'bg-slate-200'}`}></div>
+                          <div key={i} className={`w-4 h-4 rounded-full ${enteredPin.length > i ? 'bg-blue-600' : 'bg-slate-200 dark:bg-slate-600'}`}></div>
                       ))}
                   </div>
                   <div className="grid grid-cols-3 gap-4">
@@ -125,20 +125,20 @@ const FullScreenDisplay = ({ text, isOpen, onClose, onSpeak, isPlaying, isLoadin
                           <button 
                             key={num} 
                             onClick={() => handlePinDigit(num.toString())}
-                            className="h-16 text-2xl font-bold text-slate-700 bg-slate-100 rounded-xl hover:bg-slate-200 active:scale-95"
+                            className="h-16 text-2xl font-bold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-700 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-600 active:scale-95"
                           >
                               {num}
                           </button>
                       ))}
                       <button 
                         onClick={() => setShowPinPad(false)} 
-                        className="h-16 text-lg font-bold text-red-600 bg-red-50 rounded-xl hover:bg-red-100 active:scale-95"
+                        className="h-16 text-lg font-bold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/30 rounded-xl hover:bg-red-100 dark:hover:bg-red-900/50 active:scale-95"
                       >
                           Cancel
                       </button>
                       <button 
                         onClick={() => handlePinDigit('0')}
-                        className="h-16 text-2xl font-bold text-slate-700 bg-slate-100 rounded-xl hover:bg-slate-200 active:scale-95"
+                        className="h-16 text-2xl font-bold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-700 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-600 active:scale-95"
                       >
                           0
                       </button>

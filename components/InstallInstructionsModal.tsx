@@ -12,18 +12,18 @@ const InstallInstructionsModal = ({ isOpen, onClose, platform }: InstallInstruct
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm p-4">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col max-h-[90vh]">
-        <div className="flex justify-between items-center p-4 border-b border-slate-200 bg-slate-50">
-          <h2 className="text-xl font-bold text-slate-800">Add to Home Screen</h2>
-          <button onClick={onClose} className="text-slate-500 hover:text-slate-700 transition-colors p-1" aria-label="Close">
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col max-h-[90vh] dark:bg-slate-800">
+        <div className="flex justify-between items-center p-4 border-b border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-900">
+          <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100">Add to Home Screen</h2>
+          <button onClick={onClose} className="text-slate-500 hover:text-slate-700 transition-colors p-1 dark:text-slate-400 dark:hover:text-slate-200" aria-label="Close">
             <span className="text-2xl">❌</span>
           </button>
         </div>
 
-        <div className="overflow-y-auto p-6 space-y-4 text-slate-700">
+        <div className="overflow-y-auto p-6 space-y-4 text-slate-700 dark:text-slate-300">
           {platform === 'ios' ? (
             <>
-              <p className="text-sm text-slate-600 mb-4">
+              <p className="text-sm text-slate-600 mb-4 dark:text-slate-400">
                 Install Vox Libera on your iPhone or iPad so it opens like a regular app, works offline, and stays free forever.
               </p>
               <ol className="space-y-4">
@@ -40,13 +40,13 @@ const InstallInstructionsModal = ({ isOpen, onClose, platform }: InstallInstruct
                   <span>Tap <strong>"Add"</strong> in the top-right corner.</span>
                 </li>
               </ol>
-              <p className="text-xs text-slate-500 mt-4 bg-amber-50 border border-amber-100 rounded-lg p-3">
+              <p className="text-xs text-slate-500 mt-4 bg-amber-50 border border-amber-100 rounded-lg p-3 dark:text-slate-400">
                 ⚠️ This only works in <strong>Safari</strong>. If you're using Chrome or another browser on iOS, open this page in Safari first.
               </p>
             </>
           ) : (
             <>
-              <p className="text-sm text-slate-600 mb-4">
+              <p className="text-sm text-slate-600 mb-4 dark:text-slate-400">
                 Install Vox Libera as an app on your device so it opens like a regular app, works offline, and stays free forever.
               </p>
               <ol className="space-y-4">
@@ -63,14 +63,14 @@ const InstallInstructionsModal = ({ isOpen, onClose, platform }: InstallInstruct
                   <span>Confirm by tapping <strong>"Install"</strong> or <strong>"Add"</strong>.</span>
                 </li>
               </ol>
-              <p className="text-xs text-slate-500 mt-4">
+              <p className="text-xs text-slate-500 mt-4 dark:text-slate-400">
                 This works in Chrome, Edge, and most Android browsers. If you don't see this option, your browser may not support installing apps.
               </p>
             </>
           )}
         </div>
 
-        <div className="p-4 border-t border-slate-200 bg-slate-50 flex justify-end">
+        <div className="p-4 border-t border-slate-200 bg-slate-50 flex justify-end dark:border-slate-700 dark:bg-slate-900">
           <button
             onClick={onClose}
             className="px-6 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 font-semibold shadow-md transition-colors"

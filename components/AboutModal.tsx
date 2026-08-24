@@ -11,24 +11,24 @@ const AboutModal = ({ isOpen, onClose }: AboutModalProps): React.ReactElement | 
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm p-4">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]">
-        <div className="flex justify-between items-center p-4 border-b border-slate-200 bg-slate-50">
-          <h2 className="text-xl font-bold text-slate-800">About Vox Libera</h2>
-          <button onClick={onClose} className="text-slate-500 hover:text-slate-700 transition-colors p-1" aria-label="Close">
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh] dark:bg-slate-800">
+        <div className="flex justify-between items-center p-4 border-b border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-900">
+          <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100">About Vox Libera</h2>
+          <button onClick={onClose} className="text-slate-500 hover:text-slate-700 transition-colors p-1 dark:text-slate-400 dark:hover:text-slate-200" aria-label="Close">
             <span className="text-2xl">❌</span>
           </button>
         </div>
         
-        <div className="overflow-y-auto p-6 space-y-6 text-slate-700">
+        <div className="overflow-y-auto p-6 space-y-6 text-slate-700 dark:text-slate-300">
           <section>
-            <h3 className="text-lg font-semibold text-slate-900 mb-2">Purpose</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-2 dark:text-slate-100">Purpose</h3>
             <p className="leading-relaxed">
               Vox Libera is an Augmentative and Alternative Communication application designed to give a voice to individuals who have difficulty speaking. Whether due to aphasia, autism, stroke, vocal cord damage, or other conditions, this app helps users communicate their needs, thoughts, and feelings effectively.
             </p>
           </section>
 
           <section>
-            <h3 className="text-lg font-semibold text-slate-900 mb-2">Key Features</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-2 dark:text-slate-100">Key Features</h3>
             <ul className="list-disc list-inside space-y-1 ml-1">
               <li><span className="font-medium">Visual Communication:</span> Uses intuitive icons and categories to build sentences quickly without typing.</li>
               <li><span className="font-medium">Text-to-Speech:</span> Instantly converts selected words or typed text into speech using your device's built-in voices &mdash; free, private, and works offline.</li>
@@ -38,7 +38,7 @@ const AboutModal = ({ isOpen, onClose }: AboutModalProps): React.ReactElement | 
           </section>
 
           <section>
-            <h3 className="text-lg font-semibold text-slate-900 mb-2">Resources</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-2 dark:text-slate-100">Resources</h3>
             <p className="mb-2 text-sm">Useful links for AAC support and information:</p>
             <ul className="list-none space-y-2 text-sm">
               <li>
@@ -60,7 +60,7 @@ const AboutModal = ({ isOpen, onClose }: AboutModalProps): React.ReactElement | 
           </section>
         </div>
 
-        <div className="p-4 border-t border-slate-200 bg-slate-50 flex justify-between items-center">
+        <div className="p-4 border-t border-slate-200 bg-slate-50 flex justify-between items-center dark:border-slate-700 dark:bg-slate-900">
             <a 
               href='https://ko-fi.com/D1D61NBN42' 
               target='_blank' 

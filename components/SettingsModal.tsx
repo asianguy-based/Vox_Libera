@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { UserSettings, LANGUAGES, Language, Category } from '../types';
-import { loadVoices, speakText, isSpeechSynthesisSupported } from '../utils/speechUtils';
+import { subscribeToVoices, speakText, isSpeechSynthesisSupported } from '../utils/speechUtils';
 import {
   exportBackupToFile,
   saveBackupWithPicker,
@@ -34,10 +34,15 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
   }, [settings, isOpen]);
 
   // Load the device's installed system voices when the modal opens.
+  // Uses subscribeToVoices() (not a one-shot promise) so that if the
+  // browser is slow to populate its voice list (common on Android/embedded
+  // WebViews, sometimes 1-4s), the dropdown updates automatically once the
+  // voices do arrive instead of staying permanently empty for the session.
   useEffect(() => {
     if (!isOpen) return;
     setTtsSupported(isSpeechSynthesisSupported());
-    loadVoices().then(setAvailableVoices);
+    const unsubscribe = subscribeToVoices(setAvailableVoices);
+    return unsubscribe;
   }, [isOpen]);
 
   if (!isOpen) return null;
@@ -176,10 +181,10 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm p-4">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]">
-        <div className="flex justify-between items-center p-4 border-b border-slate-200 bg-slate-50">
-          <h2 className="text-xl font-bold text-slate-800">Settings & Customization</h2>
-          <button onClick={onClose} className="text-slate-500 hover:text-slate-700 transition-colors p-1">
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh] dark:bg-slate-800">
+        <div className="flex justify-between items-center p-4 border-b border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-900">
+          <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100">Settings & Customization</h2>
+          <button onClick={onClose} className="text-slate-500 hover:text-slate-700 transition-colors p-1 dark:text-slate-400 dark:hover:text-slate-200">
             <span className="text-2xl">❌</span>
           </button>
         </div>
@@ -205,7 +210,7 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
                         value={localSettings.pinCode}
                         onChange={handleChange}
                         placeholder="e.g. 1234"
-                        className="w-full p-3 border border-red-200 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-slate-800 bg-white tracking-widest font-mono"
+                        className="w-full p-3 border border-red-200 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-slate-800 bg-white tracking-widest font-mono dark:text-slate-100 dark:bg-slate-800"
                     />
                     <p className="text-xs text-red-600 mt-1">Used to unlock Full Screen mode and Settings.</p>
                 </div>
@@ -225,10 +230,10 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
 
             {/* Language & Voice */}
             <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-slate-800 border-b pb-2">Language & Speech</h3>
+                <h3 className="text-lg font-semibold text-slate-800 border-b pb-2 dark:text-slate-100">Language & Speech</h3>
                 
                  <div>
-                    <label htmlFor="language" className="block text-sm font-medium text-slate-700 mb-2">
+                    <label htmlFor="language" className="block text-sm font-medium text-slate-700 mb-2 dark:text-slate-300">
                     App Language
                     </label>
                     <select
@@ -236,7 +241,7 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
                         name="language"
                         value={localSettings.language}
                         onChange={handleChange}
-                        className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-slate-800"
+                        className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-slate-800 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
                     >
                         {LANGUAGES.map((lang) => (
                             <option key={lang.code} value={lang.code}>
@@ -247,7 +252,7 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
                 </div>
 
                 <div>
-                    <label htmlFor="systemVoiceURI" className="block text-sm font-medium text-slate-700 mb-2">
+                    <label htmlFor="systemVoiceURI" className="block text-sm font-medium text-slate-700 mb-2 dark:text-slate-300">
                     Voice Selection
                     </label>
                     {!ttsSupported ? (
@@ -262,7 +267,7 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
                                     name="systemVoiceURI"
                                     value={localSettings.systemVoiceURI}
                                     onChange={handleChange}
-                                    className="flex-grow p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-slate-800"
+                                    className="flex-grow p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-slate-800 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
                                 >
                                     <option value="">Device Default</option>
                                     {voicesToShow.map((voice) => (
@@ -275,7 +280,7 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
                                     type="button"
                                     onClick={handleTestVoice}
                                     disabled={isPreviewLoading || isPreviewPlaying}
-                                    className="flex items-center justify-center px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 border border-slate-300 transition-colors min-w-[5rem]"
+                                    className="flex items-center justify-center px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 border border-slate-300 transition-colors min-w-[5rem] dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600 dark:border-slate-600"
                                     title="Test Voice"
                                 >
                                     {isPreviewPlaying ? (
@@ -288,7 +293,7 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
                                     )}
                                 </button>
                             </div>
-                            <p className="text-xs text-slate-500 mt-1">
+                            <p className="text-xs text-slate-500 mt-1 dark:text-slate-400">
                                 Uses your device's built-in voices (free, works offline). Voices shown depend on your browser and OS (Chrome, Safari, Android, iOS all provide different voices).
                             </p>
                         </>
@@ -297,7 +302,7 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
 
                 <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <label htmlFor="voicePitch" className="block text-sm font-medium text-slate-700 mb-2">
+                        <label htmlFor="voicePitch" className="block text-sm font-medium text-slate-700 mb-2 dark:text-slate-300">
                             Pitch ({(localSettings.voicePitch ?? 1.0).toFixed(2)})
                         </label>
                         <input
@@ -313,7 +318,7 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
                         />
                     </div>
                     <div>
-                        <label htmlFor="voiceRate" className="block text-sm font-medium text-slate-700 mb-2">
+                        <label htmlFor="voiceRate" className="block text-sm font-medium text-slate-700 mb-2 dark:text-slate-300">
                             Speed ({(localSettings.voiceRate ?? 1.0).toFixed(2)})
                         </label>
                         <input
@@ -333,10 +338,10 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
 
             {/* User Profile */}
             <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-slate-800 border-b pb-2">Personal Information</h3>
+                <h3 className="text-lg font-semibold text-slate-800 border-b pb-2 dark:text-slate-100">Personal Information</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label htmlFor="userName" className="block text-sm font-medium text-slate-700 mb-2">Name</label>
+                        <label htmlFor="userName" className="block text-sm font-medium text-slate-700 mb-2 dark:text-slate-300">Name</label>
                         <input
                         type="text"
                         id="userName"
@@ -344,11 +349,11 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
                         value={localSettings.userName}
                         onChange={handleChange}
                         placeholder="Jamie"
-                        className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-800 bg-white"
+                        className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-800 bg-white dark:border-slate-600 dark:text-slate-100 dark:bg-slate-800"
                         />
                     </div>
                      <div>
-                        <label htmlFor="age" className="block text-sm font-medium text-slate-700 mb-2">Age</label>
+                        <label htmlFor="age" className="block text-sm font-medium text-slate-700 mb-2 dark:text-slate-300">Age</label>
                         <input
                         type="text"
                         id="age"
@@ -356,13 +361,13 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
                         value={localSettings.age}
                         onChange={handleChange}
                         placeholder="25"
-                        className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-800 bg-white"
+                        className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-800 bg-white dark:border-slate-600 dark:text-slate-100 dark:bg-slate-800"
                         />
                     </div>
                 </div>
                 
                  <div>
-                    <label htmlFor="address" className="block text-sm font-medium text-slate-700 mb-2">I live at</label>
+                    <label htmlFor="address" className="block text-sm font-medium text-slate-700 mb-2 dark:text-slate-300">I live at</label>
                     <input
                     type="text"
                     id="address"
@@ -370,13 +375,13 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
                     value={localSettings.address}
                     onChange={handleChange}
                     placeholder="123 Main St..."
-                    className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-800 bg-white"
+                    className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-800 bg-white dark:border-slate-600 dark:text-slate-100 dark:bg-slate-800"
                     />
                 </div>
 
                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                      <div>
-                        <label htmlFor="phone" className="block text-sm font-medium text-slate-700 mb-2">Phone Number</label>
+                        <label htmlFor="phone" className="block text-sm font-medium text-slate-700 mb-2 dark:text-slate-300">Phone Number</label>
                         <input
                         type="text"
                         id="phone"
@@ -384,11 +389,11 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
                         value={localSettings.phone}
                         onChange={handleChange}
                         placeholder="555-0199"
-                        className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-800 bg-white"
+                        className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-800 bg-white dark:border-slate-600 dark:text-slate-100 dark:bg-slate-800"
                         />
                     </div>
                     <div>
-                        <label htmlFor="birthday" className="block text-sm font-medium text-slate-700 mb-2">Birthday</label>
+                        <label htmlFor="birthday" className="block text-sm font-medium text-slate-700 mb-2 dark:text-slate-300">Birthday</label>
                         <input
                         type="text"
                         id="birthday"
@@ -396,13 +401,13 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
                         value={localSettings.birthday}
                         onChange={handleChange}
                         placeholder="January 1st"
-                        className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-800 bg-white"
+                        className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-800 bg-white dark:border-slate-600 dark:text-slate-100 dark:bg-slate-800"
                         />
                     </div>
                  </div>
 
                 <div>
-                    <label htmlFor="allergies" className="block text-sm font-medium text-slate-700 mb-2">Allergies</label>
+                    <label htmlFor="allergies" className="block text-sm font-medium text-slate-700 mb-2 dark:text-slate-300">Allergies</label>
                     <input
                     type="text"
                     id="allergies"
@@ -410,12 +415,12 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
                     value={localSettings.allergies}
                     onChange={handleChange}
                     placeholder="Peanuts, Dairy..."
-                    className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-800 bg-white"
+                    className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-800 bg-white dark:border-slate-600 dark:text-slate-100 dark:bg-slate-800"
                     />
                 </div>
 
                 <div>
-                    <label htmlFor="disabilityInfo" className="block text-sm font-medium text-slate-700 mb-2">Disability Description</label>
+                    <label htmlFor="disabilityInfo" className="block text-sm font-medium text-slate-700 mb-2 dark:text-slate-300">Disability Description</label>
                     <input
                     type="text"
                     id="disabilityInfo"
@@ -423,12 +428,12 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
                     value={localSettings.disabilityInfo}
                     onChange={handleChange}
                     placeholder="My disability is called..."
-                    className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-800 bg-white"
+                    className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-800 bg-white dark:border-slate-600 dark:text-slate-100 dark:bg-slate-800"
                     />
                 </div>
 
                  <div>
-                    <label htmlFor="emergencyContact" className="block text-sm font-medium text-slate-700 mb-2">Emergency Contact</label>
+                    <label htmlFor="emergencyContact" className="block text-sm font-medium text-slate-700 mb-2 dark:text-slate-300">Emergency Contact</label>
                     <textarea
                     id="emergencyContact"
                     name="emergencyContact"
@@ -436,12 +441,12 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
                     value={localSettings.emergencyContact}
                     onChange={handleChange}
                     placeholder="Mom: 555-1234"
-                    className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-800 bg-white resize-none"
+                    className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-800 bg-white resize-none dark:border-slate-600 dark:text-slate-100 dark:bg-slate-800"
                     />
                 </div>
                 
                  <div>
-                    <label htmlFor="caregiver" className="block text-sm font-medium text-slate-700 mb-2">Caregiver Info</label>
+                    <label htmlFor="caregiver" className="block text-sm font-medium text-slate-700 mb-2 dark:text-slate-300">Caregiver Info</label>
                     <textarea
                     id="caregiver"
                     name="caregiver"
@@ -449,12 +454,12 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
                     value={localSettings.caregiver}
                     onChange={handleChange}
                     placeholder="Name and Number"
-                    className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-800 bg-white resize-none"
+                    className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-800 bg-white resize-none dark:border-slate-600 dark:text-slate-100 dark:bg-slate-800"
                     />
                 </div>
 
                 <div>
-                    <label htmlFor="userInfo" className="block text-sm font-medium text-slate-700 mb-2">
+                    <label htmlFor="userInfo" className="block text-sm font-medium text-slate-700 mb-2 dark:text-slate-300">
                     Other Info / Bio
                     </label>
                     <textarea
@@ -464,15 +469,15 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
                     value={localSettings.userInfo}
                     onChange={handleChange}
                     placeholder="Additional details..."
-                    className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-800 resize-none bg-white"
+                    className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-800 resize-none bg-white dark:border-slate-600 dark:text-slate-100 dark:bg-slate-800"
                     />
                 </div>
             </div>
             
             {/* Saved Spoken Recordings (summary + link to dedicated page) */}
             <div className="space-y-3">
-                <h3 className="text-lg font-semibold text-slate-800 border-b pb-2">Saved Spoken Recordings</h3>
-                <p className="text-sm text-slate-500">
+                <h3 className="text-lg font-semibold text-slate-800 border-b pb-2 dark:text-slate-100">Saved Spoken Recordings</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400">
                     Record personal audio messages (your own voice, or a loved one's) for quick playback.
                     You get 5 starter slots and can add unlimited more.
                 </p>
@@ -485,15 +490,15 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
                     </div>
                     <span className="text-3xl">💾</span>
                 </div>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-slate-500 dark:text-slate-400">
                     💡 Tap the <strong>Saved Spoken Recordings</strong> category on the main screen to record, play, rename, or add new voice clips.
                 </p>
             </div>
 
             {/* Data Management: Export / Import / Backup */}
             <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-slate-800 border-b pb-2">Data Management</h3>
-                <p className="text-sm text-slate-500">
+                <h3 className="text-lg font-semibold text-slate-800 border-b pb-2 dark:text-slate-100">Data Management</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400">
                     Your personal info, recordings, and custom categories are stored only on this device.
                     Export a backup to move to a new device, or back it up somewhere safe.
                 </p>
@@ -505,8 +510,8 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
                 )}
 
                 {/* Export */}
-                <div className="border border-slate-200 rounded-lg p-4 space-y-3">
-                    <p className="text-sm font-semibold text-slate-700">📤 Export Data</p>
+                <div className="border border-slate-200 rounded-lg p-4 space-y-3 dark:border-slate-700">
+                    <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">📤 Export Data</p>
                     <div className="flex flex-wrap gap-2">
                         <button
                             type="button"
@@ -518,7 +523,7 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
                         <button
                             type="button"
                             onClick={handleBackupChooseLocation}
-                            className="flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors text-sm font-semibold"
+                            className="flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors text-sm font-semibold dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
                             title="Choose exactly where to save (works with cloud-synced folders like Google Drive/OneDrive on desktop browsers)"
                         >
                             📁 Save to Folder / Cloud Drive
@@ -534,15 +539,15 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
                             </button>
                         )}
                     </div>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-slate-500 dark:text-slate-400">
                         "Save to Folder / Cloud Drive" lets you pick a folder synced by Google Drive, OneDrive, iCloud Drive, or Dropbox's desktop app (where supported by your browser).
                         "Share" opens your device's native share sheet on mobile.
                     </p>
                 </div>
 
                 {/* Import */}
-                <div className="border border-slate-200 rounded-lg p-4 space-y-3">
-                    <p className="text-sm font-semibold text-slate-700">📥 Import Data</p>
+                <div className="border border-slate-200 rounded-lg p-4 space-y-3 dark:border-slate-700">
+                    <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">📥 Import Data</p>
                     <input
                         ref={importFileInputRef}
                         type="file"
@@ -565,11 +570,11 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
 
             {/* Appearance Section */}
              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-slate-800 border-b pb-2">Appearance</h3>
+                <h3 className="text-lg font-semibold text-slate-800 border-b pb-2 dark:text-slate-100">Appearance</h3>
                 
                 {/* Dark Mode */}
                 <div className="flex items-center justify-between">
-                  <label htmlFor="darkMode" className="text-sm font-medium text-slate-700">Dark Mode</label>
+                  <label htmlFor="darkMode" className="text-sm font-medium text-slate-700 dark:text-slate-300">Dark Mode</label>
                   <input
                     type="checkbox"
                     id="darkMode"
@@ -582,7 +587,7 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
 
                 {/* Category Card Color */}
                  <div>
-                    <label htmlFor="customCategoryColor" className="block text-sm font-medium text-slate-700 mb-2">
+                    <label htmlFor="customCategoryColor" className="block text-sm font-medium text-slate-700 mb-2 dark:text-slate-300">
                         Category Card Color
                     </label>
                     <div className="flex gap-2 items-center">
@@ -592,22 +597,22 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
                             name="customCategoryColor"
                             value={localSettings.customCategoryColor || '#3b82f6'} // Default blue if empty
                             onChange={handleChange}
-                            className="h-10 w-20 p-1 rounded border border-slate-300 cursor-pointer bg-white"
+                            className="h-10 w-20 p-1 rounded border border-slate-300 cursor-pointer bg-white dark:border-slate-600 dark:bg-slate-800"
                         />
                         <button 
                             type="button" 
                             onClick={() => setLocalSettings(prev => ({ ...prev, customCategoryColor: '' }))}
-                            className="text-sm text-slate-500 hover:text-red-500 underline"
+                            className="text-sm text-slate-500 hover:text-red-500 underline dark:text-slate-400"
                         >
                             Reset to Default
                         </button>
                     </div>
-                    <p className="text-xs text-slate-500 mt-1">Overrides the default colors for all category buttons.</p>
+                    <p className="text-xs text-slate-500 mt-1 dark:text-slate-400">Overrides the default colors for all category buttons.</p>
                 </div>
 
                 {/* Word Card Color */}
                  <div>
-                    <label htmlFor="customWordColor" className="block text-sm font-medium text-slate-700 mb-2">
+                    <label htmlFor="customWordColor" className="block text-sm font-medium text-slate-700 mb-2 dark:text-slate-300">
                         Word Card Color
                     </label>
                     <div className="flex gap-2 items-center">
@@ -617,24 +622,24 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
                             name="customWordColor"
                             value={localSettings.customWordColor || '#16a34a'} // Default green if empty
                             onChange={handleChange}
-                            className="h-10 w-20 p-1 rounded border border-slate-300 cursor-pointer bg-white"
+                            className="h-10 w-20 p-1 rounded border border-slate-300 cursor-pointer bg-white dark:border-slate-600 dark:bg-slate-800"
                         />
                          <button 
                             type="button" 
                             onClick={() => setLocalSettings(prev => ({ ...prev, customWordColor: '' }))}
-                            className="text-sm text-slate-500 hover:text-red-500 underline"
+                            className="text-sm text-slate-500 hover:text-red-500 underline dark:text-slate-400"
                         >
                             Reset to Default
                         </button>
                     </div>
-                     <p className="text-xs text-slate-500 mt-1">Overrides the default colors for all word buttons.</p>
+                     <p className="text-xs text-slate-500 mt-1 dark:text-slate-400">Overrides the default colors for all word buttons.</p>
                 </div>
             </div>
 
             </form>
         </div>
 
-        <div className="p-4 border-t border-slate-200 bg-slate-50 flex justify-between items-center">
+        <div className="p-4 border-t border-slate-200 bg-slate-50 flex justify-between items-center dark:border-slate-700 dark:bg-slate-900">
             <a 
               href='https://ko-fi.com/D1D61NBN42' 
               target='_blank' 
@@ -650,7 +655,7 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
                 <button
                   type="button"
                   onClick={onClose}
-                  className="px-4 py-2 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 font-semibold transition-colors"
+                  className="px-4 py-2 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 font-semibold transition-colors dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700"
                 >
                   Cancel
                 </button>

@@ -570,7 +570,7 @@ const App = (): React.ReactElement => {
   const currentUILabels = UI_LABELS[userSettings.language] || UI_LABELS['en'];
 
   return (
-    <div className={`h-screen flex flex-col transition-colors duration-300 overflow-hidden ${userSettings.darkMode ? 'bg-slate-900 text-slate-100' : 'bg-slate-50 text-slate-800'}`}>
+    <div className={`${userSettings.darkMode ? 'dark' : ''} h-screen flex flex-col transition-colors duration-300 overflow-hidden ${userSettings.darkMode ? 'bg-slate-900 text-slate-100' : 'bg-slate-50 text-slate-800'}`}>
       
       <header>
         <SentenceBar
@@ -648,7 +648,7 @@ const App = (): React.ReactElement => {
          </div>
       )}
 
-      <footer className={`text-center p-4 text-xs transition-colors duration-300 flex flex-row items-center justify-center gap-2 sm:gap-4 ${userSettings.darkMode ? 'text-slate-500' : 'text-slate-500'} ${isVirtualKeyboardOpen ? 'mb-64' : ''}`}>
+      <footer className={`text-center p-4 text-xs transition-colors duration-300 flex flex-row items-center justify-center gap-2 sm:gap-4 text-slate-500 dark:text-slate-400 ${isVirtualKeyboardOpen ? 'mb-64' : ''}`}>
         <button 
             onClick={() => setIsAboutOpen(true)} 
             className="hover:underline focus:outline-none font-semibold"

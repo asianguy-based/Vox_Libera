@@ -95,7 +95,7 @@ const RecordingsPage = ({
                     onChange={(e) => setRenameValue(e.target.value)}
                     onBlur={() => submitRename(rec.id)}
                     onKeyDown={(e) => e.key === 'Enter' && submitRename(rec.id)}
-                    className="w-full p-1.5 rounded border border-blue-400 text-slate-800 text-sm"
+                    className="w-full p-1.5 rounded border border-blue-400 text-slate-800 dark:text-slate-100 dark:bg-slate-900 text-sm"
                   />
                 ) : (
                   <button
@@ -124,7 +124,7 @@ const RecordingsPage = ({
                   onClick={() => {
                     if (confirm(`Delete "${rec.label}"? This cannot be undone.`)) onDeleteRecording(rec.id);
                   }}
-                  className="p-1.5 rounded-lg text-red-500 hover:bg-red-50 hover:text-red-700 transition-colors"
+                  className="p-1.5 rounded-lg text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-700 dark:hover:text-red-400 transition-colors"
                   title="Delete this recording slot"
                 >
                   <span className="text-lg">🗑️</span>
@@ -154,7 +154,7 @@ const RecordingsPage = ({
                 <button
                   key={ic}
                   onClick={() => setNewIcon(ic)}
-                  className={`text-2xl p-2 rounded-lg transition-all ${newIcon === ic ? 'bg-blue-100 ring-2 ring-blue-500' : 'hover:bg-slate-100'}`}
+                  className={`text-2xl p-2 rounded-lg transition-all ${newIcon === ic ? 'bg-blue-100 dark:bg-blue-900/40 ring-2 ring-blue-500' : 'hover:bg-slate-100 dark:hover:bg-slate-700'}`}
                 >
                   {ic}
                 </button>
@@ -166,10 +166,10 @@ const RecordingsPage = ({
               onChange={(e) => setNewLabel(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleAddSubmit()}
               placeholder="Label, e.g. Mom's Voice"
-              className="w-full p-3 border border-slate-300 rounded-lg text-slate-800 bg-white"
+              className="w-full p-3 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-800 dark:text-slate-100 bg-white dark:bg-slate-800"
             />
             <div className="flex gap-2 justify-end">
-              <button onClick={() => setIsAdding(false)} className="px-4 py-2 rounded-lg border border-slate-300 text-sm font-semibold">
+              <button onClick={() => setIsAdding(false)} className="px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 text-sm font-semibold">
                 Cancel
               </button>
               <button
@@ -184,7 +184,7 @@ const RecordingsPage = ({
         ) : (
           <button
             onClick={() => setIsAdding(true)}
-            className="w-full flex items-center justify-center gap-2 p-4 rounded-xl border-2 border-dashed border-slate-300 text-slate-400 hover:text-blue-500 hover:border-blue-500 hover:bg-blue-50 transition-all duration-200"
+            className="w-full flex items-center justify-center gap-2 p-4 rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-600 text-slate-400 dark:text-slate-500 hover:text-blue-500 hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-slate-800 transition-all duration-200"
           >
             <span className="text-2xl opacity-70">➕</span>
             <span className="text-sm font-semibold">Add Another Recording</span>

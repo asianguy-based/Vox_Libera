@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+/* Enable class-based dark mode (Tailwind v4 defaults dark: to the OS-level
+   prefers-color-scheme media query, which ignores our in-app Dark Mode
+   toggle). This makes `dark:` utility classes activate whenever a `.dark`
+   class is present on an ancestor element (App.tsx toggles it on the root
+   div based on userSettings.darkMode), so the setting works consistently
+   regardless of the user's OS/browser theme. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* Global app styles that were previously inline / relied on the Tailwind
    CDN script's default behavior. Kept minimal and self-contained so the app
    works fully offline without any external stylesheet or font requests.

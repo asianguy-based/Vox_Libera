@@ -42,7 +42,7 @@ const CategoryGrid = ({ categories, onCategoryClick, customColor, onAddCategory,
          <h1 className="text-xl font-bold text-current opacity-90">{labels?.selectCategory || "Select a Category"}</h1>
          <button 
            onClick={() => setIsReordering(!isReordering)}
-           className={`px-2 py-0.5 text-xs font-semibold rounded-full border transition-all ${isReordering ? 'bg-blue-600 text-white border-blue-600 shadow-md' : 'bg-transparent text-slate-500 border-slate-300 hover:border-blue-400 hover:text-blue-600'}`}
+           className={`px-2 py-0.5 text-xs font-semibold rounded-full border transition-all ${isReordering ? 'bg-blue-600 text-white border-blue-600 shadow-md' : 'bg-transparent text-slate-500 dark:text-slate-400 border-slate-300 dark:border-slate-600 hover:border-blue-400 hover:text-blue-600'}`}
          >
            {isReordering ? (labels?.done || 'Done') : (labels?.rearrange || 'Rearrange')}
          </button>
@@ -76,7 +76,7 @@ const CategoryGrid = ({ categories, onCategoryClick, customColor, onAddCategory,
             // text-slate-500 (not -400) in the resting state: -400 only hits
             // a 2.56:1 contrast ratio against a white background, below the
             // WCAG AA minimum of 4.5:1 for normal text.
-            className="flex flex-col items-center justify-center p-2 aspect-auto min-h-[6rem] h-full rounded-xl border-2 border-dashed border-slate-300 text-slate-500 hover:text-blue-600 hover:border-blue-500 hover:bg-blue-50 transition-all duration-200"
+            className="flex flex-col items-center justify-center p-2 aspect-auto min-h-[6rem] h-full rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400 hover:text-blue-600 hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-slate-800 transition-all duration-200"
             >
             <span className="text-3xl mb-1 opacity-50">➕</span>
             <span className="text-xs font-semibold text-center">{labels?.addCategory || "Add Category"}</span>

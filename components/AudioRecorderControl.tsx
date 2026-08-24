@@ -69,14 +69,14 @@ const AudioRecorderControl = ({
   };
 
   return (
-    <div className={compact ? '' : 'border p-4 rounded-lg bg-white shadow-sm'}>
-      {!compact && <label className="block text-sm font-medium text-slate-700 mb-2">{label}</label>}
+    <div className={compact ? '' : 'border border-slate-200 dark:border-slate-700 p-4 rounded-lg bg-white dark:bg-slate-800 shadow-sm'}>
+      {!compact && <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">{label}</label>}
       <div className="flex items-center gap-3 flex-wrap">
         {!isRecording && !existingAudio && (
           <button
             type="button"
             onClick={handleStartRecording}
-            className="flex items-center gap-2 px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/60 transition-colors"
           >
             <div className="w-3 h-3 bg-red-600 rounded-full"></div>
             Record
@@ -87,7 +87,7 @@ const AudioRecorderControl = ({
           <button
             type="button"
             onClick={handleStopRecording}
-            className="flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors animate-pulse border border-slate-300"
+            className="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors animate-pulse border border-slate-300 dark:border-slate-600"
           >
             <div className="w-3 h-3 bg-slate-800 rounded-sm"></div>
             Stop Recording
@@ -100,7 +100,7 @@ const AudioRecorderControl = ({
               type="button"
               onClick={handlePlay}
               disabled={isPlaying}
-              className="flex items-center gap-2 px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 px-4 py-2 bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400 rounded-lg hover:bg-green-200 dark:hover:bg-green-900/60 transition-colors disabled:opacity-50"
             >
               {isPlaying ? <span className="text-lg">▶️</span> : <span className="text-lg">🔊</span>}
               {isPlaying ? 'Playing...' : 'Play Recording'}
@@ -108,7 +108,7 @@ const AudioRecorderControl = ({
             <button
               type="button"
               onClick={handleStartRecording}
-              className="flex items-center gap-2 px-3 py-2 bg-amber-50 text-amber-700 rounded-lg hover:bg-amber-100 transition-colors"
+              className="flex items-center gap-2 px-3 py-2 bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 rounded-lg hover:bg-amber-100 dark:hover:bg-amber-900/50 transition-colors"
               title="Re-record (replaces current audio)"
             >
               <span className="text-lg">🎙️</span>
@@ -117,7 +117,7 @@ const AudioRecorderControl = ({
             <button
               type="button"
               onClick={onDeleteAudio}
-              className="p-2 bg-slate-100 text-slate-500 rounded-lg hover:bg-red-50 hover:text-red-600 transition-colors"
+              className="p-2 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-300 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-600 dark:hover:text-red-400 transition-colors"
               title="Delete Recording"
             >
               <span className="text-lg">🗑️</span>
