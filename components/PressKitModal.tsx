@@ -17,10 +17,10 @@ interface PressKitModalProps {
 const CONTACT_EMAIL = 'jeffrey.i.mcconnell@gmail.com';
 
 const ELEVATOR_PITCH =
-  "Vox Libera is a free, open-source AAC (Augmentative and Alternative Communication) app that gives a voice to anyone who has difficulty speaking — whether from aphasia, autism, stroke, or another condition. It's 100% free forever, works offline, and requires no account, no ads, and no API keys.";
+  "Vox Libera is a free AAC (Augmentative and Alternative Communication) app that gives a voice to anyone who has difficulty speaking — whether from aphasia, autism, stroke, or another condition. It's 100% free forever, works offline, and requires no account, no ads, and no API keys.";
 
 const ABOUT_BLURB =
-  "Vox Libera is a free, open-source AAC (Augmentative and Alternative Communication) web app built for anyone who has difficulty speaking — due to aphasia, autism, cerebral palsy, ALS, stroke, or any other condition. Users build sentences from customizable word and picture cards and have them spoken aloud instantly, using their device's own built-in text-to-speech voices — completely free, private, and fully functional offline. There's no cost, no account sign-up, no ads, and no API keys required; it installs like a normal app on phones, tablets, and computers with zero app-store fees.";
+  "Vox Libera is a free AAC (Augmentative and Alternative Communication) web app built for anyone who has difficulty speaking — due to aphasia, autism, cerebral palsy, ALS, stroke, or any other condition. Users build sentences from customizable word and picture cards and have them spoken aloud instantly, using their device's own built-in text-to-speech voices — completely free, private, and fully functional offline. There's no cost, no account sign-up, no ads, and no API keys required; it installs like a normal app on phones, tablets, and computers with zero app-store fees.";
 
 const CopyableBlock = ({
   label,
@@ -79,8 +79,9 @@ const PressKitModal = ({ isOpen, onClose }: PressKitModalProps): React.ReactElem
         <div className="overflow-y-auto p-6 space-y-5 text-slate-700 dark:text-slate-300">
           <p className="text-sm leading-relaxed">
             Everything you need to write about, review, or share Vox Libera &mdash;
-            ready to copy/paste, no permission needed. Vox Libera is free and
-            open-source (MIT License), so feel free to reuse any of this.
+            ready to copy/paste, no permission needed. Vox Libera is free,
+            source-available software (non-commercial, attribution required),
+            so feel free to reuse any of this with credit to the creator.
           </p>
 
           <CopyableBlock label="Elevator Pitch" text={ELEVATOR_PITCH} />
@@ -148,7 +149,7 @@ const PressKitModal = ({ isOpen, onClose }: PressKitModalProps): React.ReactElem
               <li><span className="font-medium">Category:</span> AAC (Augmentative and Alternative Communication)</li>
               <li><span className="font-medium">Price:</span> Free, forever &mdash; no accounts, no ads, no API keys</li>
               <li><span className="font-medium">Platform:</span> Web app (installable, works offline, no app-store fees)</li>
-              <li><span className="font-medium">License:</span> Open-source, MIT License</li>
+              <li><span className="font-medium">License:</span> Free &amp; source-available &mdash; non-commercial, attribution required</li>
               <li>
                 <span className="font-medium">Source code:</span>{' '}
                 <a

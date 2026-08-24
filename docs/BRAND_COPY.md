@@ -11,16 +11,16 @@ then propagate changes to the places listed under "Used in" below.
 
 **Short (1 sentence, for character-limited bios like X/Twitter/Instagram):**
 
-> Vox Libera is a free, open-source AAC app that gives anyone who has
-> difficulty speaking a voice — no cost, no accounts, no ads, ever.
+> Vox Libera is a free AAC app that gives anyone who has difficulty
+> speaking a voice — no cost, no accounts, no ads, ever.
 
 **Standard (2 sentences, for LinkedIn/Facebook bios, email signatures, intros):**
 
-> Vox Libera is a free, open-source AAC (Augmentative and Alternative
-> Communication) app that gives a voice to anyone who has difficulty
-> speaking — whether from aphasia, autism, stroke, or another condition.
-> It's 100% free forever, works offline, and requires no account, no ads,
-> and no API keys.
+> Vox Libera is a free AAC (Augmentative and Alternative Communication)
+> app that gives a voice to anyone who has difficulty speaking — whether
+> from aphasia, autism, stroke, or another condition. It's 100% free
+> forever, works offline, and requires no account, no ads, and no API
+> keys.
 
 *Used in: social bios, README, flyer headline, press kit, launch posts.*
 
@@ -28,8 +28,8 @@ then propagate changes to the places listed under "Used in" below.
 
 ## About Blurb (paragraph, 3–5 sentences)
 
-> Vox Libera is a free, open-source AAC (Augmentative and Alternative
-> Communication) web app built for anyone who has difficulty speaking —
+> Vox Libera is a free AAC (Augmentative and Alternative Communication)
+> web app built for anyone who has difficulty speaking —
 > due to aphasia, autism, cerebral palsy, ALS, stroke, or any other
 > condition. Users build sentences from customizable word and picture cards
 > and have them spoken aloud instantly, using their device's own built-in
@@ -47,13 +47,14 @@ outreach emails, one-page flyer body copy.*
 
 ## Boilerplate ("About Vox Libera" — for press mentions / third-party writeups)
 
-> Vox Libera is a free and open-source Augmentative and Alternative
+> Vox Libera is a free Augmentative and Alternative
 > Communication (AAC) application designed to help individuals with speech
 > disabilities communicate. Available as a web app at voxlibera.app, it
 > requires no account, no subscription, and no special hardware — it runs
 > in any modern browser and can be installed like a native app on phones,
-> tablets, or computers. The project is fully open-source under the MIT
-> License and is maintained independently, with development guided
+> tablets, or computers. The project is free, source-available software
+> under the Vox Libera Community License (non-commercial, attribution
+> required) and is maintained independently, with development guided
 > directly by feedback from AAC users, caregivers, and speech-language
 > professionals.
 
@@ -66,12 +67,12 @@ posts, podcast/interview intro blurbs.*
 
 | Platform | Bio |
 |---|---|
-| X / Twitter (160) | Free, open-source AAC app that gives anyone who struggles to speak a voice. No cost, no accounts, no ads — ever. 🗣️💙 voxlibera.app |
-| Instagram (150) | Free & open-source AAC app 🗣️ Giving a voice to anyone who has difficulty speaking. No cost. No ads. Ever. 👇 |
-| Facebook Page (short description) | Vox Libera is a free, open-source AAC app that helps people with speech disabilities communicate — no cost, no accounts, no ads, ever. |
+| X / Twitter (160) | Free AAC app that gives anyone who struggles to speak a voice. No cost, no accounts, no ads — ever. 🗣️💙 voxlibera.app |
+| Instagram (150) | Free AAC app 🗣️ Giving a voice to anyone who has difficulty speaking. No cost. No ads. Ever. 👇 |
+| Facebook Page (short description) | Vox Libera is a free AAC app that helps people with speech disabilities communicate — no cost, no accounts, no ads, ever. |
 | TikTok | Free AAC app that gives a voice to anyone who struggles to speak 🗣️💙 No cost, ever. |
-| LinkedIn Page (tagline) | Free, open-source AAC (Augmentative and Alternative Communication) software — giving everyone the ability to speak. |
-| YouTube channel description | Vox Libera is a free, open-source AAC app for anyone who has difficulty speaking. This channel shares demos, feature walkthroughs, and updates. Try it free at voxlibera.app. |
+| LinkedIn Page (tagline) | Free AAC (Augmentative and Alternative Communication) software — giving everyone the ability to speak. |
+| YouTube channel description | Vox Libera is a free AAC app for anyone who has difficulty speaking. This channel shares demos, feature walkthroughs, and updates. Try it free at voxlibera.app. |
 
 **Link in every bio:** `https://voxlibera.app`
 **Suggested handle (use consistently across platforms):** `@voxlibera` (fallback: `@voxliberaapp` if taken)
@@ -108,7 +109,7 @@ email sign-offs, directory submission forms.*
 
 **Headline:** Vox Libera — Free Speech, For Everyone
 
-**Sub-headline:** A free, open-source AAC app that gives anyone who has
+**Sub-headline:** A free AAC app that gives anyone who has
 difficulty speaking a voice.
 
 **Body:** (Standard elevator pitch, above)
@@ -124,8 +125,8 @@ difficulty speaking a voice.
 **Call to action:** Try it free today at **voxlibera.app**
 *(QR code linking to https://voxlibera.app)*
 
-**Footer line:** Free & open-source (MIT License) · No accounts · No ads ·
-No API keys · github.com/asianguy-based/Vox_Libera
+**Footer line:** Free forever · Non-commercial, attribution required ·
+No accounts · No ads · No API keys · github.com/asianguy-based/Vox_Libera
 
 *Used in: `public/press/vox-libera-flyer.pdf` (generated from
 `docs/press-kit/flyer.html`).*

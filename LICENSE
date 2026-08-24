@@ -1,21 +1,55 @@
-MIT License
-
+Vox Libera Community License (Non-Commercial, Attribution Required)
 Copyright (c) 2025 Jeffrey McConnell
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to use, copy, modify, merge, and distribute copies of the Software,
+including modified/derivative versions ("Derivative Works"), subject to
+the following conditions:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+1. ATTRIBUTION REQUIRED.
+   Any use, distribution, or public deployment of the Software or any
+   Derivative Work must clearly and visibly credit Jeffrey McConnell as the
+   original creator of Vox Libera, and must retain this license notice and
+   the above copyright notice. Attribution must be reasonably visible to
+   end users (for example, in an About/Credits screen, README, or
+   equivalent), not merely buried in source code comments.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+2. NON-COMMERCIAL USE ONLY.
+   The Software and any Derivative Work may NOT be sold, sublicensed,
+   rented, or otherwise used for commercial advantage or monetary
+   compensation. This includes, without limitation: charging a purchase
+   price, subscription fee, or usage fee; bundling the Software into a paid
+   product or service; running paid advertising within the Software; or
+   using the Software to generate revenue in any other way. The Software
+   must always remain free of charge to end users. Voluntary, unsolicited
+   donations to the original creator (e.g. via Ko-fi) are not affected by
+   this restriction.
+
+3. NO MALICIOUS USE.
+   The Software and any Derivative Work may not be used for any unlawful,
+   harmful, deceptive, or malicious purpose, including but not limited to:
+   distributing malware; collecting or exposing users' personal or medical
+   information without consent; impersonating Vox Libera or its creator in
+   bad faith; or any use intended to cause harm to individuals who rely on
+   the Software to communicate.
+
+4. NO WARRANTY.
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.
+   IN NO EVENT SHALL THE AUTHOR OR COPYRIGHT HOLDER BE LIABLE FOR ANY
+   CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+   TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE
+   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. This is
+   especially important given the Software's use in assistive
+   communication contexts — always use good judgment and, where
+   appropriate, professional guidance.
+
+5. SUMMARY (non-binding, for convenience only).
+   You may use, modify, and share Vox Libera and any modified versions of
+   it, for free, forever — as long as you (a) credit Jeffrey McConnell as
+   the original creator, (b) never charge money for it or otherwise
+   monetize it, and (c) never use it for harmful or malicious purposes.
+   The conditions above are the binding legal terms; this summary does not
+   modify or override them.

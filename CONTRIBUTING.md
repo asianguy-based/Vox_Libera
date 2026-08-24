@@ -2,12 +2,17 @@
 
 First off, thank you for considering contributing to Vox Libera! 🎉
 
-Vox Libera is a **free, open-source AAC (Augmentative and Alternative
+Vox Libera is a **free, source-available AAC (Augmentative and Alternative
 Communication) app** built so that anyone with a communication disability
 can have a voice — without app store fees, subscriptions, accounts, or
 paid API keys. Every contribution, whether it's a bug fix, a new phrase
 category, a translation, or a documentation improvement, helps someone
 communicate more easily.
+
+Vox Libera is licensed under the [Vox Libera Community License](./LICENSE)
+(non-commercial, attribution required) rather than a standard OSI
+open-source license — by contributing, you agree that your contribution
+will be distributed under those same terms.
 
 This document is a **starting template** — feel free to open a PR editing
 it further as the project and community grow.
@@ -33,9 +38,10 @@ needs and dignity front and center.
 
 ## Project Philosophy (please read before contributing code)
 
-1. **Stay free and open-source.** No paid APIs, no required accounts, no
+1. **Stay free and non-commercial.** No paid APIs, no required accounts, no
    telemetry/tracking, no ads. All core features must work with $0 cost to
-   both the maintainer and the end user.
+   both the maintainer and the end user, and the app must never be sold or
+   monetized.
 2. **Stay a web app.** Vox Libera intentionally stays out of app stores to
    avoid developer fees and review gatekeeping — it's installed as a PWA
    instead. Please don't propose wrapping it in a native shell (Capacitor,

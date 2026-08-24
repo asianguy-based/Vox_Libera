@@ -6,10 +6,10 @@ Pathologists (SLPs), and the institutions that serve them. Work through the
 phases roughly in order — each phase builds credibility and assets used by
 the next.
 
-**Guiding principle:** Vox Libera is free, open-source, and has zero running
-cost. Every outreach channel below is chosen because it's also free (or
-effectively free) — no ad spend required, though a small budget can
-accelerate things later if desired.
+**Guiding principle:** Vox Libera is free, source-available (non-commercial,
+attribution required), and has zero running cost. Every outreach channel
+below is chosen because it's also free (or effectively free) — no ad spend
+required, though a small budget can accelerate things later if desired.
 
 **Ordering note:** Social presence (Phase 1) is deliberately placed *before*
 any outreach (Phase 2/3). Anyone we contact — a Reddit community, an SLP, a
@@ -97,9 +97,9 @@ and organic word-of-mouth before approaching bigger organizations.
 - [ ] r/CerebralPalsy
 - [ ] r/ALS
 - [ ] r/disability
-- [ ] r/opensource (frame as "free open-source AAC app I built")
 - [ ] r/SideProject / r/InternetIsBeautiful (broader visibility)
-- [ ] **Approach**: Read each subreddit's rules first (many require moderator pre-approval for self-promotion). Lead with the problem you're solving and that it's free/open-source, not a sales pitch. Genuinely engage with comments/questions afterward. Link to socials + app in the post.
+- [ ] **Note:** r/opensource is no longer a great fit since the license is source-available/non-commercial rather than OSI open-source — consider skipping it or being explicit about the license if posting there, to avoid pushback.
+- [ ] **Approach**: Read each subreddit's rules first (many require moderator pre-approval for self-promotion). Lead with the problem you're solving and that it's free (source-available, non-commercial), not a sales pitch. Genuinely engage with comments/questions afterward. Link to socials + app in the post.
 
 ### Facebook Groups
 - [ ] Search "AAC support group", "augmentative communication parents", "[condition] + caregivers" (aphasia, ALS, autism, cerebral palsy, apraxia)
@@ -117,8 +117,8 @@ and organic word-of-mouth before approaching bigger organizations.
 - [ ] National Aphasia Association community boards
 - [ ] Quora — answer existing questions like "what are free AAC apps" and mention Vox Libera where genuinely relevant
 
-### Open Source / Developer Communities
-- [ ] Post on Hacker News ("Show HN: Vox Libera – free open-source AAC app")
+### Developer / Source-Available Communities
+- [ ] Post on Hacker News ("Show HN: Vox Libera – a free AAC app, source-available on GitHub")
 - [ ] Product Hunt launch
 - [ ] r/webdev / r/reactjs ("Show and tell" style post about the tech + mission)
 - [ ] GitHub — make sure the repo README is polished, add topics/tags (`aac`, `accessibility`, `speech-disability`, `react`, `pwa`) so it's discoverable in GitHub search

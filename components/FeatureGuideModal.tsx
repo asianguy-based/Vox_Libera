@@ -22,7 +22,7 @@ const SLIDES: Slide[] = [
     icon: '🗣️',
     title: 'Welcome to Vox Libera',
     description:
-      "Vox Libera is a free, open-source AAC (Augmentative and Alternative Communication) app that gives a voice to anyone who has difficulty speaking. This quick guide walks through everything the app can do.",
+      "Vox Libera is a free AAC (Augmentative and Alternative Communication) app that gives a voice to anyone who has difficulty speaking. This quick guide walks through everything the app can do.",
     tip: 'You can reopen this guide any time from Settings → Help / Feature Guide.',
   },
   {
@@ -123,7 +123,7 @@ const SLIDES: Slide[] = [
     icon: '💙',
     title: 'Free, Forever',
     description:
-      'Vox Libera is free and open-source, with no accounts, no ads, and no API keys required. If it has helped you or someone you love, consider supporting future development on Ko-fi (see the About page).',
+      'Vox Libera is free, forever, with no accounts, no ads, and no API keys required. If it has helped you or someone you love, consider supporting future development on Ko-fi (see the About page).',
   },
 ];
 

@@ -4,7 +4,7 @@
 
 # Vox Libera — a free AAC app for everyone
 
-**Vox Libera** ("free voice") is a free, open-source Augmentative and Alternative Communication (AAC) app for anyone who has difficulty speaking. It's a full-featured, installable web app — no accounts, no ads, no API keys, and no cost, ever.
+**Vox Libera** ("free voice") is a free Augmentative and Alternative Communication (AAC) app for anyone who has difficulty speaking. It's a full-featured, installable web app — no accounts, no ads, no API keys, and no cost, ever.
 
 👉 **Use it now: [https://voxlibera.app](https://voxlibera.app)**
 
@@ -40,9 +40,15 @@ For a full walkthrough, open the in-app **Feature Guide** from Settings → Help
 
 Everything runs client-side in your browser. Speech synthesis uses your device's built-in voices (no API keys, no per-use costs, works offline), and your data — categories, recordings, personal info — stays on your device unless you explicitly export/back it up. There are no accounts, no ads, and no tracking required to use the app.
 
-## Open Source
+## License
 
-Vox Libera is free and open-source software, licensed under the [MIT License](./LICENSE). You are welcome to use, modify, and redistribute this app for your own needs — including forking it to build a version tailored to a specific individual or community. Because text-to-speech runs entirely on-device, anyone can self-host or run this app at zero ongoing cost.
+Vox Libera is free, source-available software under the [Vox Libera Community License](./LICENSE) — a custom, non-commercial license. You're welcome to use, modify, and redistribute this app (including forking it for a specific individual or community), subject to three conditions:
+
+1. **Attribution** — credit Jeffrey McConnell as the original creator, visibly to end users (not just in source comments)
+2. **Non-commercial, always free** — you may never sell it, paywall it, or otherwise monetize it; it must stay free for end users
+3. **No malicious use** — never use it to cause harm, deceive, or misuse people's personal or medical information
+
+See the [LICENSE](./LICENSE) file for the full terms. Because text-to-speech runs entirely on-device, anyone can self-host or run this app at zero ongoing cost.
 
 ### Running it yourself
 ```bash

@@ -31,7 +31,7 @@ const AboutModal = ({ isOpen, onClose }: AboutModalProps): React.ReactElement | 
           <section>
             <h3 className="text-lg font-semibold text-slate-900 mb-2 dark:text-slate-100">🎯 Purpose</h3>
             <p className="text-sm leading-relaxed">
-              Vox Libera is a free, open-source Augmentative and Alternative Communication (AAC) app designed to give a voice to individuals who have difficulty speaking &mdash; whether due to aphasia, autism, stroke, vocal cord damage, or other conditions.
+              Vox Libera is a free Augmentative and Alternative Communication (AAC) app designed to give a voice to individuals who have difficulty speaking &mdash; whether due to aphasia, autism, stroke, vocal cord damage, or other conditions.
             </p>
           </section>
 

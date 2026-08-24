@@ -1,13 +1,13 @@
 # Vox Libera
 
-> Free, open-source AAC (Augmentative and Alternative Communication) web app. React 18 + Vite + TypeScript SPA, deployed via Cloudflare Pages to **voxlibera.app**. Zero backend cost philosophy — no server, no accounts, no ads, no API keys.
+> Free, source-available AAC (Augmentative and Alternative Communication) web app — non-commercial, attribution required. React 18 + Vite + TypeScript SPA, deployed via Cloudflare Pages to **voxlibera.app**. Zero backend cost philosophy — no server, no accounts, no ads, no API keys.
 
 **Status:** 🟢 Active — pre-launch / building social presence
 **Target:** Everything (socials + supporting assets) live/public by **01 SEP 2026**
 **Repo:** [github.com/asianguy-based/Vox_Libera](https://github.com/asianguy-based/Vox_Libera)
 **Live site:** [voxlibera.app](https://voxlibera.app)
 **Current version:** 1.1.2
-**License:** MIT (open-source)
+**License:** Vox Libera Community License (free, source-available, non-commercial, attribution required)
 
 ---
 
@@ -29,11 +29,11 @@
 
 ## 📝 Elevator Pitch
 
-> Vox Libera is a free, open-source AAC (Augmentative and Alternative Communication) app that gives a voice to anyone who has difficulty speaking — whether from aphasia, autism, stroke, or another condition. It's 100% free forever, works offline, and requires no account, no ads, and no API keys.
+> Vox Libera is a free AAC (Augmentative and Alternative Communication) app that gives a voice to anyone who has difficulty speaking — whether from aphasia, autism, stroke, or another condition. It's 100% free forever, works offline, and requires no account, no ads, and no API keys.
 
 ## 📄 About Blurb
 
-> Vox Libera is a free, open-source AAC (Augmentative and Alternative Communication) web app built for anyone who has difficulty speaking — due to aphasia, autism, cerebral palsy, ALS, stroke, or any other condition. Users build sentences from customizable word and picture cards and have them spoken aloud instantly, using their device's own built-in text-to-speech voices — completely free, private, and fully functional offline. There's no cost, no account sign-up, no ads, and no API keys required; it installs like a normal app on phones, tablets, and computers with zero app-store fees.
+> Vox Libera is a free AAC (Augmentative and Alternative Communication) web app built for anyone who has difficulty speaking — due to aphasia, autism, cerebral palsy, ALS, stroke, or any other condition. Users build sentences from customizable word and picture cards and have them spoken aloud instantly, using their device's own built-in text-to-speech voices — completely free, private, and fully functional offline. There's no cost, no account sign-up, no ads, and no API keys required; it installs like a normal app on phones, tablets, and computers with zero app-store fees.
 
 *(Full brand copy — social bios per platform, boilerplate, flyer copy — lives in `docs/BRAND_COPY.md` in the repo; copy the table below in if you want it duplicated here in Notion.)*
 
@@ -148,6 +148,8 @@
 
 | Version | What shipped |
 |---|---|
+| 1.1.4 | Switched license from MIT to the custom Vox Libera Community License (non-commercial, attribution required, no malicious use); updated all copy/docs referencing "MIT"/"open-source" accordingly |
+| 1.1.3 | Updated README with the current live URL, feature list, and project info |
 | 1.1.2 | Fixed press-kit flyer PDF spilling onto a stray second page — now single page, footer line at the bottom |
 | 1.1.1 | Added in-app Press & Media Kit (About page), downloadable one-page flyer PDF, brand copy doc |
 | 1.1.0 | Dark Mode everywhere, Voice Selection reliability fix, Feature Guide, automatic update checking |
@@ -159,4 +161,5 @@
 - **Ordering decision:** Social Presence (Phase 1) was deliberately moved before Grassroots/Institutional Outreach (Phase 2/3) — anyone contacted via outreach will likely check for a live, credible online presence first.
 - **Contact email decision:** Reusing `jeffrey.i.mcconnell@gmail.com` everywhere (flyer, press kit, social bios, outreach) rather than mixing addresses — it's already the Web3Forms/mailto fallback target, so all feedback paths land in one inbox. Optional future upgrade: free Cloudflare Email Routing to forward a branded `hello@voxlibera.app` alias.
 - **Original header banner** (`public/assets/logo.png`) — kept as-is by request, no redesign.
-- **Deploy timing observed:** Cloudflare Pages typically takes **~1.5–2.5 minutes** from `git push` to live on voxlibera.app (measured twice: ~1m37s and ~2m17s).
+- **Deploy timing observed:** Cloudflare Pages typically takes **~1.25–2.5 minutes** from `git push` to live on voxlibera.app (measured three times: ~1m37s, ~2m17s, ~1m16s).
+- **License decision:** Switched from MIT to a custom "Vox Libera Community License" — still free to use/modify/share, but now requires (1) attribution to the original creator, (2) strictly non-commercial use (never sold/monetized), and (3) no malicious use. This is technically "source-available," not OSI open-source, since it restricts commercial use. All copy referring to "open-source"/"MIT" was updated across README, in-app modals, brand copy, flyer, and outreach checklist to say "free"/"source-available" instead.
