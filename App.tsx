@@ -13,7 +13,10 @@ import AboutModal from './components/AboutModal';
 import VirtualKeyboard from './components/VirtualKeyboard';
 import AddItemModal from './components/AddItemModal';
 import InstallInstructionsModal from './components/InstallInstructionsModal';
+import UpdateAvailableModal from './components/UpdateAvailableModal';
 import { createDefaultRecordings, generateId, migrateLegacyRecordings } from './utils/recordingsUtils';
+import { checkForUpdate, VersionInfo } from './utils/updateCheck';
+import { APP_VERSION } from './version';
 
 // Icon used to identify the built-in "Saved Spoken Memos" category across
 // all languages (names get translated, icons stay constant) so we can route
@@ -63,6 +66,10 @@ const App = (): React.ReactElement => {
   const [isIOS, setIsIOS] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
   const [isInstallInstructionsOpen, setIsInstallInstructionsOpen] = useState(false);
+
+  // Update-check state: null means "no update known/available". Populated
+  // by the version-check effect below; never touches localStorage/settings.
+  const [updateInfo, setUpdateInfo] = useState<VersionInfo | null>(null);
   
   // Initialize keyboard based on screen size (hide on mobile by default)
   const [isVirtualKeyboardOpen, setIsVirtualKeyboardOpen] = useState<boolean>(() => {
@@ -127,6 +134,16 @@ const App = (): React.ReactElement => {
       };
       document.addEventListener('fullscreenchange', handleFullscreenChange);
       return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, []);
+
+  // Check once on launch whether a newer version has been deployed to the
+  // server than the one currently running in this browser. This ONLY reads
+  // a small version.json probe file over the network - it never reads or
+  // writes localStorage, so it can never affect saved settings, categories,
+  // or recordings. Fails silently (see utils/updateCheck.ts) if offline or
+  // if the probe request fails for any reason.
+  useEffect(() => {
+    checkForUpdate(APP_VERSION).then(setUpdateInfo);
   }, []);
 
   // Listen for PWA install prompt
@@ -648,32 +665,38 @@ const App = (): React.ReactElement => {
          </div>
       )}
 
-      <footer className={`text-center p-4 text-xs transition-colors duration-300 flex flex-row items-center justify-center gap-2 sm:gap-4 text-slate-500 dark:text-slate-400 ${isVirtualKeyboardOpen ? 'mb-64' : ''}`}>
-        <button 
-            onClick={() => setIsAboutOpen(true)} 
-            className="hover:underline focus:outline-none font-semibold"
-        >
-            About
-        </button>
-        
-        <span className="text-slate-300">|</span>
+      <footer className={`text-center p-4 text-xs transition-colors duration-300 flex flex-col items-center justify-center gap-1 text-slate-500 dark:text-slate-400 ${isVirtualKeyboardOpen ? 'mb-64' : ''}`}>
+        <div className="flex flex-row items-center justify-center gap-2 sm:gap-4">
+          <button 
+              onClick={() => setIsAboutOpen(true)} 
+              className="hover:underline focus:outline-none font-semibold"
+          >
+              About
+          </button>
+          
+          <span className="text-slate-300">|</span>
 
-        <a href="mailto:jeffrey.i.mcconnell@gmail.com" className="hover:text-blue-500 transition-colors hover:underline">
-             © 2025 Jeffrey McConnell
-        </a>
+          <a href="mailto:jeffrey.i.mcconnell@gmail.com" className="hover:text-blue-500 transition-colors hover:underline">
+               © 2025 Jeffrey McConnell
+          </a>
 
-        {!isStandalone && (
-          <>
-            <span className="text-slate-300">|</span>
+          {!isStandalone && (
+            <>
+              <span className="text-slate-300">|</span>
 
-            <button
-                onClick={handleInstallClick}
-                className="hover:underline focus:outline-none font-semibold text-blue-600"
-            >
-                Install App
-            </button>
-          </>
-        )}
+              <button
+                  onClick={handleInstallClick}
+                  className="hover:underline focus:outline-none font-semibold text-blue-600"
+              >
+                  Install App
+              </button>
+            </>
+          )}
+        </div>
+
+        <span className="text-[10px] text-slate-400 dark:text-slate-500">
+          v{APP_VERSION}
+        </span>
       </footer>
 
       <SettingsModal 
@@ -711,6 +734,13 @@ const App = (): React.ReactElement => {
         isOpen={isInstallInstructionsOpen}
         onClose={() => setIsInstallInstructionsOpen(false)}
         platform={isIOS ? 'ios' : 'other'}
+      />
+
+      <UpdateAvailableModal
+        isOpen={!!updateInfo}
+        onClose={() => setUpdateInfo(null)}
+        newVersion={updateInfo?.version ?? ''}
+        notes={updateInfo?.notes}
       />
     </div>
   );

@@ -18,6 +18,13 @@
 /manifest.json
   Cache-Control: public, max-age=3600
 
+# Update-check probe file (utils/updateCheck.ts fetches this on launch to
+# see if a newer version has been deployed). Must never be cached - stale
+# copies would either hide real updates or show phantom "update available"
+# popups for a version that's already installed.
+/version.json
+  Cache-Control: no-cache, no-store, must-revalidate
+
 # Hashed, content-fingerprinted build output - safe to cache forever since
 # any change produces a new filename automatically.
 /assets/*

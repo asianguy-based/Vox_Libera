@@ -10,6 +10,7 @@ import {
   parseBackupFile,
   BackupValidationError,
 } from '../utils/backupUtils';
+import FeatureGuideModal from './FeatureGuideModal';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -27,6 +28,7 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [ttsSupported, setTtsSupported] = useState(true);
   const [dataMessage, setDataMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [isFeatureGuideOpen, setIsFeatureGuideOpen] = useState(false);
   const importFileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -568,6 +570,21 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
                 </div>
             </div>
 
+            {/* Help */}
+            <div className="space-y-3">
+                <h3 className="text-lg font-semibold text-slate-800 border-b pb-2 dark:text-slate-100">Help</h3>
+                <button
+                    type="button"
+                    onClick={() => setIsFeatureGuideOpen(true)}
+                    className="flex items-center gap-2 px-4 py-2 bg-indigo-100 text-indigo-700 rounded-lg hover:bg-indigo-200 transition-colors text-sm font-semibold dark:bg-indigo-900/40 dark:text-indigo-300 dark:hover:bg-indigo-900/60"
+                >
+                    📖 Feature Guide
+                </button>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                    A quick slide-by-slide walkthrough of everything Vox Libera can do.
+                </p>
+            </div>
+
             {/* Appearance Section */}
              <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-slate-800 border-b pb-2 dark:text-slate-100">Appearance</h3>
@@ -669,6 +686,11 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
             </div>
           </div>
       </div>
+
+      <FeatureGuideModal
+        isOpen={isFeatureGuideOpen}
+        onClose={() => setIsFeatureGuideOpen(false)}
+      />
     </div>
   );
 };

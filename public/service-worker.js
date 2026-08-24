@@ -129,6 +129,13 @@ self.addEventListener('fetch', (event) => {
   // this service worker never accidentally caches or blocks external APIs.
   if (url.origin !== self.location.origin) return;
 
+  // version.json is the update-check probe (see utils/updateCheck.ts) - it
+  // must always hit the network directly, never the cache, or a stale
+  // cached copy could permanently hide real updates (or the reverse: show a
+  // phantom update for a version the user already has). Let the browser
+  // handle it untouched.
+  if (url.pathname.endsWith('/version.json')) return;
+
   if (isNavigationRequest(request)) {
     // Network-first for the SPA shell so users get updates when online,
     // but always fall back to the cached shell when offline.
