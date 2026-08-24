@@ -11,30 +11,74 @@ cost. Every outreach channel below is chosen because it's also free (or
 effectively free) — no ad spend required, though a small budget can
 accelerate things later if desired.
 
+**Ordering note:** Social presence (Phase 1) is deliberately placed *before*
+any outreach (Phase 2/3). Anyone we contact — a Reddit community, an SLP, a
+school district AT coordinator — will likely check for an active, credible
+online presence before engaging or recommending the app. Standing up socials
+first gives every subsequent outreach effort somewhere real to point to.
+
+**Target: Everything below live/public by 01 SEP 2026.**
+
 ---
 
 ## Phase 0 — Foundation & Credibility Assets
 
-Do this before reaching out to anyone. These are the things people will
+Do this before anything public-facing. These are the things people will
 check before recommending or trusting a new tool.
 
-- [ ] **App icon & favicon** — ✅ Done (VL monogram, black speech bubble)
-- [ ] **Header banner** — ✅ Keeping original ("VOX LIBERA" bubble-lettering banner)
-- [ ] **In-app feedback mechanism** — ✅ Done (Questions/Comments/Feedback popup)
-- [ ] **Feature Guide slide deck** — ✅ Done (in-app walkthrough)
-- [ ] **About page cleanup with links** — ✅ Done
-- [ ] Social media profile picture — ✅ Generated (square, circle-crop safe VL/wordmark), pending final swap-in on social profiles once accounts exist
-- [ ] Write a short **"Elevator pitch"** (1–2 sentences) — e.g. *"Vox Libera is a free, open-source AAC app that gives anyone with a speech disability a voice — no accounts, no ads, no fees, works offline."*
-- [ ] Write a **one-paragraph "About" blurb** (3–5 sentences) for bios/directories/emails — expand the elevator pitch with who it's for (aphasia, autism, stroke, ALS, etc.) and what makes it different (free forever, offline, open-source, privacy-first, PWA installable).
-- [ ] Take **5–8 clean screenshots** of the app (light mode + dark mode, main grid, sentence bar in use, full-screen "big text" mode, settings) — needed for every listing, social post, and outreach email.
-- [ ] Record a **60–90 second demo video/GIF** showing: pick category → build sentence → speak it → full-screen mode. (Can be simple screen recording, no editing required to start.)
-- [ ] Create a **one-page flyer/PDF** (letter-size, print-friendly) summarizing what Vox Libera is, who it helps, and how to get it (QR code to `voxlibera.app`). Useful for SLPs to print and hand to clients/families.
-- [ ] Set up a simple **press/media page** or section on the site with the logo, screenshots, and blurb, so journalists/bloggers/directories can grab assets without asking.
-- [ ] Decide on a **contact email** to use consistently across all outreach (can be the existing Gmail or a dedicated alias like `hello@voxlibera.app` if easy to set up on the domain).
+- [x] App icon & favicon (VL monogram, black speech bubble)
+- [x] Header banner (kept original "VOX LIBERA" bubble-lettering banner)
+- [x] In-app feedback mechanism (Questions/Comments/Feedback popup)
+- [x] Feature Guide slide deck (in-app walkthrough)
+- [x] About page cleanup with links
+- [x] Social media profile picture generated (square, circle-crop safe)
+- [ ] Write a short **elevator pitch** (1–2 sentences)
+- [ ] Write a **one-paragraph About blurb** (3–5 sentences) for bios/directories/emails
+- [ ] Take **5–8 clean screenshots** of the app (light + dark mode, main grid, sentence bar in use, full-screen "big text" mode, settings)
+- [ ] Record a **60–90 second demo video/GIF** (pick category → build sentence → speak it → full-screen mode)
+- [ ] Create a **one-page flyer/PDF** (letter-size, print-friendly, QR code to `voxlibera.app`)
+- [ ] Set up a simple **press/media page** or section on the site with logo, screenshots, and blurb
+- [ ] Decide on a **contact email** to use consistently everywhere
 
 ---
 
-## Phase 1 — Grassroots & Community (Do First)
+## Phase 1 — Social Presence & Brand Setup (Do First — Before Any Outreach)
+
+Get a real, visitable home base live everywhere *before* pointing anyone
+toward it. This is the "storefront" that makes every later outreach message
+credible.
+
+### Platform Accounts
+- [ ] Facebook Page (business/nonprofit-style Page, not a personal profile)
+- [ ] Instagram
+- [ ] X / Twitter
+- [ ] TikTok (optional but strong fit — short demo clips do well for accessibility tools)
+- [ ] YouTube channel (even just for the demo video — also helps SEO/discoverability)
+- [ ] LinkedIn Page (professional audience — SLPs, AT coordinators, special-ed teachers)
+
+### Branding Each Profile
+- [ ] Upload profile picture (VL monogram/wordmark — already generated) on every platform
+- [ ] Upload cover/header image where supported (FB Page cover, X header, YouTube banner) — *pending generation, small image-credit task*
+- [ ] Write consistent bio/description on every platform using the elevator pitch from Phase 0
+- [ ] Add link to `voxlibera.app` in every bio/profile
+- [ ] Use the same handle/username across all platforms where possible (e.g. `@voxlibera` or `@voxliberaapp`) for consistency and easy discovery
+- [ ] Pin an intro post/video on each platform introducing what Vox Libera is
+
+### Launch Content (have ready before going live)
+- [ ] Launch announcement post (adaptable per platform's format/length)
+- [ ] First 3–5 "feature spotlight" posts queued up (can repurpose Feature Guide slide content directly)
+- [ ] Demo video uploaded to YouTube + cross-posted/linked from other platforms
+
+### Site-Side Integration
+- [ ] Add social icons/links to the Vox Libera web app footer or About page
+- [ ] Add social links to the press/media page
+
+**Once this phase is live, every subsequent outreach message can include real,
+active social links — not "coming soon."**
+
+---
+
+## Phase 2 — Grassroots & Community Outreach
 
 Lower-friction, higher-response-rate audiences. These are individual people
 and small communities, not gatekept institutions — good for early feedback
@@ -51,7 +95,7 @@ and organic word-of-mouth before approaching bigger organizations.
 - [ ] r/disability
 - [ ] r/opensource (frame as "free open-source AAC app I built")
 - [ ] r/SideProject / r/InternetIsBeautiful (broader visibility)
-- [ ] **Approach**: Read each subreddit's rules first (many require moderator pre-approval for self-promotion). Lead with the problem you're solving and that it's free/open-source, not a sales pitch. Genuinely engage with comments/questions afterward.
+- [ ] **Approach**: Read each subreddit's rules first (many require moderator pre-approval for self-promotion). Lead with the problem you're solving and that it's free/open-source, not a sales pitch. Genuinely engage with comments/questions afterward. Link to socials + app in the post.
 
 ### Facebook Groups
 - [ ] Search "AAC support group", "augmentative communication parents", "[condition] + caregivers" (aphasia, ALS, autism, cerebral palsy, apraxia)
@@ -85,7 +129,7 @@ and organic word-of-mouth before approaching bigger organizations.
 
 ---
 
-## Phase 2 — Organizations, Associations & Professionals
+## Phase 3 — Organizations, Associations & Professionals
 
 Higher-credibility, slower-moving, but high-leverage — one SLP or org
 recommending the app can reach dozens of families.
@@ -132,37 +176,26 @@ recommending the app can reach dozens of families.
 
 ---
 
-## Phase 3 — Content, Social Presence & Amplification
-
-Run in parallel with/after Phase 1–2 to build ongoing visibility rather than
-a one-time push.
-
-- [ ] Create social accounts (once profile picture/cover assets finalized): Facebook Page, Instagram, X/Twitter, possibly TikTok (short demo clips do well for accessibility tools)
-- [ ] Post a **launch announcement** across all channels simultaneously
-- [ ] Create a simple **content calendar** — e.g. weekly "feature spotlight" posts walking through one feature at a time (mirrors the Feature Guide slides — easy repurposing)
-- [ ] Short demo videos/GIFs per feature (Full Screen mode, Voice selection, Custom categories, etc.) — good for TikTok/Instagram Reels/X
-- [ ] Encourage early users to share feedback/testimonials (can route through the new in-app Feedback form — ask permission before publishing any quotes)
-- [ ] Write a **launch blog post / Medium article** telling the "why" story — this is often the most-shared piece of content and works well for HN/Reddit/LinkedIn posts
-- [ ] Consider a **LinkedIn post** — SLPs, special-ed teachers, and AT coordinators are active there professionally; frame around the mission and open-source angle
-
----
-
 ## Phase 4 — Sustain & Iterate
 
 - [ ] Set a recurring reminder (monthly?) to check the in-app Feedback inbox and respond
+- [ ] Keep posting to socials regularly (content calendar — weekly feature-spotlight posts work well, mirrors Feature Guide slides for easy repurposing)
 - [ ] Track which channels actually drive traffic/installs (simple: ask new users "how did you hear about us?" via an optional field, or just note referral patterns manually since there's no analytics backend)
 - [ ] Revisit and refresh the Feature Guide / About page as new features ship
 - [ ] Periodically re-post/refresh social content — one-time posts fade fast, especially on Reddit/Facebook groups
+- [ ] Encourage early users to share feedback/testimonials (route through the in-app Feedback form — ask permission before publishing any quotes)
 - [ ] Consider reaching out to accessibility-focused podcasts or YouTube channels for a mention/interview once there's some traction/testimonials to point to
 
 ---
 
 ## Quick-Reference Priority Order
 
-If time/energy is limited, tackle in this order for fastest signal:
+Fastest path to a credible, live presence by 01 SEP 2026:
 
-1. Reddit (r/AAC, r/SLP, r/Aphasia) + relevant Facebook groups — fastest feedback loop, zero cost
-2. GitHub polish + Hacker News "Show HN" + Product Hunt — developer/tech crowd, good for credibility and possibly contributors
-3. State Assistive Technology Act Programs + local school district AT coordinators — small number of contacts, potentially large reach per contact
-4. ASHA / ISAAC / State SLP associations — slower to respond but high credibility once listed
-5. Social media presence — ongoing, parallel track once brand assets are ready
+1. **Phase 0 zero-cost writing tasks** (elevator pitch, About blurb, flyer copy) — can be done immediately, no credits, no waiting
+2. **Phase 0 your-side tasks** (screenshots, demo recording) — do in parallel with #1, needed before socials can have real content
+3. **Phase 1 social account creation + branding** — get every platform live with consistent branding/bio/links, even before posting content
+4. **Phase 1 launch content + go live** — post launch announcement + first feature-spotlight posts across all platforms simultaneously
+5. **Phase 2 grassroots outreach** — Reddit, Facebook groups, Hacker News, Product Hunt, GitHub polish (now with real social links to point to)
+6. **Phase 3 institutional outreach** — ASHA/ISAAC/state associations, school districts, AT programs, universities (slower-moving, start these once socials + grassroots have some initial traction/testimonials)
+7. **Phase 4 ongoing** — ongoing content, feedback monitoring, sustained outreach
