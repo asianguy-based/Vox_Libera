@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Vox Libera Flyer</title>
+<style>
+  @page {
+    size: letter;
+    margin: 0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'DejaVu Sans', 'Helvetica Neue', Arial, sans-serif;
+    color: #0f172a;
+  }
+  .page {
+    width: 8.5in;
+    height: 11in;
+    padding: 0.6in 0.7in;
+    display: flex;
+    flex-direction: column;
+  }
+  .header {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0.35in;
+  }
+  .header img {
+    height: 0.85in;
+  }
+  h1 {
+    text-align: center;
+    font-size: 30pt;
+    margin: 0 0 0.08in 0;
+    color: #1d4ed8;
+    letter-spacing: 0.3px;
+  }
+  .subhead {
+    text-align: center;
+    font-size: 13.5pt;
+    color: #334155;
+    margin: 0 0 0.3in 0;
+    font-weight: 500;
+  }
+  .body-copy {
+    font-size: 11.5pt;
+    line-height: 1.55;
+    color: #1e293b;
+    text-align: center;
+    max-width: 6.4in;
+    margin: 0 auto 0.35in auto;
+  }
+  .features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.18in 0.4in;
+    margin: 0 auto 0.4in auto;
+    max-width: 6.6in;
+    width: 100%;
+  }
+  .feature {
+    font-size: 12pt;
+    line-height: 1.4;
+    background: #f1f5f9;
+    border-radius: 10px;
+    padding: 0.16in 0.2in 0.16in 0.45in;
+    position: relative;
+  }
+  .feature::before {
+    content: "";
+    position: absolute;
+    left: 0.2in;
+    top: 0.24in;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #1d4ed8;
+  }
+  .cta-band {
+    background: #1d4ed8;
+    color: white;
+    border-radius: 16px;
+    padding: 0.35in 0.4in;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.4in;
+    margin-top: auto;
+  }
+  .cta-text {
+    flex: 1;
+  }
+  .cta-text .cta-line1 {
+    font-size: 17pt;
+    font-weight: 700;
+    margin: 0 0 0.05in 0;
+  }
+  .cta-text .cta-url {
+    font-size: 20pt;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
+  .qr-box {
+    background: white;
+    padding: 0.12in;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .qr-box img {
+    width: 1.15in;
+    height: 1.15in;
+    display: block;
+  }
+  .footer-line {
+    text-align: center;
+    font-size: 9.5pt;
+    color: #64748b;
+    margin-top: 0.22in;
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <img src="../../public/assets/logo.png" alt="Vox Libera" />
+    </div>
+
+    <h1>Free Speech, For Everyone</h1>
+    <div class="subhead">
+      A free, open-source AAC app that gives anyone who has difficulty speaking a voice.
+    </div>
+
+    <div class="body-copy">
+      Vox Libera is a free, open-source AAC (Augmentative and Alternative
+      Communication) web app built for anyone who has difficulty speaking &mdash;
+      due to aphasia, autism, cerebral palsy, ALS, stroke, or any other
+      condition. Users build sentences from customizable word and picture
+      cards and have them spoken aloud instantly, using their device's own
+      built-in text-to-speech voices &mdash; completely free, private, and fully
+      functional offline. There's no cost, no account sign-up, no ads, and
+      no API keys required.
+    </div>
+
+    <div class="features">
+      <div class="feature">Tap-to-speak word &amp; picture cards, fully customizable</div>
+      <div class="feature">Natural text-to-speech using your device's own voices &mdash; works offline</div>
+      <div class="feature">Full-screen "big text" mode for showing sentences to others</div>
+      <div class="feature">Personal voice recordings for instant playback</div>
+      <div class="feature">Emergency &amp; caregiver info stored right in the app</div>
+      <div class="feature">Installs like a real app &mdash; no app-store fees, ever</div>
+    </div>
+
+    <div class="cta-band">
+      <div class="cta-text">
+        <div class="cta-line1">Try it free today at</div>
+        <div class="cta-url">voxlibera.app</div>
+      </div>
+      <div class="qr-box">
+        <img src="qr-voxlibera.png" alt="QR code to voxlibera.app" />
+      </div>
+    </div>
+
+    <div class="footer-line">
+      Free &amp; open-source (MIT License) &middot; No accounts &middot; No ads &middot; No API keys &middot;
+      github.com/asianguy-based/Vox_Libera &middot; jeffrey.i.mcconnell@gmail.com
+    </div>
+  </div>
+</body>
+</html>

@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import FeatureGuideModal from './FeatureGuideModal';
 import FeedbackModal from './FeedbackModal';
+import PressKitModal from './PressKitModal';
 
 interface AboutModalProps {
   isOpen: boolean;
@@ -11,6 +12,7 @@ interface AboutModalProps {
 const AboutModal = ({ isOpen, onClose }: AboutModalProps): React.ReactElement | null => {
   const [isFeatureGuideOpen, setIsFeatureGuideOpen] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
+  const [isPressKitOpen, setIsPressKitOpen] = useState(false);
 
   if (!isOpen) return null;
 
@@ -79,6 +81,22 @@ const AboutModal = ({ isOpen, onClose }: AboutModalProps): React.ReactElement | 
                   Send Feedback
                 </button>
               </div>
+
+              <div className="flex items-center justify-between gap-3 p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/40">
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-slate-800 dark:text-slate-100">📰 Press &amp; Media Kit</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                    Writing about Vox Libera? Grab the logo, blurb, and a printable flyer.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsPressKitOpen(true)}
+                  className="shrink-0 px-3 py-1.5 rounded-lg bg-slate-200 text-slate-700 hover:bg-slate-300 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600 text-xs font-semibold transition-colors"
+                >
+                  Open Kit
+                </button>
+              </div>
             </div>
           </section>
 
@@ -135,6 +153,11 @@ const AboutModal = ({ isOpen, onClose }: AboutModalProps): React.ReactElement | 
       <FeedbackModal
         isOpen={isFeedbackOpen}
         onClose={() => setIsFeedbackOpen(false)}
+      />
+
+      <PressKitModal
+        isOpen={isPressKitOpen}
+        onClose={() => setIsPressKitOpen(false)}
       />
     </div>
   );

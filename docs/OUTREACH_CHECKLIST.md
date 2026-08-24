@@ -32,13 +32,17 @@ check before recommending or trusting a new tool.
 - [x] Feature Guide slide deck (in-app walkthrough)
 - [x] About page cleanup with links
 - [x] Social media profile picture generated (square, circle-crop safe)
-- [ ] Write a short **elevator pitch** (1–2 sentences)
-- [ ] Write a **one-paragraph About blurb** (3–5 sentences) for bios/directories/emails
+- [x] Write a short **elevator pitch** (1–2 sentences) — see `docs/BRAND_COPY.md`
+- [x] Write a **one-paragraph About blurb** (3–5 sentences) for bios/directories/emails — see `docs/BRAND_COPY.md`
 - [ ] Take **5–8 clean screenshots** of the app (light + dark mode, main grid, sentence bar in use, full-screen "big text" mode, settings)
 - [ ] Record a **60–90 second demo video/GIF** (pick category → build sentence → speak it → full-screen mode)
-- [ ] Create a **one-page flyer/PDF** (letter-size, print-friendly, QR code to `voxlibera.app`)
-- [ ] Set up a simple **press/media page** or section on the site with logo, screenshots, and blurb
-- [ ] Decide on a **contact email** to use consistently everywhere
+- [x] Create a **one-page flyer/PDF** (letter-size, print-friendly, QR code to `voxlibera.app`) — `public/press/vox-libera-flyer.pdf`, source in `docs/press-kit/`
+- [x] Set up a simple **press/media page** or section on the site with logo, screenshots, and blurb — in-app Press &amp; Media Kit (About → Press &amp; Media Kit)
+- [x] Decide on a **contact email** to use consistently everywhere — `jeffrey.i.mcconnell@gmail.com` (see `docs/BRAND_COPY.md` for rationale + optional branded-forwarding upgrade)
+
+**Copy source of truth:** `docs/BRAND_COPY.md` holds the elevator pitch, About
+blurb, per-platform social bios, flyer copy, and press-kit copy in one place —
+update it first, then propagate to the in-app Press Kit / flyer / social bios.
 
 ---
 
