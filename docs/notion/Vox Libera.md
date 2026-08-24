@@ -6,7 +6,7 @@
 **Target:** Everything (socials + supporting assets) live/public by **01 SEP 2026**
 **Repo:** [github.com/asianguy-based/Vox_Libera](https://github.com/asianguy-based/Vox_Libera)
 **Live site:** [voxlibera.app](https://voxlibera.app)
-**Current version:** 1.1.2
+**Current version:** 1.1.5
 **License:** Vox Libera Community License (free, source-available, non-commercial, attribution required)
 
 ---
@@ -68,8 +68,8 @@
 - [x] Cloudflare Access / www ↔ apex domain fixes
 - [x] In-app Feature Guide — 17-slide walkthrough of every feature
 - [x] Version-check / update-notification system (`version.ts` + `public/version.json`)
-- [x] "Questions/Comments/Feedback" popup (replaced footer mailto link) — Web3Forms + mailto fallback
-  - ⚠️ **Open item:** `WEB3FORMS_ACCESS_KEY` in `utils/feedbackConfig.ts` is still an empty placeholder. Get a free key at web3forms.com and paste it in — until then, feedback just opens the user's email client (works, but not as slick).
+- [x] "Questions/Comments/Feedback" popup (replaced footer mailto link) — Web3Forms, delivers straight to `jeffrey.i.mcconnell@gmail.com`; mailto fallback kept as a safety net if the API ever fails
+  - ✅ `WEB3FORMS_ACCESS_KEY` configured and live-tested (v1.1.5) — spam protection set to honeypot only (hCaptcha was tried first but rejected all submissions, so it was turned off in the Web3Forms dashboard).
 - [x] About page reorganized: Purpose / Features / Help & Feedback / Resources sections
 
 ---
@@ -138,7 +138,6 @@
 | Simplified speech-bubble watermark (no text) | Image-generation credits | Same retry batch as above |
 | App screenshots (5–8) | User action | Needs a person to capture from a real device/browser |
 | Demo video (60–90 sec) | User action | Can be recorded in parallel with other Phase 0 work |
-| Web3Forms feedback delivery | User action | Get free key at web3forms.com, paste into `utils/feedbackConfig.ts` |
 
 ---
 
@@ -148,6 +147,7 @@
 
 | Version | What shipped |
 |---|---|
+| 1.1.5 | Wired up a live Web3Forms access key for the in-app Feedback form — submissions now deliver straight to `jeffrey.i.mcconnell@gmail.com` instead of falling back to mailto; disabled hCaptcha on the Web3Forms form (was blocking all submissions) |
 | 1.1.4 | Switched license from MIT to the custom Vox Libera Community License (non-commercial, attribution required, no malicious use); updated all copy/docs referencing "MIT"/"open-source" accordingly |
 | 1.1.3 | Updated README with the current live URL, feature list, and project info |
 | 1.1.2 | Fixed press-kit flyer PDF spilling onto a stray second page — now single page, footer line at the bottom |

@@ -1,4 +1,4 @@
 {
-  "version": "1.1.4",
-  "notes": "Switched from MIT to a custom Vox Libera Community License: free forever, non-commercial, attribution required, no malicious use."
+  "version": "1.1.5",
+  "notes": "In-app Feedback form now delivers straight to the developer's inbox via Web3Forms (previously required opening your own email client)."
 }

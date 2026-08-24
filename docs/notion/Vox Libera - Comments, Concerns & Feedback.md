@@ -4,7 +4,7 @@
 
 **Related:** See the main **Vox Libera** project page for assets, deliverables, and the phased checklist.
 
-**In-app feedback source:** Settings/footer → "Questions/Comments/Feedback" popup → delivered via Web3Forms to `jeffrey.i.mcconnell@gmail.com` (or opens a mailto: fallback if the Web3Forms key isn't configured yet).
+**In-app feedback source:** Settings/footer → "Questions/Comments/Feedback" popup → delivered via Web3Forms straight to `jeffrey.i.mcconnell@gmail.com` (live and tested as of v1.1.5; mailto: fallback remains as a safety net if the API ever fails).
 
 ---
 
@@ -37,7 +37,7 @@
 
 *(Things you already know about — from testing, QA, or early notes — even before external feedback comes in.)*
 
-- [ ] `WEB3FORMS_ACCESS_KEY` in `utils/feedbackConfig.ts` is still an empty placeholder — feedback currently falls back to opening the user's email client instead of delivering directly. Get a free key at web3forms.com.
+- [x] ~~`WEB3FORMS_ACCESS_KEY` was an empty placeholder~~ — resolved in v1.1.5. Key configured, hCaptcha disabled in the Web3Forms dashboard (it was rejecting all submissions), and delivery confirmed with a live test submission.
 
 ---
 

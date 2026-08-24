@@ -26,7 +26,7 @@
 // silently fails - it just won't be as slick as a proper inbox delivery
 // until the key above is configured.
 
-export const WEB3FORMS_ACCESS_KEY = '';
+export const WEB3FORMS_ACCESS_KEY = '3838cc09-95ce-43a7-b4fc-66050fa4d9b3';
 
 // Fallback destination email used by the "mailto:" backup path (and shown
 // in the UI as a manual alternative if the online submission ever fails).
