@@ -14,6 +14,7 @@ import VirtualKeyboard from './components/VirtualKeyboard';
 import AddItemModal from './components/AddItemModal';
 import InstallInstructionsModal from './components/InstallInstructionsModal';
 import UpdateAvailableModal from './components/UpdateAvailableModal';
+import FeedbackModal from './components/FeedbackModal';
 import { createDefaultRecordings, generateId, migrateLegacyRecordings } from './utils/recordingsUtils';
 import { checkForUpdate, VersionInfo } from './utils/updateCheck';
 import { APP_VERSION } from './version';
@@ -60,6 +61,7 @@ const App = (): React.ReactElement => {
   const [isFullScreenOpen, setIsFullScreenOpen] = useState<boolean>(false); // Legacy "Big Text" modal
   const [isKioskMode, setIsKioskMode] = useState<boolean>(false); // True browser fullscreen
   const [isAboutOpen, setIsAboutOpen] = useState<boolean>(false);
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState<boolean>(false);
   
   // PWA Install State
   const [installPrompt, setInstallPrompt] = useState<any>(null);
@@ -676,9 +678,12 @@ const App = (): React.ReactElement => {
           
           <span className="text-slate-300">|</span>
 
-          <a href="mailto:jeffrey.i.mcconnell@gmail.com" className="hover:text-blue-500 transition-colors hover:underline">
-               © 2025 Jeffrey McConnell
-          </a>
+          <button
+              onClick={() => setIsFeedbackOpen(true)}
+              className="hover:text-blue-500 transition-colors hover:underline focus:outline-none"
+          >
+              Questions/Comments/Feedback
+          </button>
 
           {!isStandalone && (
             <>
@@ -741,6 +746,11 @@ const App = (): React.ReactElement => {
         onClose={() => setUpdateInfo(null)}
         newVersion={updateInfo?.version ?? ''}
         notes={updateInfo?.notes}
+      />
+
+      <FeedbackModal
+        isOpen={isFeedbackOpen}
+        onClose={() => setIsFeedbackOpen(false)}
       />
     </div>
   );
