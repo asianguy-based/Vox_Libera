@@ -52,10 +52,12 @@ Get a real, visitable home base live everywhere *before* pointing anyone
 toward it. This is the "storefront" that makes every later outreach message
 credible.
 
-### Platform Accounts
+### Platform Accounts & Presence
+- [x] Ko-fi Creator Profile set up & live (`ko-fi.com/voxlibera`) — 0% fee tip/support mechanism for zero-cost maintenance
+- [ ] Linktree hub configured (`linktr.ee/voxlibera`) pointing to app, flyer PDF, guide, press kit, Ko-fi, and GitHub
 - [ ] Facebook Page (business/nonprofit-style Page, not a personal profile)
-- [ ] Instagram
-- [ ] X / Twitter
+- [ ] Instagram (`@voxlibera` / fallback `@voxliberaapp`)
+- [ ] X / Twitter (`@voxlibera` / fallback `@voxliberaapp`)
 - [ ] TikTok (optional but strong fit — short demo clips do well for accessibility tools)
 - [ ] YouTube channel (even just for the demo video — also helps SEO/discoverability)
 - [ ] LinkedIn Page (professional audience — SLPs, AT coordinators, special-ed teachers)

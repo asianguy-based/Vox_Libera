@@ -74,7 +74,9 @@ posts, podcast/interview intro blurbs.*
 | LinkedIn Page (tagline) | Free AAC (Augmentative and Alternative Communication) software — giving everyone the ability to speak. |
 | YouTube channel description | Vox Libera is a free AAC app for anyone who has difficulty speaking. This channel shares demos, feature walkthroughs, and updates. Try it free at voxlibera.app. |
 
-**Link in every bio:** `https://voxlibera.app`
+**Link in every bio:** `https://voxlibera.app`  
+**Ko-fi Support:** `https://ko-fi.com/voxlibera`  
+**Linktree:** `https://linktr.ee/voxlibera`  
 **Suggested handle (use consistently across platforms):** `@voxlibera` (fallback: `@voxliberaapp` if taken)
 
 ---

@@ -194,6 +194,17 @@ const PressKitModal = ({ isOpen, onClose }: PressKitModalProps): React.ReactElem
                 </a>
               </li>
               <li>
+                <span className="font-medium">Support:</span>{' '}
+                <a
+                  href="https://ko-fi.com/voxlibera"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 dark:text-blue-400 hover:underline"
+                >
+                  ko-fi.com/voxlibera
+                </a>
+              </li>
+              <li>
                 <span className="font-medium">Contact:</span>{' '}
                 <a href={`mailto:${CONTACT_EMAIL}`} className="text-blue-600 dark:text-blue-400 hover:underline">
                   {CONTACT_EMAIL}
