@@ -658,7 +658,7 @@ const SettingsModal = ({ isOpen, onClose, settings, categories, onSave, onImport
 
         <div className="p-4 border-t border-slate-200 bg-slate-50 flex justify-between items-center dark:border-slate-700 dark:bg-slate-900">
             <a 
-              href='https://ko-fi.com/D1D61NBN42' 
+              href='https://ko-fi.com/voxlibera' 
               target='_blank' 
               rel="noopener noreferrer" 
               className='flex items-center gap-2 px-4 py-2 rounded-full font-bold text-white transition-transform hover:scale-105 active:scale-95 shadow-sm text-sm'

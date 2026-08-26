@@ -1,4 +1,4 @@
 {
-  "version": "1.1.8",
-  "notes": "Updated project contact email to speak2me@voxlibera.app across the app, Press Kit, and documentation; synced Ko-fi vanity URL (ko-fi.com/voxlibera)."
+  "version": "1.1.9",
+  "notes": "Updated Ko-fi support button in Settings modal to point to the branded vanity link (ko-fi.com/voxlibera)."
 }
