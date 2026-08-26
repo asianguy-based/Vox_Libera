@@ -38,7 +38,7 @@ check before recommending or trusting a new tool.
 - [ ] Record a **60–90 second demo video/GIF** (pick category → build sentence → speak it → full-screen mode)
 - [x] Create a **one-page flyer/PDF** (letter-size, print-friendly, QR code to `voxlibera.app`) — `public/press/vox-libera-flyer.pdf`, source in `docs/press-kit/`
 - [x] Set up a simple **press/media page** or section on the site with logo, screenshots, and blurb — in-app Press &amp; Media Kit (About → Press &amp; Media Kit)
-- [x] Decide on a **contact email** to use consistently everywhere — `jeffrey.i.mcconnell@gmail.com` (see `docs/BRAND_COPY.md` for rationale + optional branded-forwarding upgrade)
+- [x] Decide on a **contact email** to use consistently everywhere — `speak2me@voxlibera.app` (branded address routed via Cloudflare Email Routing; same address configured in `utils/feedbackConfig.ts`)
 
 **Copy source of truth:** `docs/BRAND_COPY.md` holds the elevator pitch, About
 blurb, per-platform social bios, flyer copy, and press-kit copy in one place —

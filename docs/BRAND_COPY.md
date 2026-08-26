@@ -89,18 +89,13 @@ emails) rather than mixing a personal address in some places and the
 in-app feedback form in others. This also keeps the "which address is
 correct?" question from ever coming up for anyone vetting the project.
 
-- **Public contact email (use everywhere):** `jeffrey.i.mcconnell@gmail.com`
-  (same address already configured as `FEEDBACK_FALLBACK_EMAIL` in
+- **Public contact email (use everywhere):** `speak2me@voxlibera.app`
+  (same address configured as `FEEDBACK_FALLBACK_EMAIL` in
   `utils/feedbackConfig.ts` and as the Web3Forms delivery target, so all
   feedback paths — in-app form, mailto fallback, and outreach replies —
   land in one inbox).
-- **Optional zero-cost upgrade (not required to launch):** Since
-  `voxlibera.app` is already on Cloudflare, Cloudflare Email Routing (free)
-  can forward a branded address like `hello@voxlibera.app` to the Gmail
-  address above with no mailbox to pay for. This is a nice-to-have polish
-  item for later — the plain Gmail address is perfectly fine to launch
-  with and is what's used across every asset built so far (flyer, press
-  kit, social bio template).
+- **Branded Domain Routing:** Set up via Cloudflare Email Routing to forward
+  `speak2me@voxlibera.app` directly to your inbox with zero running cost.
 
 *Used in: flyer, press kit, social bios ("DM or email ___"), outreach
 email sign-offs, directory submission forms.*
@@ -148,7 +143,7 @@ Libera — logo files, boilerplate copy, and a one-page overview PDF.
   `public/assets/icons/android-chrome-512x512.png`)
 - One-page flyer PDF (`/press/vox-libera-flyer.pdf`)
 - Screenshots & demo video — *coming soon, see OUTREACH_CHECKLIST.md*
-- Contact: jeffrey.i.mcconnell@gmail.com
+- Contact: speak2me@voxlibera.app
 
 *Used in: in-app Press Kit section (About page), linked from
 OUTREACH_CHECKLIST.md and outreach emails.*

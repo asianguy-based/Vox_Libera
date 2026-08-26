@@ -11,7 +11,7 @@
 //
 //   1. Go to https://web3forms.com
 //   2. Enter the email address where you want feedback delivered
-//      (e.g. jeffrey.i.mcconnell@gmail.com) and click "Create Access Key"
+//      (e.g. speak2me@voxlibera.app) and click "Create Access Key"
 //   3. Web3Forms emails you a key instantly (just a random ID string -
 //      it is NOT a secret password, it's safe to have in client-side code)
 //   4. Paste that key below, replacing the empty string
@@ -30,4 +30,4 @@ export const WEB3FORMS_ACCESS_KEY = '3838cc09-95ce-43a7-b4fc-66050fa4d9b3';
 
 // Fallback destination email used by the "mailto:" backup path (and shown
 // in the UI as a manual alternative if the online submission ever fails).
-export const FEEDBACK_FALLBACK_EMAIL = 'jeffrey.i.mcconnell@gmail.com';
+export const FEEDBACK_FALLBACK_EMAIL = 'speak2me@voxlibera.app';

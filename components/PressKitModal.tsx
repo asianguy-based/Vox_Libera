@@ -14,7 +14,7 @@ interface PressKitModalProps {
 // Copy is kept in sync with docs/BRAND_COPY.md (the single source of truth
 // used for social bios, the flyer, and outreach emails) - if you update the
 // wording there, mirror the change here too.
-const CONTACT_EMAIL = 'jeffrey.i.mcconnell@gmail.com';
+const CONTACT_EMAIL = 'speak2me@voxlibera.app';
 
 const ELEVATOR_PITCH =
   "Vox Libera is a free AAC (Augmentative and Alternative Communication) app that gives a voice to anyone who has difficulty speaking — whether from aphasia, autism, stroke, or another condition. It's 100% free forever, works offline, and requires no account, no ads, and no API keys.";

@@ -65,4 +65,4 @@ If you can, please show your support and check out another project of mine:
 
 <a href="http://www.bulletpointlegal.info"><img width="1216" height="231" alt="Bullet Point Legal Logo" src="https://github.com/user-attachments/assets/11adf159-f12a-4401-96a3-7aec71d1cd2e"/> </a>
 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](ko-fi.com/voxlibera)
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/voxlibera)

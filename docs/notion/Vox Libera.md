@@ -6,7 +6,7 @@
 **Target:** Everything (socials + supporting assets) live/public by **01 SEP 2026**
 **Repo:** [github.com/asianguy-based/Vox_Libera](https://github.com/asianguy-based/Vox_Libera)
 **Live site:** [voxlibera.app](https://voxlibera.app)
-**Current version:** 1.1.6
+**Current version:** 1.1.8
 **License:** Vox Libera Community License (free, source-available, non-commercial, attribution required)
 
 ---
@@ -21,8 +21,8 @@
 | Outreach checklist (full detail) | `docs/OUTREACH_CHECKLIST.md` in repo |
 | Press/Media Kit (in-app) | About → Press & Media Kit |
 | Flyer PDF (live) | https://voxlibera.app/press/vox-libera-flyer.pdf |
-| Contact email | jeffrey.i.mcconnell@gmail.com |
-| Support | https://ko-fi.com/D1D61NBN42 |
+| Contact email | speak2me@voxlibera.app |
+| Support | https://ko-fi.com/voxlibera |
 | **Comments, Concerns & Feedback log** | *(separate Notion page — see sibling page)* |
 
 ---
@@ -54,7 +54,7 @@
 - [x] Press boilerplate ("About Vox Libera" for third-party writeups)
 - [x] Per-platform social bios (X, Instagram, Facebook, TikTok, LinkedIn, YouTube)
 - [x] Flyer copy (headline, sub-headline, feature bullets, CTA, footer line)
-- [x] Contact email decided: `jeffrey.i.mcconnell@gmail.com` (same as in-app feedback fallback)
+- [x] Contact email decided: `speak2me@voxlibera.app` (routed via Cloudflare Email Routing to inbox; same as in-app feedback fallback)
 
 ### Documents & Files
 - [x] One-page flyer PDF — letter-size, print-friendly, QR code to voxlibera.app → live at `/press/vox-libera-flyer.pdf`
@@ -68,7 +68,7 @@
 - [x] Cloudflare Access / www ↔ apex domain fixes
 - [x] In-app Feature Guide — 17-slide walkthrough of every feature
 - [x] Version-check / update-notification system (`version.ts` + `public/version.json`)
-- [x] "Questions/Comments/Feedback" popup (replaced footer mailto link) — Web3Forms, delivers straight to `jeffrey.i.mcconnell@gmail.com`; mailto fallback kept as a safety net if the API ever fails
+- [x] "Questions/Comments/Feedback" popup (replaced footer mailto link) — Web3Forms, delivers straight to `speak2me@voxlibera.app`; mailto fallback kept as a safety net if the API ever fails
   - ✅ `WEB3FORMS_ACCESS_KEY` configured and live-tested (v1.1.5) — spam protection set to honeypot only (hCaptcha was tried first but rejected all submissions, so it was turned off in the Web3Forms dashboard).
 - [x] About page reorganized: Purpose / Features / Help & Feedback / Resources sections
 
@@ -145,8 +145,10 @@
 
 | Version | What shipped |
 |---|---|
+| 1.1.8 | Updated contact email across the app, Press Kit, Notion docs, and brand reference to `speak2me@voxlibera.app`; verified Ko-fi vanity URL `https://ko-fi.com/voxlibera` |
+| 1.1.7 | Wired up branded vanity Ko-fi link (`ko-fi.com/voxlibera`) in in-app About modal and Press Kit |
 | 1.1.6 | Added social cover/header image (`public/assets/social-cover.png`, 1920×560) and speech-bubble watermark (`public/assets/watermark.png`, 1024×1024); wired cover image into Open Graph/Twitter card meta tags in `index.html`; added both as Press Kit downloads |
-| 1.1.5 | Wired up a live Web3Forms access key for the in-app Feedback form — submissions now deliver straight to `jeffrey.i.mcconnell@gmail.com` instead of falling back to mailto; disabled hCaptcha on the Web3Forms form (was blocking all submissions) |
+| 1.1.5 | Wired up a live Web3Forms access key for the in-app Feedback form — submissions now deliver straight to `speak2me@voxlibera.app` instead of falling back to mailto; disabled hCaptcha on the Web3Forms form (was blocking all submissions) |
 | 1.1.4 | Switched license from MIT to the custom Vox Libera Community License (non-commercial, attribution required, no malicious use); updated all copy/docs referencing "MIT"/"open-source" accordingly |
 | 1.1.3 | Updated README with the current live URL, feature list, and project info |
 | 1.1.2 | Fixed press-kit flyer PDF spilling onto a stray second page — now single page, footer line at the bottom |
@@ -158,7 +160,8 @@
 ## 📌 Notes / Decisions Log
 
 - **Ordering decision:** Social Presence (Phase 1) was deliberately moved before Grassroots/Institutional Outreach (Phase 2/3) — anyone contacted via outreach will likely check for a live, credible online presence first.
-- **Contact email decision:** Reusing `jeffrey.i.mcconnell@gmail.com` everywhere (flyer, press kit, social bios, outreach) rather than mixing addresses — it's already the Web3Forms/mailto fallback target, so all feedback paths land in one inbox. Optional future upgrade: free Cloudflare Email Routing to forward a branded `hello@voxlibera.app` alias.
+- **Contact email decision:** Using branded address `speak2me@voxlibera.app` everywhere (flyer, press kit, social bios, outreach, Web3Forms/mailto fallback), routed seamlessly via Cloudflare Email Routing to your main inbox with zero mailbox fees.
+- **Support link decision:** Official Ko-fi support page established at `https://ko-fi.com/voxlibera` (0% platform fee on standard donations, no 501(c)(3) overhead required).
 - **Original header banner** (`public/assets/logo.png`) — kept as-is by request, no redesign.
 - **Social cover banner design decision:** Built by compositing the existing logo's lettering onto a newly-generated wide (1920×560) background+mascot scene with its own blank speech-bubble badge — rather than pasting the full logo (which has its own bubble/outline) onto the new banner's bubble, which produced a confusing "three bubbles" nested look. Fix: extracted *only* the letter glyphs from the logo via connected-component analysis (discarding the logo's own bubble/outline shape), then pasted just the lettering onto the banner's single badge. Also required generous horizontal/vertical padding so the lettering clears the badge's own rounded-corner outline curve (a tight-padding first attempt made a letter look like it was "popping out" through the corner).
 - **Deploy timing observed:** Cloudflare Pages typically takes **~1.25–2.5 minutes** from `git push` to live on voxlibera.app (measured three times: ~1m37s, ~2m17s, ~1m16s).

@@ -4,7 +4,7 @@
 
 **Related:** See the main **Vox Libera** project page for assets, deliverables, and the phased checklist.
 
-**In-app feedback source:** Settings/footer → "Questions/Comments/Feedback" popup → delivered via Web3Forms straight to `jeffrey.i.mcconnell@gmail.com` (live and tested as of v1.1.5; mailto: fallback remains as a safety net if the API ever fails).
+**In-app feedback source:** Settings/footer → "Questions/Comments/Feedback" popup → delivered via Web3Forms straight to `speak2me@voxlibera.app` (live and tested as of v1.1.5; mailto: fallback remains as a safety net if the API ever fails).
 
 ---
 
