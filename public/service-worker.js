@@ -34,7 +34,18 @@
 //
 // Bump CACHE_VERSION whenever you want to force old caches to be cleared on
 // next activate (e.g. after significant asset changes).
-const CACHE_VERSION = 'v5';
+//
+// IMPORTANT LESSON LEARNED (bug fixed in v6): the v1.2.0 brand-kit overhaul
+// replaced public/assets/logo.png and the favicon/icon files in place
+// (same filenames, new pixel content) but did NOT bump CACHE_VERSION. Since
+// those files are served cache-first (see isBuildAsset/CORE_ASSETS below),
+// every browser that had already installed/visited the app before that
+// release kept serving its old cached copy of the logo/icons indefinitely -
+// the new files on the server were never fetched because a cache hit always
+// wins. Filename-stable static assets (unlike the content-hashed JS/CSS
+// bundle) MUST be accompanied by a CACHE_VERSION bump whenever their
+// contents change, or returning users will never see the update.
+const CACHE_VERSION = 'v6';
 const CACHE_NAME = `vox-libera-cache-${CACHE_VERSION}`;
 
 // Core app-shell files that must always be available offline. Hashed build

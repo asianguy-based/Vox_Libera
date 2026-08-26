@@ -1,4 +1,4 @@
 {
-  "version": "1.2.0",
-  "notes": "Major brand visual overhaul: implemented complete Brand Kit assets, new logos, wordmarks, standard PWA icons, mascots/emotes, and Notion documentation."
+  "version": "1.2.1",
+  "notes": "Fix: bump service worker cache version so already-installed/returning users actually receive the new brand-kit logo, favicon, and app icons from v1.2.0 instead of a stale cached copy. Also regenerates the one-page press-kit flyer PDF with the new wordmark."
 }
