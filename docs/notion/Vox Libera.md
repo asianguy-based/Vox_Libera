@@ -45,8 +45,8 @@
 - [x] App icon & favicon — black speech-bubble "VL" monogram (`public/assets/icons/`)
 - [x] Header banner / logo — "VOX LIBERA — Every Voice, Set Free" wordmark (`public/assets/logo.png`), kept as original, unchanged
 - [x] Square social media profile picture — VL/wordmark, circle-crop safe (generated, not yet used — no social accounts exist yet)
-- [ ] Social cover/header image (FB/X/YouTube banner) — ⛔ **blocked on image-generation credits**, retry pending
-- [ ] Simplified speech-bubble watermark mark (no text) — ⛔ **blocked on image-generation credits**, retry pending
+- [x] Social cover/header image (FB/X/YouTube banner) — `public/assets/social-cover.png` (1920×560, wide bubble-badge banner), also wired as the Open Graph/Twitter card image in `index.html`
+- [x] Simplified speech-bubble watermark mark (no text) — `public/assets/watermark.png` (1024×1024, black & white)
 
 ### Written Copy
 - [x] Elevator pitch (short + standard versions)
@@ -96,7 +96,7 @@
 ### Phase 1 — Social Presence & Brand Setup *(do before any outreach)*
 - [ ] Create accounts: Facebook Page, Instagram, X/Twitter, TikTok, YouTube, LinkedIn Page
 - [ ] Upload profile picture (already generated) on every platform
-- [ ] Upload cover/header image once generated *(blocked on image credits)*
+- [ ] Upload cover/header image to each platform (asset ready: `public/assets/social-cover.png`)
 - [ ] Consistent bio/description + link to voxlibera.app on every platform
 - [ ] Same handle/username across platforms (`@voxlibera`, fallback `@voxliberaapp`)
 - [ ] Pin intro post/video on each platform
@@ -134,8 +134,6 @@
 
 | Item | Blocked on | Notes |
 |---|---|---|
-| Social cover/header image (FB/X/YouTube banner) | Image-generation credits | Small batch, 1–2 images — retry when credits available |
-| Simplified speech-bubble watermark (no text) | Image-generation credits | Same retry batch as above |
 | App screenshots (5–8) | User action | Needs a person to capture from a real device/browser |
 | Demo video (60–90 sec) | User action | Can be recorded in parallel with other Phase 0 work |
 
@@ -147,6 +145,7 @@
 
 | Version | What shipped |
 |---|---|
+| 1.1.6 | Added social cover/header image (`public/assets/social-cover.png`, 1920×560) and speech-bubble watermark (`public/assets/watermark.png`, 1024×1024); wired cover image into Open Graph/Twitter card meta tags in `index.html`; added both as Press Kit downloads |
 | 1.1.5 | Wired up a live Web3Forms access key for the in-app Feedback form — submissions now deliver straight to `jeffrey.i.mcconnell@gmail.com` instead of falling back to mailto; disabled hCaptcha on the Web3Forms form (was blocking all submissions) |
 | 1.1.4 | Switched license from MIT to the custom Vox Libera Community License (non-commercial, attribution required, no malicious use); updated all copy/docs referencing "MIT"/"open-source" accordingly |
 | 1.1.3 | Updated README with the current live URL, feature list, and project info |
@@ -161,5 +160,6 @@
 - **Ordering decision:** Social Presence (Phase 1) was deliberately moved before Grassroots/Institutional Outreach (Phase 2/3) — anyone contacted via outreach will likely check for a live, credible online presence first.
 - **Contact email decision:** Reusing `jeffrey.i.mcconnell@gmail.com` everywhere (flyer, press kit, social bios, outreach) rather than mixing addresses — it's already the Web3Forms/mailto fallback target, so all feedback paths land in one inbox. Optional future upgrade: free Cloudflare Email Routing to forward a branded `hello@voxlibera.app` alias.
 - **Original header banner** (`public/assets/logo.png`) — kept as-is by request, no redesign.
+- **Social cover banner design decision:** Built by compositing the existing logo's lettering onto a newly-generated wide (1920×560) background+mascot scene with its own blank speech-bubble badge — rather than pasting the full logo (which has its own bubble/outline) onto the new banner's bubble, which produced a confusing "three bubbles" nested look. Fix: extracted *only* the letter glyphs from the logo via connected-component analysis (discarding the logo's own bubble/outline shape), then pasted just the lettering onto the banner's single badge. Also required generous horizontal/vertical padding so the lettering clears the badge's own rounded-corner outline curve (a tight-padding first attempt made a letter look like it was "popping out" through the corner).
 - **Deploy timing observed:** Cloudflare Pages typically takes **~1.25–2.5 minutes** from `git push` to live on voxlibera.app (measured three times: ~1m37s, ~2m17s, ~1m16s).
 - **License decision:** Switched from MIT to a custom "Vox Libera Community License" — still free to use/modify/share, but now requires (1) attribution to the original creator, (2) strictly non-commercial use (never sold/monetized), and (3) no malicious use. This is technically "source-available," not OSI open-source, since it restricts commercial use. All copy referring to "open-source"/"MIT" was updated across README, in-app modals, brand copy, flyer, and outreach checklist to say "free"/"source-available" instead.

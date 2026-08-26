@@ -62,7 +62,7 @@ credible.
 
 ### Branding Each Profile
 - [ ] Upload profile picture (VL monogram/wordmark — already generated) on every platform
-- [ ] Upload cover/header image where supported (FB Page cover, X header, YouTube banner) — *pending generation, small image-credit task*
+- [ ] Upload cover/header image where supported (FB Page cover, X header, YouTube banner) — asset ready: `public/assets/social-cover.png` (1920×560)
 - [ ] Write consistent bio/description on every platform using the elevator pitch from Phase 0
 - [ ] Add link to `voxlibera.app` in every bio/profile
 - [ ] Use the same handle/username across all platforms where possible (e.g. `@voxlibera` or `@voxliberaapp`) for consistency and easy discovery

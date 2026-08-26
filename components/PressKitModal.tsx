@@ -138,6 +138,38 @@ const PressKitModal = ({ isOpen, onClose }: PressKitModalProps): React.ReactElem
                 </div>
                 <span className="shrink-0 text-xs font-semibold text-blue-600 dark:text-blue-400">Download ⬇️</span>
               </a>
+
+              <a
+                href="/assets/social-cover.png"
+                target="_blank"
+                rel="noopener noreferrer"
+                download
+                className="flex items-center justify-between gap-3 p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/40 hover:bg-slate-100 dark:hover:bg-slate-900/70 transition-colors"
+              >
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-slate-800 dark:text-slate-100">Social Cover / Header Image (PNG, 1920×560)</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                    For Facebook Page cover, X header, YouTube banner
+                  </p>
+                </div>
+                <span className="shrink-0 text-xs font-semibold text-blue-600 dark:text-blue-400">Download ⬇️</span>
+              </a>
+
+              <a
+                href="/assets/watermark.png"
+                target="_blank"
+                rel="noopener noreferrer"
+                download
+                className="flex items-center justify-between gap-3 p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/40 hover:bg-slate-100 dark:hover:bg-slate-900/70 transition-colors"
+              >
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-slate-800 dark:text-slate-100">Speech-Bubble Watermark (PNG, 1024×1024)</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                    Simplified black &amp; white bubble mark, no text
+                  </p>
+                </div>
+                <span className="shrink-0 text-xs font-semibold text-blue-600 dark:text-blue-400">Download ⬇️</span>
+              </a>
             </div>
           </section>
 

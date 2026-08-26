@@ -1,4 +1,4 @@
 {
-  "version": "1.1.5",
-  "notes": "In-app Feedback form now delivers straight to the developer's inbox via Web3Forms (previously required opening your own email client)."
+  "version": "1.1.6",
+  "notes": "Added social cover/header image and speech-bubble watermark assets (Press Kit downloads + Open Graph/Twitter card meta tags)."
 }
