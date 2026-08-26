@@ -6,7 +6,7 @@
 **Target:** Everything (socials + supporting assets) live/public by **01 SEP 2026**
 **Repo:** [github.com/asianguy-based/Vox_Libera](https://github.com/asianguy-based/Vox_Libera)
 **Live site:** [voxlibera.app](https://voxlibera.app)
-**Current version:** 1.1.5
+**Current version:** 1.1.6
 **License:** Vox Libera Community License (free, source-available, non-commercial, attribution required)
 
 ---
