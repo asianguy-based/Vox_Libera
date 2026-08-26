@@ -1,4 +1,4 @@
 {
-  "version": "1.1.9",
-  "notes": "Updated Ko-fi support button in Settings modal to point to the branded vanity link (ko-fi.com/voxlibera)."
+  "version": "1.2.0",
+  "notes": "Major brand visual overhaul: implemented complete Brand Kit assets, new logos, wordmarks, standard PWA icons, mascots/emotes, and Notion documentation."
 }

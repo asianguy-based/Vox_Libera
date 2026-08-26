@@ -6,7 +6,7 @@
 **Target:** Everything (socials + supporting assets) live/public by **01 SEP 2026**
 **Repo:** [github.com/asianguy-based/Vox_Libera](https://github.com/asianguy-based/Vox_Libera)
 **Live site:** [voxlibera.app](https://voxlibera.app)
-**Current version:** 1.1.8
+**Current version:** 1.2.0
 **License:** Vox Libera Community License (free, source-available, non-commercial, attribution required)
 
 ---
@@ -19,6 +19,7 @@
 | GitHub repo | https://github.com/asianguy-based/Vox_Libera |
 | Brand copy (source of truth) | `docs/BRAND_COPY.md` in repo |
 | Outreach checklist (full detail) | `docs/OUTREACH_CHECKLIST.md` in repo |
+| Complete Brand Kit (Notion mirror) | `docs/notion/Complete Brand Kit (2026-08-26).md` |
 | Press/Media Kit (in-app) | About → Press & Media Kit |
 | Flyer PDF (live) | https://voxlibera.app/press/vox-libera-flyer.pdf |
 | Contact email | speak2me@voxlibera.app |
@@ -145,6 +146,7 @@
 
 | Version | What shipped |
 |---|---|
+| 1.2.0 | Major brand visual overhaul: implemented complete Brand Kit assets, new logos, wordmarks, standard PWA icons, mascots/emotes, and Notion documentation (`Complete Brand Kit (2026-08-26)`) |
 | 1.1.8 | Updated contact email across the app, Press Kit, Notion docs, and brand reference to `speak2me@voxlibera.app`; verified Ko-fi vanity URL `https://ko-fi.com/voxlibera` |
 | 1.1.7 | Wired up branded vanity Ko-fi link (`ko-fi.com/voxlibera`) in in-app About modal and Press Kit |
 | 1.1.6 | Added social cover/header image (`public/assets/social-cover.png`, 1920×560) and speech-bubble watermark (`public/assets/watermark.png`, 1024×1024); wired cover image into Open Graph/Twitter card meta tags in `index.html`; added both as Press Kit downloads |
