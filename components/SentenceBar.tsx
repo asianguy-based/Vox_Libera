@@ -109,8 +109,8 @@ const SentenceBar = ({
                 src="/assets/logo.png" 
                 alt="Vox Libera - Every Voice, Set Free!" 
                 className="h-24 object-contain"
-                width="1726"
-                height="339"
+                width="1077"
+                height="169"
             />
         </div>
 
