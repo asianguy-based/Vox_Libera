@@ -25,7 +25,29 @@
 /version.json
   Cache-Control: no-cache, no-store, must-revalidate
 
-# Hashed, content-fingerprinted build output - safe to cache forever since
-# any change produces a new filename automatically.
-/assets/*
+# Hashed, content-fingerprinted JS/CSS bundle - safe to cache forever since
+# any change produces a brand-new filename automatically (Vite content
+# hashing). Scoped to "index-*" (the actual bundle filenames) rather than a
+# blanket "/assets/*" - see the BUG note below for why that matters.
+/assets/index-*
   Cache-Control: public, max-age=31536000, immutable
+
+# BUG FIXED (2026-08-26, see CACHE_VERSION v6 note in service-worker.js):
+# public/assets/ also holds plain, NON-hashed static images (app logo,
+# social-cover, watermark, favicon/PWA icons) that keep the exact same
+# filename even when their pixel content changes - e.g. the v1.2.0
+# brand-kit rebrand replaced logo.png and the icons in place. A previous
+# blanket "/assets/*" rule marked ALL of /assets/ (including these) as
+# "immutable" for a year, so both the Cloudflare edge cache and every
+# visitor's browser kept serving the OLD logo/icons long after the new
+# ones were deployed - a hard refresh didn't even help because the browser
+# never re-requested them at all. Give these a short, revalidate-friendly
+# cache instead so a rebrand actually reaches users promptly.
+/assets/logo.png
+  Cache-Control: public, max-age=3600, must-revalidate
+/assets/social-cover.png
+  Cache-Control: public, max-age=3600, must-revalidate
+/assets/watermark.png
+  Cache-Control: public, max-age=3600, must-revalidate
+/assets/icons/*
+  Cache-Control: public, max-age=3600, must-revalidate
